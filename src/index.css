@@ -1,68 +1,80 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+/* 기본 박스 모델 설정 */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
+  margin: 0; 
+  padding: 0; 
+  line-height: 1.0;
+  font-size: 16px; 
+  font-weight: 400; 
+  font-style: normal;
+  color: #000; 
+  list-style: none;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* body 추가 설정 */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  letter-spacing: -0.03em;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* 헤딩 요소 */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1em;
 }
 
+/* 링크 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 테이블 */
+table, tr, td, th {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 버튼 및 폼 요소 */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+/* 텍스트 영역 */
+textarea {
+  resize: none;
+}
+
+/* 이미지 */
+img {
+  vertical-align: top;
+}
+
+/* 리스트 */
+ul, ol {
+  list-style: none;
+}
+
+/* 유틸리티 클래스 */
+.clear::after {
+  content: '';
+  display: block;
+  clear: both;
 }
