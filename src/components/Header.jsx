@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from "../contexts/AuthContext";
 import './Header.css';
 
 const Header = () => {
+  const { user, userInfo, signOut } = useAuth();
+  const navigate = useNavigate(); // 👈 이 부분이 빠져있었어요!
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuData = [
@@ -74,8 +77,16 @@ const Header = () => {
   };
 
   const handleLogin = () => {
-    // 로그인 모달 열기 또는 로그인 페이지로 이동
+    // 로그인 페이지로 이동
     console.log('로그인 버튼 클릭');
+    navigate('/login');
+  };
+
+  const handleLogout = async () => {
+    const result = await signOut();
+    if (result.success) {
+      alert('로그아웃 되었습니다.');
+    }
   };
 
   return (
@@ -139,11 +150,37 @@ const Header = () => {
             <img src="/images/icons/ico_bag.png" alt="쇼핑백" />
           </Link>
         </li>
-        <li>
-          <button onClick={handleLogin} aria-label="로그인">
-            <img src="/images/icons/ico_login.png" alt="로그인" />
-          </button>
-        </li>
+
+        {/* 로그인 상태에 따른 조건부 렌더링 */}
+        {user ? (
+          // 로그인된 상태
+          <>
+            <li>
+              <span className="user-greeting">
+                {userInfo?.name}님
+              </span>
+            </li>
+            <li>
+              <button onClick={handleLogout} aria-label="로그아웃">
+                <img src="/images/icons/ico_logout.png" alt="로그아웃" />
+              </button>
+            </li>
+          </>
+        ) : (
+          // 로그아웃된 상태
+          <>
+            <li>
+              <Link to="/login" aria-label="로그인">
+                <img src="/images/icons/ico_login.png" alt="로그인" />
+              </Link>
+            </li>
+            <li>
+              <Link to="/signup" aria-label="회원가입">
+                <img src="/images/icons/ico_signup.png" alt="회원가입" />
+              </Link>
+            </li>
+          </>
+        )}
       </ul>
     </header>
   )

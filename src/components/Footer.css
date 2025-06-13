@@ -1,48 +1,48 @@
 /* Footer.css - 기존 CSS 그대로 적용 */
 
 /* ===================================footer 시작 */
-footer {
+#footer {
   background: #000;
-  margin-top: 220px;
+  margin-top: 445px;
 }
 
-footer .footerWrap {
+#footer .footerWrap {
   padding-top: 10px; 
   display: flex;
 }
 
-footer .footerWrap .footerLeft {
+#footer .footerWrap .footerLeft {
   background: #fff; 
   width: 633px; 
   border-radius: 25px;
 }
 
-footer .footerWrap .footerLeft p {
+#footer .footerWrap .footerLeft p {
   padding: 74px; 
   border-bottom: 2px solid #000;
 }
 
-footer .footerWrap .footerLeft > ul {
+#footer .footerWrap .footerLeft > ul {
   display: flex; 
   justify-content: space-between;
 }
 
-footer .footerWrap .footerLeft ul .appLink ul li:nth-child(1) {
+#footer .footerWrap .footerLeft ul .appLink ul li:nth-child(1) {
   border-bottom: 2px solid #000; 
   padding: 23px 40px 26px 20px;
 }
 
-footer .footerWrap .footerLeft ul .appLink ul li:nth-child(2) {
+#footer .footerWrap .footerLeft ul .appLink ul li:nth-child(2) {
   padding: 23px 20px 20px 26px;
 }
 
-footer .footerWrap .footerLeft ul .qrCode {
+#footer .footerWrap .footerLeft ul .qrCode {
   border-left: 2px solid #000; 
   padding: 60px;
 }
 
 /* footerRight 시작 */
-footer .footerWrap .footerRight {
+#footer .footerWrap .footerRight {
   width: calc(100% - 633px); 
   background: #fff; 
   margin-left: 10px; 
@@ -52,11 +52,11 @@ footer .footerWrap .footerRight {
   justify-content: space-between;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .tap {
+#footer .footerWrap .footerRight .rightCenter .centerTop .tap {
   border-bottom: 2px solid #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .tap a {
+#footer .footerWrap .footerRight .rightCenter .centerTop .tap a {
   display: inline-block; 
   padding-bottom: 29px; 
   font-size: 1.38rem;
@@ -64,41 +64,41 @@ footer .footerWrap .footerRight .rightCenter .centerTop .tap a {
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .tap .notice.active {
+#footer .footerWrap .footerRight .rightCenter .centerTop .tap .notice.active {
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .tap .event {
+#footer .footerWrap .footerRight .rightCenter .centerTop .tap .event {
   margin-left: 33px; 
   color: #868686;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .tap .event.active {
+#footer .footerWrap .footerRight .rightCenter .centerTop .tap .event.active {
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList {
   padding-top: 29px; 
   height: 190px;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li {
   margin-bottom: 20px; 
   width: 620px; 
   position: relative;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li:last-child {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li:last-child {
   margin-bottom: 0;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a {
   display: block;
   text-decoration: none;
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a span {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a span {
   color: #868686; 
   font-size: 0.88rem; 
   position: absolute; 
@@ -106,37 +106,37 @@ footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a span
   line-height: 16px;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList {
   display: none; 
   padding-top: 29px; 
   height: 190px;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList.hidden {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList.hidden {
   display: none;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .noticeList.hidden {
+#footer .footerWrap .footerRight .rightCenter .centerTop .noticeList.hidden {
   display: none;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li {
   margin-bottom: 20px; 
   width: 620px;
   position: relative;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li:last-child {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li:last-child {
   margin-bottom: 0;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li a {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li a {
   display: block;
   text-decoration: none;
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li a span {
+#footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li a span {
   color: #868686; 
   font-size: 0.88rem; 
   position: absolute; 
@@ -145,23 +145,23 @@ footer .footerWrap .footerRight .rightCenter .centerTop .eventList ul li a span 
 }
 
 /* 이용약관 */
-footer .footerWrap .footerRight .rightCenter .centerBottom {
+#footer .footerWrap .footerRight .rightCenter .centerBottom {
   width: 620px; 
   margin-top: 62px; 
   display: flex; 
   justify-content: space-between;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerBottom dl dt {
+#footer .footerWrap .footerRight .rightCenter .centerBottom dl dt {
   margin-bottom: 15px;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerBottom dl dt a {
+#footer .footerWrap .footerRight .rightCenter .centerBottom dl dt a {
   text-decoration: none;
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightCenter .centerBottom dl dd a {
+#footer .footerWrap .footerRight .rightCenter .centerBottom dl dd a {
   display: block; 
   font-size: 0.88rem; 
   margin-bottom: 10px;
@@ -169,39 +169,39 @@ footer .footerWrap .footerRight .rightCenter .centerBottom dl dd a {
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightR .csCenter h3 {
+#footer .footerWrap .footerRight .rightR .csCenter h3 {
   font-size: 1.38rem;
 }
 
-footer .footerWrap .footerRight .rightR .csCenter .csNumber {
+#footer .footerWrap .footerRight .rightR .csCenter .csNumber {
   font-size: 1.88rem; 
   margin: 10px 0 15px 0;
 }
 
-footer .footerWrap .footerRight .rightR .contact {
+#footer .footerWrap .footerRight .rightR .contact {
   margin-top: 55px;
 }
 
-footer .footerWrap .footerRight .rightR .contact h3 {
+#footer .footerWrap .footerRight .rightR .contact h3 {
   font-size: 1.38rem; 
   line-height: 1.8rem;
 }
 
-footer .footerWrap .footerRight .rightR .contact p {
+#footer .footerWrap .footerRight .rightR .contact p {
   margin: 13px 0;
 }
 
-footer .footerWrap .footerRight .rightR .contact .mailAddress {
+#footer .footerWrap .footerRight .rightR .contact .mailAddress {
   font-size: 0.88rem; 
   font-weight: 300;
 }
 
-footer .footerWrap .footerRight .rightR .button {
+#footer .footerWrap .footerRight .rightR .button {
   display: flex; 
   margin-top: 57px;
 }
 
-footer .footerWrap .footerRight .rightR .button a {
+#footer .footerWrap .footerRight .rightR .button a {
   display: inline-block; 
   margin-right: 17px; 
   border: 1px solid #868686; 
@@ -210,7 +210,7 @@ footer .footerWrap .footerRight .rightR .button a {
   color: #000;
 }
 
-footer .footerWrap .footerRight .rightR .button a:hover {
+#footer .footerWrap .footerRight .rightR .button a:hover {
   background: #000; 
   color: #fff; 
   border: 1px solid #000;
@@ -220,7 +220,7 @@ footer .footerWrap .footerRight .rightR .button a:last-child {
   margin-right: 0;
 }
 
-footer .footerInforWrap {
+#footer .footerInforWrap {
   width: 1400px; 
   margin: 0 auto; 
   color: #F2F2F2; 
@@ -229,35 +229,35 @@ footer .footerInforWrap {
   padding: 23px 0;
 }
 
-footer .footerInforWrap .footerInfor {
+#footer .footerInforWrap .footerInfor {
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-footer .footerInforWrap .footerInfor li {
+#footer .footerInforWrap .footerInfor li {
   color: #F2F2F2; 
   line-height: 30px;
 }
 
-footer .footerInforWrap .footerInfor li::after {
+#footer .footerInforWrap .footerInfor li::after {
   content: '|'; 
   padding: 0 10px;
 }
 
-footer .footerInforWrap .footerInfor li:nth-child(3):after {
+#footer .footerInforWrap .footerInfor li:nth-child(3):after {
   content: '';
 }
 
-footer .footerInforWrap .footerInfor li span a {
+#footer .footerInforWrap .footerInfor li span a {
   color: #f2f2f2; 
   font-size: 0.88rem; 
   cursor: pointer;
   text-decoration: none;
 }
 
-footer .footerInforWrap p {
+#footer .footerInforWrap p {
   color: #F2F2F2; 
   line-height: 30px;
 }
@@ -280,11 +280,4 @@ footer .footerInforWrap p {
 
 #topBtn:hover {
   background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* 리스트 기본 스타일 초기화 */
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }

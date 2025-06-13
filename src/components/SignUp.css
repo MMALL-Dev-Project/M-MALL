@@ -1,0 +1,267 @@
+/* SignUp.css - M-MALL 사이트 디자인에 맞춘 회원가입 스타일 */
+
+/* 전체 컨테이너 */
+#signup-container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 120px;
+}
+
+/* 회원가입 래퍼 */
+.signup-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* 헤더 */
+.signup-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.signup-header h2 {
+  font-size: 2.19rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 15px;
+  letter-spacing: -0.03em;
+}
+
+.signup-header p {
+  font-size: 1.1rem;
+  color: #565656;
+  font-weight: 400;
+}
+
+/* 폼 스타일 */
+.signup-form {
+  width: 100%;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 35px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+/* 인풋 + 버튼 컨테이너 */
+.input-btn {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* 인풋 스타일 */
+.form-group input {
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
+  font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #000;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.form-group input::placeholder {
+  color: #999;
+  font-weight: 300;
+}
+
+/* 인풋 + 버튼이 있는 경우 */
+.input-btn input {
+  flex: 1;
+}
+
+/* 에러 상태 */
+.form-group input.error {
+  border-color: #ff4444;
+}
+
+/* 성공 상태 */
+.form-group input.success {
+  /* border-color: #016ACA; */
+}
+
+/* 중복확인 버튼 */
+.check-btn {
+  height: 50px;
+  padding: 0 20px;
+  background-color: #ffffff;
+  border: 1px solid #000;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.check-btn:hover {
+  background-color: #000;
+  color: #ffffff;
+}
+
+.check-btn:disabled {
+  background-color: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.check-btn:disabled:hover {
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+/* 에러 메시지 */
+.error-message {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #ff4444;
+  font-weight: 400;
+}
+
+/* 성공 메시지 */
+.success-message {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #016ACA;
+  font-weight: 400;
+}
+
+/* 회원가입 버튼 */
+.signup-btn {
+  width: 100%;
+  height: 55px;
+  background-color: #000;
+  border: none;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 40px;
+  transition: background-color 0.2s ease;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.signup-btn:hover {
+  background-color: #333;
+}
+
+.signup-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.signup-btn:disabled:hover {
+  background-color: #ccc;
+}
+
+/* 푸터 */
+.signup-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.signup-footer p {
+  font-size: 0.95rem;
+  color: #565656;
+}
+
+.signup-footer a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.signup-footer a:hover {
+  color: #666;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  #signup-container {
+    padding: 40px 0;
+  }
+  
+  .signup-wrapper {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+  
+  .signup-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .input-btn {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .check-btn {
+    width: 100%;
+    height: 45px;
+  }
+  
+  .form-group input {
+    height: 45px;
+  }
+  
+  .signup-btn {
+    height: 50px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-header {
+    margin-bottom: 40px;
+  }
+  
+  .signup-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .form-group input {
+    height: 42px;
+    font-size: 0.95rem;
+  }
+  
+  .check-btn {
+    height: 42px;
+    font-size: 0.85rem;
+  }
+  
+  .signup-btn {
+    height: 48px;
+    margin-top: 30px;
+  }
+}
