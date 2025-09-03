@@ -5,7 +5,7 @@ import './Header.css';
 
 const Header = () => {
   const { user, userInfo, signOut } = useAuth();
-  const navigate = useNavigate(); // 👈 이 부분이 빠져있었어요!
+  const navigate = useNavigate();
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuData = [
@@ -93,7 +93,7 @@ const Header = () => {
     <header id="header">
       <h1 className="logo">
         <Link to="/">
-          <img src="/images/logo.svg" alt="M-MALL" />
+          <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="M-MALL" />
         </Link>
       </h1>
       <nav
