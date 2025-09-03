@@ -137,17 +137,17 @@ const Header = () => {
       <ul className="lnb">
         <li>
           <button onClick={handleSearch} aria-label="검색">
-            <img src="/images/icons/ico_search.png" alt="검색" />
+            <img src="/M-MALL/images/icons/ico_search.png" alt="검색" />
           </button>
         </li>
         <li>
           <Link to="/mypage" aria-label="마이페이지">
-            <img src="/images/icons/ico_user.png" alt="마이페이지" />
+            <img src="/M-MALL/images/icons/ico_user.png" alt="마이페이지" />
           </Link>
         </li>
         <li>
           <Link to="/cart" aria-label="쇼핑백">
-            <img src="/images/icons/ico_bag.png" alt="쇼핑백" />
+            <img src="/M-MALL/images/icons/ico_bag.png" alt="쇼핑백" />
           </Link>
         </li>
 
@@ -162,7 +162,7 @@ const Header = () => {
             </li>
             <li>
               <button onClick={handleLogout} aria-label="로그아웃">
-                <img src="/images/icons/ico_logout.png" alt="로그아웃" />
+                <img src="/M-MALL/images/icons/ico_logout.png" alt="로그아웃" />
               </button>
             </li>
           </>
@@ -171,12 +171,12 @@ const Header = () => {
           <>
             <li>
               <Link to="/login" aria-label="로그인">
-                <img src="/images/icons/ico_login.png" alt="로그인" />
+                <img src="/M-MALL/images/icons/ico_login.png" alt="로그인" />
               </Link>
             </li>
             <li>
               <Link to="/signup" aria-label="회원가입">
-                <img src="/images/icons/ico_signup.png" alt="회원가입" />
+                <img src="/M-MALL/images/icons/ico_signup.png" alt="회원가입" />
               </Link>
             </li>
           </>
