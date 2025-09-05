@@ -1,67 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext";
 import './Header.css';
+import { supabase } from "../../config/supabase";
 
 const Header = () => {
   const { user, userInfo, signOut } = useAuth();
   const navigate = useNavigate();
   const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [menuData, setMenuData] = useState([]);
 
-  const menuData = [
-    {
-      name: '추천상품',
-      link: '/recommended',
-      subMenu: []
-    },
-    {
-      name: '패션·뷰티',
-      link: '/fashion-beauty',
-      subMenu: ['전체', '의류', '가방·신발', '액세서리', '주얼리', '키즈', '메이크업', '헤어·바디', '프레그런스']
-    },
-    {
-      name: '리빙',
-      link: '/living',
-      subMenu: ['전체', '조명', '가구', '홈데코', '키친', '다이닝', '생활용품']
-    },
-    {
-      name: '테크',
-      link: '/tech',
-      subMenu: ['전체', '디지털', '영상·음향', '주방가전', '생활가전', '뷰티기기']
-    },
-    {
-      name: '스포츠·레저',
-      link: '/sports',
-      subMenu: ['전체', '골프', '캠핑', '등산', '피트니스']
-    },
-    {
-      name: '컬처',
-      link: '/culture',
-      subMenu: ['전체', '바이닐', '해외도서 큐레이션', '국내도서 스테디셀러', '아트샵', '취미']
-    },
-    {
-      name: '편집샵',
-      link: '/select-shop',
-      subMenu: []
-    },
-    {
-      name: '호텔·고메',
-      link: '/hotel-gourmet',
-      subMenu: ['전체', '스테이', '스파', '고메']
-    },
-    {
-      name: '모바일 이용권',
-      link: '/mobile',
-      subMenu: [],
-      isSpecial: true
-    },
-    {
-      name: '현대카드',
-      link: '/hyundai-card',
-      subMenu: [],
-      isSpecial: true
-    }
-  ];
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select(`
+            name, slug, display_order,
+            sub_categories(name, slug, display_order)
+          `)
+          .order('display_order');
+
+        if (error) {
+          console.error('카테고리 조회 에러:', error);
+          return;
+        }
+
+        // DB 데이터를 컴포넌트 형식으로 변환
+        const formattedData = data.map(category => ({
+          name: category.name,
+          slug: category.slug,
+          subMenu: category.sub_categories || [],
+          isSpecial: ['mobile', 'hyundai-card'].includes(category.slug)
+        }));
+        setMenuData(formattedData);
+      } catch (error) {
+        console.error('데이터 로드 실패:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleMenuHover = (index) => {
     setHoveredMenu(index);
@@ -72,12 +51,10 @@ const Header = () => {
   };
 
   const handleSearch = () => {
-    // 검색 모달 열기 또는 검색 페이지로 이동
     console.log('검색 버튼 클릭');
   };
 
   const handleLogin = () => {
-    // 로그인 페이지로 이동
     console.log('로그인 버튼 클릭');
     navigate('/login');
   };
@@ -108,20 +85,20 @@ const Header = () => {
               onMouseEnter={() => handleMenuHover(index)}
             >
               <Link
-                to={menu.link}
+                to={`/${menu.slug}`}
                 className={`gnb-link ${hoveredMenu === index ? 'hovered' : ''}`}
               >
                 {menu.name}
               </Link>
               {/* 서브메뉴 */}
-              {menu.subMenu.length > 0 && (
+              {menu.subMenu && menu.subMenu.length > 0 && (
                 <ul
                   className={`sub-menu ${hoveredMenu === index ? 'visible' : ''}`}
                 >
                   {menu.subMenu.map((subItem, subIndex) => (
                     <li key={subIndex}>
-                      <Link to={`${menu.link}/${encodeURIComponent(subItem.toLowerCase().replace(/[·\s]/g, '-'))}`}>
-                        {subItem}
+                      <Link to={`/${menu.slug}/${subItem.slug}`}>
+                        {subItem.name}
                       </Link>
                     </li>
                   ))}
@@ -153,7 +130,6 @@ const Header = () => {
 
         {/* 로그인 상태에 따른 조건부 렌더링 */}
         {user ? (
-          // 로그인된 상태
           <>
             <li>
               <span className="user-greeting">
@@ -167,7 +143,6 @@ const Header = () => {
             </li>
           </>
         ) : (
-          // 로그아웃된 상태
           <>
             <li>
               <Link to="/login" aria-label="로그인">
@@ -183,7 +158,7 @@ const Header = () => {
         )}
       </ul>
     </header>
-  )
+  );
 };
 
 export default Header;
