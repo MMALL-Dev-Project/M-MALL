@@ -38,6 +38,11 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_STORAGE_USER_PROFILES: ${{ secrets.VITE_STORAGE_USER_PROFILES }}
+          VITE_STORAGE_BRAND_LOGOS: ${{ secrets.VITE_STORAGE_BRAND_LOGOS }}
+          VITE_STORAGE_PRODUCTS: ${{ secrets.VITE_STORAGE_PRODUCTS }}
+          VITE_STORAGE_REVIEWS: ${{ secrets.VITE_STORAGE_REVIEWS }}
+          VITE_STORAGE_INQUIRIES: ${{ secrets.VITE_STORAGE_INQUIRIES }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
