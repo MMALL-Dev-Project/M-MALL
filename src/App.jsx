@@ -5,9 +5,9 @@ import './App.css'
 
 import { AuthProvider } from './contexts/AuthContext'
 import AuthCallback from './contexts/AuthCallback';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import SignUp from './components/SignUp';
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
+import SignUp from './pages/auth/SignUp';
 
 console.log('Supabase 연결:', supabase)
 
