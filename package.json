@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.8.2",
-    "@supabase/supabase-js": "^2.50.0",
+    "@reduxjs/toolkit": "^2.9.0",
+    "@supabase/supabase-js": "^2.57.0",
     "@types/redux-persist": "^4.0.0",
-    "axios": "^1.9.0",
-    "bootstrap": "^5.3.6",
+    "axios": "^1.11.0",
+    "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
