@@ -7,7 +7,12 @@ import { AuthProvider } from './contexts/AuthContext'
 import AuthCallback from './contexts/AuthCallback';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
+
 import SignUp from './pages/auth/SignUp';
+import Login from './pages/auth/Login';
+
+import CategoryPage from './pages/CategoryPage';
+
 import Notice from './pages/support/Notice';
 
 console.log('Supabase 연결:', supabase)
@@ -27,22 +32,14 @@ function App() {
             {/* 인증 콜백 라우트 */}
             <Route path="/auth/callback" element={<AuthCallback />} />
 
-            {/* 메뉴별 페이지들 */}
-            <Route path="/recommended" element={<div>추천상품</div>} />
-            <Route path="/fashion-beauty" element={<div>패션·뷰티</div>} />
-            <Route path="/living" element={<div>리빙</div>} />
-            <Route path="/tech" element={<div>테크</div>} />
-            <Route path="/sports" element={<div>스포츠·레저</div>} />
-            <Route path="/culture" element={<div>컬처</div>} />
-            <Route path="/select-shop" element={<div>편집샵</div>} />
-            <Route path="/hotel-gourmet" element={<div>호텔·고메</div>} />
-            <Route path="/mobile" element={<div>모바일 이용권</div>} />
-            <Route path="/hyundai-card" element={<div>현대카드</div>} />
+             {/* 메뉴별 페이지들 - 동적 라우팅*/}
+            <Route path="/:categorySlug" element={<CategoryPage />} />
+            <Route path="/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
 
             {/* 사용자 관련 페이지들 */}
             <Route path="/mypage" element={<div>마이페이지</div>} />
             <Route path="/cart" element={<div>장바구니</div>} />
-            <Route path="/login" element={<div>로그인 페이지</div>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
 
             {/* 공지사항 */}
@@ -60,4 +57,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
