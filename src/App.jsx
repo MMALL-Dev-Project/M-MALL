@@ -13,6 +13,8 @@ import Login from './pages/auth/Login';
 
 import CategoryPage from './pages/CategoryPage';
 
+import Notice from './pages/support/Notice';
+
 console.log('Supabase 연결:', supabase)
 
 function App() {
@@ -39,6 +41,9 @@ function App() {
             <Route path="/cart" element={<div>장바구니</div>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+
+            {/* 공지사항 */}
+              <Route path="/support/notice" element={<Notice />} />
 
             {/* 404 페이지 */}
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
