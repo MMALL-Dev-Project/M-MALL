@@ -44,6 +44,7 @@ function App() {
 
             {/* 공지사항 */}
               <Route path="/support/notice" element={<Notice />} />
+              <Route path="/support/notice/:nid" element={<Notice />} />
 
             {/* 404 페이지 */}
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
