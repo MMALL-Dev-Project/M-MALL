@@ -8,6 +8,7 @@ import AuthCallback from './contexts/AuthCallback';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import SignUp from './pages/auth/SignUp';
+import Notice from './pages/support/Notice';
 
 console.log('Supabase 연결:', supabase)
 
@@ -43,6 +44,9 @@ function App() {
             <Route path="/cart" element={<div>장바구니</div>} />
             <Route path="/login" element={<div>로그인 페이지</div>} />
             <Route path="/signup" element={<SignUp />} />
+
+            {/* 공지사항 */}
+              <Route path="/support/notice" element={<Notice />} />
 
             {/* 404 페이지 */}
             <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />

@@ -105,10 +105,10 @@ const Footer = () => {
                 <ul>
                   {noticeList.map((item, index) => (
                     <li key={index}>
-                      <a href="#">
+                      <Link to="/support/notice">
                         {item.title}
                         <span>{item.date}</span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
