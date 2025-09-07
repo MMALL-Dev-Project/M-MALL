@@ -7,7 +7,10 @@ import { AuthProvider } from './contexts/AuthContext'
 import AuthCallback from './contexts/AuthCallback';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
+
 import SignUp from './pages/auth/SignUp';
+import Login from './pages/auth/Login';
+
 import CategoryPage from './pages/CategoryPage';
 
 console.log('Supabase 연결:', supabase)
@@ -34,7 +37,7 @@ function App() {
             {/* 사용자 관련 페이지들 */}
             <Route path="/mypage" element={<div>마이페이지</div>} />
             <Route path="/cart" element={<div>장바구니</div>} />
-            <Route path="/login" element={<div>로그인 페이지</div>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
 
             {/* 404 페이지 */}
