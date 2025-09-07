@@ -1,0 +1,10 @@
+#notice-container {
+  padding: 100px 20px;
+  background-color: white;
+  min-height: 500px;
+}
+
+.notice-header h2 {
+  color: red;
+  font-size: 2rem;
+}

@@ -84,13 +84,12 @@ const Footer = () => {
             <div className="centerTop">
               {/* 탭 메뉴 */}
               <div className="tap">
-                <a
-                  href="#"
+                <Link
+                  to="/support/notice"
                   className={`notice ${activeTab === 'notice' ? 'active' : ''}`}
-                  onClick={(e) => handleTabClick('notice', e)}
                 >
                   공지사항
-                </a>
+                </Link>
                 <a
                   href="#"
                   className={`event ${activeTab === 'event' ? 'active' : ''}`}
@@ -105,10 +104,10 @@ const Footer = () => {
                 <ul>
                   {noticeList.map((item, index) => (
                     <li key={index}>
-                      <Link to="/support/notice">
+                      <a href="#">
                         {item.title}
                         <span>{item.date}</span>
-                      </Link>
+                      </a>
                     </li>
                   ))}
                 </ul>
