@@ -1,0 +1,35 @@
+.product-list {
+    padding: 0 60px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.product-card .photo {
+    display: flex;
+    aspect-ratio: 6 / 7;
+}
+
+.product-card img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.product-card .brand {
+    font-size: 20px;
+    margin: 12px 0;
+}
+
+.product-card .price {
+    color: #555;
+    font-size: 16px;
+    margin: 10px 0 16px;
+}
+
+.product-card .mpoint {
+    color: #898989;
+    border: 0.5px solid #898989;
+    border-radius: 6px;
+    padding: 3px 8px;
+    display: inline-block;
+}
