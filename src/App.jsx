@@ -12,8 +12,11 @@ import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
 
 import CategoryPage from './pages/CategoryPage';
+import ProductDetail from './pages/ProductDetail';
 
 import Notice from './pages/support/Notice';
+
+import NotFound from './pages/error/NotFound';
 
 console.log('Supabase 연결:', supabase)
 
@@ -32,9 +35,12 @@ function App() {
             {/* 인증 콜백 라우트 */}
             <Route path="/auth/callback" element={<AuthCallback />} />
 
-             {/* 메뉴별 페이지들 - 동적 라우팅*/}
+            {/* 메뉴별 페이지들 - 동적 라우팅*/}
             <Route path="/:categorySlug" element={<CategoryPage />} />
             <Route path="/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
+
+            {/* 상품별 상세 페이지 - 동적 라우팅 */}
+            <Route path="/product/:pid" element={<ProductDetail />} />
 
             {/* 사용자 관련 페이지들 */}
             <Route path="/mypage" element={<div>마이페이지</div>} />
@@ -43,11 +49,11 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
 
             {/* 공지사항 */}
-              <Route path="/support/notice" element={<Notice />} />
-              <Route path="/support/notice/:nid" element={<Notice />} />
+            <Route path="/support/notice" element={<Notice />} />
+            <Route path="/support/notice/:nid" element={<Notice />} />
 
             {/* 404 페이지 */}
-            <Route path="*" element={<div>페이지를 찾을 수 없습니다.</div>} />
+            <Route path="*" element={<NotFound/>} />
           </Routes>
 
           {/* Footer도 모든 페이지에서 공통으로 보여짐 */}
