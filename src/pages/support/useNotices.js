@@ -100,13 +100,9 @@ export const useNotices = () => {
     //공지사항 삭제
     const deleteNotice = async (noticeId) => {
         try {
-
             const {data, error} = await supabase
                 .from('notices')
-                .update({
-                    is_active: false,
-                    updated_at: new Date().toISOString()
-                })
+                .delete()
                 .eq('nid', noticeId)
                 .select()
                 .single();
