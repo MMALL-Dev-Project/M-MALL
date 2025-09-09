@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { supabase } from '../config/supabase';
+import { useAuth } from "../contexts/AuthContext";
 
 import ProductInfo from '../components/products/product-detail/ProductInfo';
 import ProductReview from '../components/products/product-detail/ProductReview';
