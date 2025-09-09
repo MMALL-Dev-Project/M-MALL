@@ -63,18 +63,6 @@ export const AuthProvider = ({ children }) => {
     }
     getSession() // 즉시 실행
 
-    // 인증 상태 변화 감지
-    // const { data: { subscription } } = supabase.auth.onAuthStateChange(
-    //   async (event, session) => { // async 사용
-    //     setUser(session?.user ?? null)
-    //     if (session?.user) {
-    //       await fetchUserInfo(session.user.id) // 비동기 호출
-    //     } else {
-    //       setUserInfo(null)
-    //     }
-    //   }
-    // )
-
     const { data: {subscription} } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null)
