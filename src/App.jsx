@@ -15,6 +15,8 @@ import CategoryPage from './pages/CategoryPage';
 
 console.log('Supabase 연결:', supabase)
 
+// 푸터 숨길 페이지 경로들
+
 function App() {
   return (
     <AuthProvider>

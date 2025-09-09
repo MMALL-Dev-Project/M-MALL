@@ -1,0 +1,63 @@
+.auth-callback-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f5f6fa;
+  padding: 20px;
+}
+
+.auth-callback-container > div {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  max-width: 500px;
+  width: 100%;
+}
+
+.auth-callback-container h2 {
+  color: #000;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.auth-callback-container p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .auth-callback-container > div {
+    padding: 40px 30px;
+  }
+  
+  .auth-callback-container h2 {
+    font-size: 24px;
+  }
+  
+  .auth-callback-container p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-callback-container {
+    padding: 15px;
+  }
+  
+  .auth-callback-container > div {
+    padding: 30px 20px;
+  }
+  
+  .auth-callback-container h2 {
+    font-size: 22px;
+  }
+}
