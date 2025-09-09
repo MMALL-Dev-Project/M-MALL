@@ -12,44 +12,84 @@ export const useAuth = () => {
 // 저장소제공자
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [userInfo, setUserInfo] = useState(null) // 추가: 사용자 정보 상태
+  const [userInfo, setUserInfo] = useState(null) // 사용자 정보 상태
   const [loading, setLoading] = useState(true)
+
+  console.log('AuthProvider 렌더링 - loading:', loading)
 
   // 인증 상태 변화 감지 추가
   useEffect(() => {
-    // 현재 세션 확인
+    console.log('useEffect 시작')
     const getSession = async () => {
       try {
+        console.log('세션 및 사용자 정보 조회 시작')
+
+        // 1. 세션 확인
         const { data: { session } } = await supabase.auth.getSession()
+        console.log('세션 결과:', session)
+
         setUser(session?.user ?? null)
 
-        // 로그인 상태면 user_info도 가져오기
+        // 2. 로그인 상태면 user_info도 가져오기
         if (session?.user) {
-          await fetchUserInfo(session.user.id)
+          console.log('사용자 정보 조회 시작 - userId:', session.user.id)
+          
+          //await fetchUserInfo(session.user.id)
+          const { data, error } = await supabase
+            .from('user_info')
+            .select('name, points_balance, role, profile_image, notification_settings')
+            .eq('id', session.user.id) // UUID로 조회
+            .single()
+
+          if (error) {
+            console.error('사용자 정보 조회 에러:', error)
+            setUserInfo(null)
+          } else {
+            console.log('사용자 정보 조회 성공:', data)
+            setUserInfo(data)
+
+          }
+        } else {
+          console.log('로그인 상태 아님 - userInfo null로 설정')
+          setUserInfo(null)
         }
       } catch (error) {
-        console.error('세션 확인 에러:', error)
+        console.error('getSessionAndUser 에러:', error)
       } finally {
+        // 3. 성공/실패 관계없이 loading 완료
+        console.log('모든 작업 완료 - loading을 false로 설정')
         setLoading(false)
       }
     }
-    getSession()
+    getSession() // 즉시 실행
 
     // 인증 상태 변화 감지
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('인증 상태 변화:', event, session?.user?.email)
-        setUser(session?.user ?? null)
+    // const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    //   async (event, session) => { // async 사용
+    //     setUser(session?.user ?? null)
+    //     if (session?.user) {
+    //       await fetchUserInfo(session.user.id) // 비동기 호출
+    //     } else {
+    //       setUserInfo(null)
+    //     }
+    //   }
+    // )
 
-        if (session?.user) {
-          await fetchUserInfo(session.user.id)
-        } else {
+    const { data: {subscription} } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null)
+        // 로그아웃 시에만 userInfo 초기화
+        if (!session?.user) {
           setUserInfo(null)
         }
+        // 로그인 시 userInfo는 별도로 다시 조회하지 않음.
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () =>  {
+      console.log('subscription 해제')
+      subscription.unsubscribe() 
+    }
   }, [])
 
   // user_id로 user_info 테이블에서 사용자 정보 가져오기
@@ -150,7 +190,6 @@ export const AuthProvider = ({ children }) => {
         alert('로그아웃 실패: ' + error.message)
         return { success: false, error }
       } else {
-        alert('로그아웃 되었습니다.')
         return { success: true }
       }
     } catch (error) {

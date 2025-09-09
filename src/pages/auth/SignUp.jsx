@@ -138,13 +138,29 @@ const SignUp = () => {
   // 입력값 변경 처리
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let processedValue = value;
+    // 전화번호 자동 하이픈 처리
+    if (name === 'phone') {
+      // 숫자만 남기기
+      const numbersOnly = value.replace(/\D/g, ''); // \D = 숫자가 아닌 모든 문자
+      // 3-4-4 형식으로 하이픈 추가
+      if (numbersOnly.length <= 3) {
+        processedValue = numbersOnly;
+      } else if (numbersOnly.length <= 7) {
+        processedValue = `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+      } else {
+        processedValue = `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
 
     // 실시간 유효성 검사
-    const error = validateField(name, value);
+    const error = validateField(name, processedValue);
     setErrors(prev => ({
       ...prev,
       [name]: error
@@ -152,7 +168,7 @@ const SignUp = () => {
 
     // 비밀번호 확인 처리
     if (name === 'password' && formData.confirmPassword) {
-      const confirmError = formData.confirmPassword !== value ? '비밀번호가 일치하지 않습니다.' : '';
+      const confirmError = formData.confirmPassword !== processedValue ? '비밀번호가 일치하지 않습니다.' : '';
       setErrors(prev => ({
         ...prev,
         confirmPassword: confirmError
