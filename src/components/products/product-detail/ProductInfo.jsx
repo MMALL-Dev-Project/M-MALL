@@ -14,6 +14,10 @@ const ProductInfo = ({ product }) => {
 	const [productSkus, setProductSkus] = useState([]);
 	const [quantity, setQuantity] = useState(1);
 
+	// 좋아요 상태
+	const [likeCount, setLikeCount] = useState(product?.like_count || 0);
+	const [liked, setLiked] = useState(false);
+
 	const [loading, setLoading] = useState(false);
 
 
@@ -44,6 +48,31 @@ const ProductInfo = ({ product }) => {
 		};
 		fetchUserPoints();
 	}, []);
+
+	// 좋아요 상태 불러오기
+	useEffect(() => {
+		if (!user) return;
+		const fetchLikeStatus = async () => {
+			try {
+				const { data, error } = await supabase
+					.from('likes')
+					.select('*')
+					.eq('pid', product.pid)
+					.eq('target_type', 'PRODUCT')
+					.eq('uid', user.id)
+					.maybeSingle();
+
+				// 좋아요 상태 설정
+				if (!error && data) {
+					setLiked(true);
+				}
+
+			} catch (error) {
+				console.error('좋아요 상태 조회 에러:', error);
+			}
+		}
+		fetchLikeStatus();
+	}, [user, product.pid]);
 
 	// SKU 데이터 불러오기
 	useEffect(() => {
@@ -135,6 +164,48 @@ const ProductInfo = ({ product }) => {
 			...prev,
 			[optionType]: value
 		}));
+	};
+
+	// 좋아요 토글 핸들러
+	const handleLikeToggle = async () => {
+		if (!user) {
+			alert('로그인이 필요합니다.');
+			return;
+		}
+		try {
+			if (liked) {
+				// 좋아요 취소
+				const { error } = await supabase
+					.from('likes')
+					.delete()
+					.eq('pid', product.pid)
+					.eq('target_type', 'PRODUCT')
+					.eq('uid', user.id);
+
+				if (error) throw error;
+
+				setLiked(false);
+				setLikeCount(prev => Math.max(0, prev - 1));
+
+			} else {
+				// 좋아요 추가
+				const { error } = await supabase
+					.from('likes')
+					.insert({
+						pid: product.pid,
+						target_type: 'PRODUCT',
+						uid: user.id
+					});
+
+				if (error) throw error;
+
+				setLiked(true);
+				setLikeCount(prev => prev + 1);
+
+			}
+		} catch (error) {
+			console.error('좋아요 토글 에러:', error);
+		}
 	};
 
 	// console.log('옵션:', product.option_types);
@@ -253,7 +324,7 @@ const ProductInfo = ({ product }) => {
 						:
 						<div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
 							<div><strong>SKU ID:</strong> {productSkus[0]?.skid}</div>
-							<div><strong>SKU options:</strong> {productSkus[0]?.options ?? 'null'}</div>
+							<strong>SKU options:</strong> {productSkus[0]?.options ? JSON.stringify(productSkus[0].options) : 'null'}
 							<div><strong>남은재고:</strong> {productSkus[0]?.stock_qty}개</div>
 						</div>
 					}
@@ -275,8 +346,9 @@ const ProductInfo = ({ product }) => {
 					</div>
 
 					<div className='btn-group'>
-						<button className='btn-wish'>
-							<span>{product?.like}</span>
+						<button className='btn-wish' onClick={handleLikeToggle}>
+							<img src={liked ? `${import.meta.env.BASE_URL}images/icons/ico_likeFull.png` : `${import.meta.env.BASE_URL}images/icons/ico_like.png`} alt="좋아요" />
+							<span>{likeCount}</span>
 						</button>
 						<div className='purchase-buttons'>
 							<button className='btn-cart'>장바구니</button>
