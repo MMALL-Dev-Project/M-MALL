@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { supabase } from '../config/supabase';
-import { useAuth } from "../contexts/AuthContext";
 
 import ProductInfo from '../components/products/product-detail/ProductInfo';
 import ProductReview from '../components/products/product-detail/ProductReview';
@@ -25,8 +24,8 @@ const ProductDetail = () => {
                     .select(`
                         *,
                         brands(name, bid),
-                        categories(name, cid),
-                        sub_categories(name, scid)
+                        categories(name, cid, slug),
+                        sub_categories(name, scid, slug)
                     `)
                     .eq('pid', pid)
                     .single();
@@ -51,8 +50,6 @@ const ProductDetail = () => {
         }
     }, [pid]);
 
-    console.log('상품정보:', product);
-
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -68,12 +65,6 @@ const ProductDetail = () => {
 
     return (
         <div id='product-detail-page'>
-            <p>
-                홈 &gt;
-                {product.categories?.name || product.cid} &gt;
-                {product.sub_categories?.name || product.scid}
-            </p>
-
             {/* 상품 정보 및 상세페이지 */}
             <ProductInfo product={product} />
             {/* 상품 문의 */}
