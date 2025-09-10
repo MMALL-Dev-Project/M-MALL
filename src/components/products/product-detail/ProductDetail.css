@@ -1,7 +1,7 @@
 #product-detail-page {
-    max-width: 1280px;
-    margin: 100px auto 0;
-    padding: 20px;
+    max-width: 1300px;
+    margin: calc(120px + 80px) auto 0;
+    padding: 0 15px;
 }
 
 #product-detail-page h4 {
@@ -15,11 +15,12 @@
     display: block;
 }
 
-/* info */
+/* ===== ProductInfo 상품 정보 컴포넌트 ===== */
 
+/* 상품 정보 영역 */
 #product-detail-page .product-info {
     display: flex;
-    gap: 40px;
+    gap: 60px;
     margin-top: 20px;
 }
 
@@ -32,26 +33,20 @@
     padding-top: 40px;
 }
 
-.info-wrap .brand {
+.info-wrap .info-main {
+    margin-bottom: 40px;
+}
+
+.info-wrap .category-brand {
     font-weight: 600;
 }
 
 .info-wrap .name {
     font-size: 1.13rem;
     margin: 22px 0;
-    display: flex;
-    justify-content: space-between;
 }
 
-.info-wrap .delivery {
-    color: #016ACA;
-    font-size: 0.81rem;
-    border: 0.5px solid #016ACA;
-    padding: 5px;
-    border-radius: 15px;
-}
-
-.info-wrap .price {
+.info-wrap .price span {
     font-size: 1.25rem;
     font-weight: 500;
 }
@@ -72,22 +67,69 @@
     display: inline-block;
 }
 
+.info-wrap .info-extra {
+    padding: 40px 0;
+    border-top: 1px solid #c8c8c8;
+    border-bottom: 1px solid #c8c8c8;
+    margin-bottom: 40px;
+}
+
+.info-wrap .info-extra dl {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.info-wrap .info-extra dl:last-child {
+    margin-bottom: 0;
+}
+
+.info-wrap .info-extra dt {
+    min-width: 120px;
+}
+
+/* 상품 정보 - 버튼 */
 .info-wrap .btn-group {
     margin-top: 30px;
     display: flex;
     gap: 10px;
-    justify-content: end;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.info-wrap .btn-group button {
+.info-wrap .btn-group .btn-wish {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-wrap .purchase-buttons button {
     display: block;
     padding: 10px 50px;
     cursor: pointer;
     border: 1px solid #848484;
 }
 
-.info-wrap .btn-group .btn-buy {
+.btn-group .purchase-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-group .purchase-buttons .btn-buy {
     border-color: #016ACA;
     color: #FBFBFB;
     background: #016ACA;
+}
+
+/* 상품 디테일 이미지 영역 */
+.product-detail-images {
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-detail-images img {
+    margin: 40px 0;
+    max-width: 800px;
+    display: block;
 }
