@@ -1,7 +1,8 @@
-import React, { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../../config/supabase';
 import { useAuth } from "../../../contexts/AuthContext";
+import { getThumbnailSrc } from "../../../utils/image";
 
 const ProductInfo = ({ product }) => {
 	// 사용자 정보
@@ -218,7 +219,7 @@ const ProductInfo = ({ product }) => {
 			<div className='product-info'>
 				{/* 상품 이미지 */}
 				<div>
-					<img src={product.thumbnail_url} alt={product.name} />
+					<img src={getThumbnailSrc(product.thumbnail_url)} alt={product.name} />
 				</div>
 				{/* 상품 정보 */}
 				<div className='info-wrap'>
@@ -262,7 +263,7 @@ const ProductInfo = ({ product }) => {
 							<dd>
 								{
 									product?.option_types
-										? selectedSku?.stock_qty || '옵션을 선택하세요'
+										? selectedSku ? selectedSku.stock_qty : '옵션을 선택하세요'
 										: productSkus[0]?.stock_qty
 								}
 							</dd>
