@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { supabase } from '../../../config/supabase';
 import { useAuth } from "../../../contexts/AuthContext";
 import { getThumbnailSrc } from "../../../utils/image";
 import SelectedOptionCard from './SelectedOptionCard';
 
 const ProductInfo = ({ product }) => {
-  // 사용자 정보
-  const { user } = useAuth();
-  const [userPoints, setUserPoints] = useState(0);
+	// 사용자 정보
+	const { user } = useAuth();
+	const [userPoints, setUserPoints] = useState(0);
+	const navigate= useNavigate();
 
   // SKU 관련 상태 - 상품별 재고 관리를 위한 SKU(Stock Keeping Unit) 데이터
   const [productSkus, setProductSkus] = useState([]); // 해당 상품의 모든 SKU 목록
@@ -217,6 +218,7 @@ const ProductInfo = ({ product }) => {
     }
   }, [selectedSku, quantity, selectedOptionCards]);
 
+
   // 할인 가격 계산 함수 - M포인트를 사용한 할인 계산
   const calculateDiscountPrice = (product, userPoints) => {
     if (!product || !product.point_rate) return 0;
@@ -226,6 +228,32 @@ const ProductInfo = ({ product }) => {
     const discountedPrice = product.price - Math.min(userPoints, maxPointUsage);
     return discountedPrice;
   }
+  const handlePurchase = () => {
+		if (!user) {
+			navigate('/login');
+			return;
+		}
+
+		// 재고 확인
+		const currentSku = selectedSku || productSkus[0];
+		if (currentSku.stock_qty < quantity) {
+			alert('선택한 수량이 재고보다 많습니다.');
+			return;
+		}
+
+		const orderItem = {
+			pid: product.pid,
+			skid: currentSku.skid,
+			quantity: quantity,
+		};
+
+		navigate('/order/checkout', {
+			state: {
+			orderItems: [orderItem],
+			fromProductDetail: true
+			}
+		});
+		}; 
 
   // 옵션 선택 핸들러 - 사용자가 드롭다운에서 옵션을 선택할 때 호출
   const handleOptionChange = (optionType, value) => {
@@ -482,13 +510,7 @@ const ProductInfo = ({ product }) => {
               >
                 장바구니
               </button>
-              <button
-                onClick={() => console.log("구매하기:", selectedOptionCards)}
-                className='btn-buy'
-                disabled={selectedOptionCards.length === 0}
-              >
-                구매하기
-              </button>
+              <button className='btn-buy' onClick={handlePurchase}>구매하기</button>
             </div>
           </div>
         </div>
