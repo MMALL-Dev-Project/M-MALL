@@ -1,0 +1,515 @@
+/* OrderDetail.css - M-MALL 주문 상세 페이지 스타일 */
+
+/* 전체 컨테이너 */
+.order-detail-container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 120px;
+  background-color: #fafafa;
+}
+
+.order-detail-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 로딩 및 에러 상태 */
+.order-detail-loading,
+.order-detail-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+.loading-spinner {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.order-detail-error p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.order-detail-error button {
+  background-color: #000;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.order-detail-error button:hover {
+  background-color: #333;
+}
+
+/* =================================== 주문 헤더 =================================== */
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 0 30px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.order-date h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 15px 0;
+  letter-spacing: -0.02em;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.order-info .date {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.order-info .order-number {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.order-status .status-badge {
+  background-color: #f8f9fa;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid currentColor;
+}
+
+/* =================================== 섹션 공통 스타일 =================================== */
+
+.order-section {
+  padding: 40px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-section:last-child {
+  border-bottom: none;
+}
+
+.order-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 25px 0;
+  letter-spacing: -0.02em;
+}
+
+/* =================================== 배송 정보 =================================== */
+
+.shipping-info {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  border-left: 4px solid #016ACA;
+}
+
+.tracking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tracking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tracking-row .label {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  min-width: 100px;
+}
+
+.tracking-row .value {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 600;
+  text-align: right;
+}
+
+.no-tracking {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.no-tracking p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* =================================== 주문 상품 목록 =================================== */
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.order-item {
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-brand {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.item-name {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.item-options {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.item-options span {
+  padding: 2px 6px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.item-quantity {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.item-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-review,
+.btn-inquiry {
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.btn-review:hover,
+.btn-inquiry:hover {
+  background-color: #f5f5f5;
+  border-color: #333;
+}
+
+/* =================================== 결제 정보 =================================== */
+
+.payment-info {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.payment-row .label {
+  color: #333;
+}
+
+.payment-row .value {
+  font-weight: 600;
+  color: #000;
+}
+
+.payment-row .value.discount {
+  color: #ff4444;
+}
+
+.payment-row .value.points {
+  color: #016ACA;
+}
+
+.payment-row.total {
+  padding-top: 15px;
+  border-top: 2px solid #e0e0e0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.payment-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+
+/* =================================== 혜택 정보 =================================== */
+
+.benefits-info {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+}
+
+.benefit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.95rem;
+}
+
+.benefit-row .label {
+  color: #333;
+}
+
+.benefit-row .value {
+  font-weight: 600;
+  color: #000;
+}
+
+.benefit-row.total {
+  border-top: 2px solid #e0e0e0;
+  padding-top: 15px;
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.benefit-row.total .value {
+  color: #28a745;
+}
+
+/* =================================== 하단 액션 버튼 =================================== */
+
+.order-actions {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.btn-back {
+  background-color: #000;
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.btn-back:hover {
+  background-color: #333;
+}
+
+/* =================================== 반응형 디자인 =================================== */
+
+@media (max-width: 768px) {
+  .order-detail-container {
+    padding-top: 100px;
+  }
+
+  .order-detail-wrapper {
+    margin: 0 15px;
+    padding: 0 20px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 30px 0 20px;
+  }
+
+  .order-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .order-section {
+    padding: 30px 0;
+  }
+
+  .order-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .shipping-info,
+  .payment-info,
+  .benefits-info {
+    padding: 20px;
+  }
+
+  .order-item {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .item-image {
+    align-self: center;
+    width: 100px;
+    height: 100px;
+  }
+
+  .item-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tracking-row,
+  .payment-row,
+  .benefit-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .tracking-row .value,
+  .payment-row .value,
+  .benefit-row .value {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-detail-wrapper {
+    margin: 0 10px;
+    padding: 0 15px;
+  }
+
+  .order-header {
+    padding: 20px 0 15px;
+  }
+
+  .order-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .order-section {
+    padding: 25px 0;
+  }
+
+  .order-section h3 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .shipping-info,
+  .payment-info,
+  .benefits-info {
+    padding: 15px;
+  }
+
+  .order-item {
+    padding: 15px;
+  }
+
+  .item-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .btn-review,
+  .btn-inquiry {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .order-actions {
+    padding: 30px 0;
+  }
+
+  .btn-back {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
+}
