@@ -14,6 +14,9 @@ import Login from './pages/auth/Login';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetail from './pages/ProductDetail';
 
+import Checkout from './pages/order/Checkout';
+import OrderDetail from './pages/order/OrderDetail';
+
 import Notice from './pages/support/Notice';
 
 import NotFound from './pages/error/NotFound';
@@ -43,6 +46,10 @@ function App() {
 
             {/* 상품별 상세 페이지 - 동적 라우팅 */}
             <Route path="/product/:pid" element={<ProductDetail />} />
+
+            {/* 주문 관련 페이지들 */}
+            <Route path="/order/checkout" element={<Checkout />} />
+            <Route path="/order/orderdetail/:orderId" element={<OrderDetail/>} />
 
             {/* 사용자 관련 페이지들 */}
             <Route path="/mypage" element={<div>마이페이지</div>} />
