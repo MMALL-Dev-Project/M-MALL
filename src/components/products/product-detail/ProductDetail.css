@@ -87,9 +87,73 @@
     min-width: 120px;
 }
 
+/* 상품 정보 - 옵션 영역 */
+
+.info-option-area {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.info-option-area .option-box {
+    margin: 20px 0;
+}
+
+.info-option-area .option-box select {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.info-option-area .option-box select:disabled {
+    background-color: #fafafa;
+    color: #aaa;
+}
+
+.info-option-area .option-box option:disabled {
+    color: #ddd;
+}
+
+/* ===== SelectedOptionCard 선택 옵션 카드 컴포넌트 ===== */
+
+.selected-option-card {
+    position: relative;
+    border: 1px solid #eee;
+    background-color: #fafafa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.selected-option-card .option-name {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.selected-option-card .option-controls {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.option-quantity > input {
+    padding: 5px;
+    padding-left: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.option-controls .btn-remove {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: red;
+}
+
 /* 상품 정보 - 버튼 */
 .info-wrap .btn-group {
-    margin-top: 30px;
+    margin-top: 40px;
     display: flex;
     gap: 10px;
     justify-content: space-between;
@@ -107,6 +171,14 @@
     padding: 10px 50px;
     cursor: pointer;
     border: 1px solid #848484;
+}
+
+.info-wrap .purchase-buttons button:disabled {
+    border-color: #eee;
+    background-color: #eee;
+    color: #bbb;
+    cursor: not-allowed;
+    
 }
 
 .btn-group .purchase-buttons {
