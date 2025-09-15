@@ -30,7 +30,9 @@ const Header = () => {
         const formattedData = data.map(category => ({
           name: category.name,
           slug: category.slug,
-          subMenu: category.sub_categories || [],
+          subMenu: category.sub_categories
+            ? [...category.sub_categories].sort((a, b) => a.display_order - b.display_order)
+            : [],
           isSpecial: ['mobile', 'hyundai-card'].includes(category.slug)
         }));
         setMenuData(formattedData);
@@ -112,47 +114,48 @@ const Header = () => {
       </nav>
       {/* 우측 회원 */}
       <ul className="lnb">
-        <li>
+        <li className="tooltip-container">
           <button onClick={handleSearch} aria-label="검색">
             <img src="/M-MALL/images/icons/ico_search.png" alt="검색" />
           </button>
+          <span className="tooltip">검색</span>
         </li>
-        <li>
-          <Link to="/mypage" aria-label="마이페이지">
-            <img src="/M-MALL/images/icons/ico_user.png" alt="마이페이지" />
-          </Link>
-        </li>
-        <li>
+
+        <li className="tooltip-container">
           <Link to="/cart" aria-label="쇼핑백">
             <img src="/M-MALL/images/icons/ico_bag.png" alt="쇼핑백" />
           </Link>
+          <span className="tooltip">쇼핑백</span>
         </li>
 
-        {/* 로그인 상태에 따른 조건부 렌더링 */}
         {user ? (
           <>
-            <li>
-              <span className="user-greeting">
-                {userInfo?.name}님
-              </span>
+            <li className="tooltip-container">
+              <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
+                {userInfo?.name}<span>님</span>
+              </Link>
+              <span className="tooltip">마이페이지</span>
             </li>
-            <li>
+            <li className="tooltip-container">
               <button onClick={handleLogout} aria-label="로그아웃">
                 <img src="/M-MALL/images/icons/ico_logout.png" alt="로그아웃" />
               </button>
+              <span className="tooltip">로그아웃</span>
             </li>
           </>
         ) : (
           <>
-            <li>
+            <li className="tooltip-container">
               <Link to="/login" aria-label="로그인">
                 <img src="/M-MALL/images/icons/ico_login.png" alt="로그인" />
               </Link>
+              <span className="tooltip">로그인</span>
             </li>
-            <li>
+            <li className="tooltip-container">
               <Link to="/signup" aria-label="회원가입">
                 <img src="/M-MALL/images/icons/ico_signup.png" alt="회원가입" />
               </Link>
+              <span className="tooltip">회원가입</span>
             </li>
           </>
         )}

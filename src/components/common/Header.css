@@ -78,8 +78,6 @@
   min-width: 200px;
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -113,29 +111,7 @@
 }
 
 .sub-menu li a:hover {
-  color: #016ACA;
   font-weight: 500;
-}
-
-/* 서브메뉴 배경 */
-.sub-bg {
-  position: absolute;
-  top: 80px;
-  left: -60px;
-  width: calc(100vw);
-  height: 0;
-  background: rgba(249, 249, 249, 0.95);
-  backdrop-filter: blur(5px);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 150;
-}
-
-.sub-bg.visible {
-  height: 300px;
-  opacity: 1;
-  visibility: visible;
 }
 
 /* 우측 네비게이션 */
@@ -160,8 +136,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   background: none;
   border: none;
   cursor: pointer;
@@ -209,4 +185,62 @@
   #header .nav .gnb > li > a {
     font-size: 14px;
   }
+}
+
+/* 툴팁 스타일 */
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 1000;
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+
+.tooltip-container:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 사용자 인사말 스타일 */
+.user-greeting {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* 한 줄로 표시 */
+  min-width: 60px; /* 최소 너비 설정 */
+  text-align: center;
+}
+.user-greeting span{
+  font-size: 16px;
+
+}
+.user-greeting:hover {
+  background-color: rgba(1, 106, 202, 0.1);
 }
