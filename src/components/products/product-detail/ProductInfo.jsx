@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../../config/supabase';
 import { useAuth } from "../../../contexts/AuthContext";
 import { getThumbnailSrc } from "../../../utils/image";
 import SelectedOptionCard from './SelectedOptionCard';
 
 const ProductInfo = ({ product }) => {
-	// 사용자 정보
-	const { user } = useAuth();
-	const [userPoints, setUserPoints] = useState(0);
-	const navigate= useNavigate();
+  // 사용자 정보
+  const { user } = useAuth();
+  const [userPoints, setUserPoints] = useState(0);
+  const navigate = useNavigate();
 
   // SKU 관련 상태 - 상품별 재고 관리를 위한 SKU(Stock Keeping Unit) 데이터
   const [productSkus, setProductSkus] = useState([]); // 해당 상품의 모든 SKU 목록
@@ -109,8 +109,6 @@ const ProductInfo = ({ product }) => {
       fetchProductSkus();
     }
   }, [product.pid]);
-
-  // console.log("productSkus", productSkus);
 
   // 전체 재고 확인 및 품절 상태 설정
   useEffect(() => {
@@ -229,31 +227,31 @@ const ProductInfo = ({ product }) => {
     return discountedPrice;
   }
   const handlePurchase = () => {
-		if (!user) {
-			navigate('/login');
-			return;
-		}
+    if (!user) {
+      navigate('/login');
+      return;
+    }
 
-		// 재고 확인
-		const currentSku = selectedSku || productSkus[0];
-		if (currentSku.stock_qty < quantity) {
-			alert('선택한 수량이 재고보다 많습니다.');
-			return;
-		}
+    // 재고 확인
+    const currentSku = selectedSku || productSkus[0];
+    if (currentSku.stock_qty < quantity) {
+      alert('선택한 수량이 재고보다 많습니다.');
+      return;
+    }
 
-		const orderItem = {
-			pid: product.pid,
-			skid: currentSku.skid,
-			quantity: quantity,
-		};
+    const orderItem = {
+      pid: product.pid,
+      skid: currentSku.skid,
+      quantity: quantity,
+    };
 
-		navigate('/order/checkout', {
-			state: {
-			orderItems: [orderItem],
-			fromProductDetail: true
-			}
-		});
-		}; 
+    navigate('/order/checkout', {
+      state: {
+        orderItems: [orderItem],
+        fromProductDetail: true
+      }
+    });
+  };
 
   // 옵션 선택 핸들러 - 사용자가 드롭다운에서 옵션을 선택할 때 호출
   const handleOptionChange = (optionType, value) => {
@@ -410,9 +408,9 @@ const ProductInfo = ({ product }) => {
   return (
     <>
       {/* 상품 정보 영역 */}
-      <div className='product-info'>
+      <div className={`product-info ${soldOut && 'soldout'}`}>
         {/* 상품 이미지 */}
-        <div>
+        <div className='photo'>
           <img src={getThumbnailSrc(product.thumbnail_url)} alt={product.name} />
         </div>
         {/* 상품 정보 */}
@@ -430,6 +428,11 @@ const ProductInfo = ({ product }) => {
             </Link>
             <div className='name'>
               {product.name}
+              {soldOut && (
+                <span className='soldout-tag' style={{ marginLeft: '10px' }}>
+                  <span>품절</span>
+                </span>
+              )}
             </div>
             <div className='price'>
               <span>{product.price.toLocaleString('ko-KR')}</span>원
@@ -510,7 +513,11 @@ const ProductInfo = ({ product }) => {
               >
                 장바구니
               </button>
-              <button className='btn-buy' onClick={handlePurchase}>구매하기</button>
+              <button
+                onClick={handlePurchase}
+                className='btn-buy'
+                disabled={selectedOptionCards.length === 0}
+              >구매하기</button>
             </div>
           </div>
         </div>
