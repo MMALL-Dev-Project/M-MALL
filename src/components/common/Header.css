@@ -1,3 +1,7 @@
+#header-wrap {
+  height: 80px;
+}
+
 #header {
   position: fixed;
   top: 0;
@@ -5,7 +9,7 @@
   padding: 0 60px;
   width: 100%;
   max-width: 1920px;
-  height: 80px;
+  height: auto;
   z-index: 100;
   background: #f9f9f9;
   display: flex;
