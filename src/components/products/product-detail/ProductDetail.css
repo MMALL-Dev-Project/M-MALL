@@ -20,6 +20,7 @@
 /* 상품 정보 영역 */
 #product-detail-page .product-info {
     display: flex;
+    align-items: flex-start;
     gap: 60px;
     margin-top: 20px;
 }
@@ -125,18 +126,20 @@
     padding: 20px;
     margin-bottom: 20px;
 }
+
 .selected-option-card .option-name {
     color: #333;
     font-weight: 500;
     margin-bottom: 20px;
 }
+
 .selected-option-card .option-controls {
     display: flex;
     justify-content: space-between;
     text-align: center;
 }
 
-.option-quantity > input {
+.option-quantity>input {
     padding: 5px;
     padding-left: 15px;
     text-align: center;
@@ -178,7 +181,7 @@
     background-color: #eee;
     color: #bbb;
     cursor: not-allowed;
-    
+
 }
 
 .btn-group .purchase-buttons {

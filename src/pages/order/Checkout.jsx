@@ -84,9 +84,6 @@ const Checkout = () => {
                     </div>
                     <div className="item-price">
                       <div className="price">{item.itemTotal.toLocaleString()}원</div>
-                      <div className="point-info">
-                        적립 포인트: {Math.floor(item.itemTotal * (item.product.point_rate || 1) / 100)}P
-                      </div>
                     </div>
                   </div>
                 ))}
@@ -276,13 +273,6 @@ const Checkout = () => {
                 <span>총 결제 금액</span>
                 <span>{pricing.finalTotal.toLocaleString()}원</span>
               </div>
-              
-              {pricing.earnedPoints > 0 && (
-                <div className="earn-points">
-                  <span>적립 예정 포인트</span>
-                  <span className="points">{pricing.earnedPoints.toLocaleString()}P</span>
-                </div>
-              )}
               
               <button 
                 className="btn-order"

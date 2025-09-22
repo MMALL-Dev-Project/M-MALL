@@ -5,6 +5,10 @@
     gap: 20px;
 }
 
+.product-card {
+    cursor: pointer;
+}
+
 .product-card .photo {
     display: flex;
     aspect-ratio: 6 / 7;
@@ -16,8 +20,13 @@
 }
 
 .product-card .brand {
+    display: inline-block;
     font-size: 20px;
     margin: 12px 0;
+}
+
+.product-card a.brand:hover {
+    text-decoration-line: underline;
 }
 
 .product-card .price {
@@ -32,4 +41,39 @@
     border-radius: 6px;
     padding: 3px 8px;
     display: inline-block;
+}
+
+/* 품절 표시 */
+
+.soldout .photo {
+    position: relative;
+}
+
+.soldout .photo img {
+    filter: brightness(0.7);
+}
+
+.soldout .photo::after {
+    content: 'SOLD OUT';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.soldout-tag {
+    margin-top: 10px;
+}
+
+.soldout-tag span {
+    display: inline-block;
+    padding: 4px;
+    color: #fff;
+    background-color: #000;
 }

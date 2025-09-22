@@ -110,8 +110,6 @@ const ProductInfo = ({ product }) => {
     }
   }, [product.pid]);
 
-  // console.log("productSkus", productSkus);
-
   // 전체 재고 확인 및 품절 상태 설정
   useEffect(() => {
     if (productSkus.length > 0) {
@@ -228,33 +226,35 @@ const ProductInfo = ({ product }) => {
     const discountedPrice = product.price - Math.min(userPoints, maxPointUsage);
     return discountedPrice;
   }
+  
   const handlePurchase = () => {
-		if (!user) {
-			navigate('/login');
-			return;
-		}
+    if (!user) {
+        navigate('/login');
+        return;
+    }
 
-		// 재고 확인
-		const currentSku = selectedSku || productSkus[0];
-		if (currentSku.stock_qty < quantity) {
-			alert('선택한 수량이 재고보다 많습니다.');
-			return;
-		}
+    // 선택된 옵션카드가 없으면 경고
+    if (selectedOptionCards.length === 0) {
+        alert('구매할 상품을 선택해주세요.');
+        return;
+    }
 
-		const orderItem = {
-			pid: product.pid,
-			skid: currentSku.skid,
-			quantity: quantity,
-		};
+    // 모든 선택된 옵션카드를 기존 형식으로 변환
+    const orderItems = selectedOptionCards.map(card => ({
+        pid: product.pid,
+        skid: card.sku.skid,
+        quantity: card.quantity,
+    }));
 
-		navigate('/order/checkout', {
-			state: {
-			orderItems: [orderItem],
-			fromProductDetail: true
-			}
-		});
-		}; 
-
+    // 기존 방식으로 전달
+    navigate('/order/checkout', {
+        state: {
+            orderItems: orderItems,
+            fromProductDetail: true
+        }
+    });
+};
+  
   // 옵션 선택 핸들러 - 사용자가 드롭다운에서 옵션을 선택할 때 호출
   const handleOptionChange = (optionType, value) => {
     setSelectedOptions(prev => {
@@ -410,9 +410,9 @@ const ProductInfo = ({ product }) => {
   return (
     <>
       {/* 상품 정보 영역 */}
-      <div className='product-info'>
+      <div className={`product-info ${soldOut && 'soldout'}`}>
         {/* 상품 이미지 */}
-        <div>
+        <div className='photo'>
           <img src={getThumbnailSrc(product.thumbnail_url)} alt={product.name} />
         </div>
         {/* 상품 정보 */}
@@ -430,6 +430,11 @@ const ProductInfo = ({ product }) => {
             </Link>
             <div className='name'>
               {product.name}
+              {soldOut && (
+                <span className='soldout-tag' style={{ marginLeft: '10px' }}>
+                  <span>품절</span>
+                </span>
+              )}
             </div>
             <div className='price'>
               <span>{product.price.toLocaleString('ko-KR')}</span>원
