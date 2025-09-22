@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../../config/supabase';
 import { useAuth } from "../../../contexts/AuthContext";
 import { getThumbnailSrc } from "../../../utils/image";
 import SelectedOptionCard from './SelectedOptionCard';
 
 const ProductInfo = ({ product }) => {
-	// 사용자 정보
-	const { user } = useAuth();
-	const [userPoints, setUserPoints] = useState(0);
-	const navigate= useNavigate();
+  // 사용자 정보
+  const { user } = useAuth();
+  const [userPoints, setUserPoints] = useState(0);
+  const navigate = useNavigate();
 
   // SKU 관련 상태 - 상품별 재고 관리를 위한 SKU(Stock Keeping Unit) 데이터
   const [productSkus, setProductSkus] = useState([]); // 해당 상품의 모든 SKU 목록
@@ -226,7 +226,7 @@ const ProductInfo = ({ product }) => {
     const discountedPrice = product.price - Math.min(userPoints, maxPointUsage);
     return discountedPrice;
   }
-  
+
   const handlePurchase = () => {
     if (!user) {
         navigate('/login');
@@ -239,22 +239,43 @@ const ProductInfo = ({ product }) => {
         return;
     }
 
-    // 모든 선택된 옵션카드를 기존 형식으로 변환
+    // 모든 선택된 옵션카드의 재고 확인
+    for (const card of selectedOptionCards) {
+        if (card.sku.stock_qty < card.quantity) {
+            alert(`선택한 수량이 재고보다 많습니다. (재고: ${card.sku.stock_qty}개)`);
+            return;
+        }
+    }
+
+    // 선택된 모든 옵션카드를 주문 아이템으로 변환
     const orderItems = selectedOptionCards.map(card => ({
         pid: product.pid,
         skid: card.sku.skid,
         quantity: card.quantity,
+        // 주문서에서 필요한 추가 정보들
+        product: {
+            pid: product.pid,
+            name: product.name,
+            price: product.price,
+            thumbnail_url: product.thumbnail_url,
+            brands: product.brands
+        },
+        sku: {
+            skid: card.sku.skid,
+            options: card.sku.options,
+            additional_price: card.sku.additional_price || 0,
+            sku_code: card.sku.sku_code
+        },
+        itemTotal: product.price + (card.sku.additional_price || 0)
     }));
 
-    // 기존 방식으로 전달
-    navigate('/order/checkout', {
-        state: {
-            orderItems: orderItems,
-            fromProductDetail: true
-        }
-    });
-};
-  
+    // 세션스토리지에 저장
+    sessionStorage.setItem('checkoutItems', JSON.stringify(orderItems));
+
+    // 주문서 페이지로 이동
+    navigate('/order/checkout');
+    };
+
   // 옵션 선택 핸들러 - 사용자가 드롭다운에서 옵션을 선택할 때 호출
   const handleOptionChange = (optionType, value) => {
     setSelectedOptions(prev => {
@@ -515,7 +536,11 @@ const ProductInfo = ({ product }) => {
               >
                 장바구니
               </button>
-              <button className='btn-buy' onClick={handlePurchase}>구매하기</button>
+              <button
+                onClick={handlePurchase}
+                className='btn-buy'
+                disabled={selectedOptionCards.length === 0}
+              >구매하기</button>
             </div>
           </div>
         </div>

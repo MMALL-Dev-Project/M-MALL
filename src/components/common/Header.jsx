@@ -53,7 +53,7 @@ const Header = () => {
   };
 
   const handleSearch = () => {
-    console.log('검색 버튼 클릭');
+    navigate('/search');
   };
 
   const handleLogin = () => {
@@ -69,98 +69,100 @@ const Header = () => {
   };
 
   return (
-    <header id="header">
-      <h1 className="logo">
-        <Link to="/">
-          <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="M-MALL" />
-        </Link>
-      </h1>
-      <nav
-        className="nav"
-        onMouseLeave={handleMenuLeave}
-      >
-        <ul className="gnb">
-          {menuData.map((menu, index) =>
-            <li
-              key={index}
-              className={`gnb-item ${menu.isSpecial ? 'special' : ''}`}
-              onMouseEnter={() => handleMenuHover(index)}
-            >
-              <Link
-                to={`/${menu.slug}`}
-                className={`gnb-link ${hoveredMenu === index ? 'hovered' : ''}`}
+    <div id="header-wrap">
+      <header id="header">
+        <h1 className="logo">
+          <Link to="/">
+            <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="M-MALL" />
+          </Link>
+        </h1>
+        <nav
+          className="nav"
+          onMouseLeave={handleMenuLeave}
+        >
+          <ul className="gnb">
+            {menuData.map((menu, index) =>
+              <li
+                key={index}
+                className={`gnb-item ${menu.isSpecial ? 'special' : ''}`}
+                onMouseEnter={() => handleMenuHover(index)}
               >
-                {menu.name}
-              </Link>
-              {/* 서브메뉴 */}
-              {menu.subMenu && menu.subMenu.length > 0 && (
-                <ul
-                  className={`sub-menu ${hoveredMenu === index ? 'visible' : ''}`}
+                <Link
+                  to={`/${menu.slug}`}
+                  className={`gnb-link ${hoveredMenu === index ? 'hovered' : ''}`}
                 >
-                  {menu.subMenu.map((subItem, subIndex) => (
-                    <li key={subIndex}>
-                      <Link to={`/${menu.slug}/${subItem.slug}`}>
-                        {subItem.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
+                  {menu.name}
+                </Link>
+                {/* 서브메뉴 */}
+                {menu.subMenu && menu.subMenu.length > 0 && (
+                  <ul
+                    className={`sub-menu ${hoveredMenu === index ? 'visible' : ''}`}
+                  >
+                    {menu.subMenu.map((subItem, subIndex) => (
+                      <li key={subIndex}>
+                        <Link to={`/${menu.slug}/${subItem.slug}`}>
+                          {subItem.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            )}
+          </ul>
+          {/* 서브메뉴 배경 */}
+          <div className={`sub-bg ${hoveredMenu !== null ? 'visible' : ''}`}></div>
+        </nav>
+        {/* 우측 회원 */}
+        <ul className="lnb">
+          <li className="tooltip-container">
+            <button onClick={handleSearch} aria-label="검색">
+              <img src="/M-MALL/images/icons/ico_search.png" alt="검색" />
+            </button>
+            <span className="tooltip">검색</span>
+          </li>
+
+          <li className="tooltip-container">
+            <Link to="/cart" aria-label="쇼핑백">
+              <img src="/M-MALL/images/icons/ico_bag.png" alt="쇼핑백" />
+            </Link>
+            <span className="tooltip">쇼핑백</span>
+          </li>
+
+          {user ? (
+            <>
+              <li className="tooltip-container">
+                <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
+                  {userInfo?.name}<span>님</span>
+                </Link>
+                <span className="tooltip">마이페이지</span>
+              </li>
+              <li className="tooltip-container">
+                <button onClick={handleLogout} aria-label="로그아웃">
+                  <img src="/M-MALL/images/icons/ico_logout.png" alt="로그아웃" />
+                </button>
+                <span className="tooltip">로그아웃</span>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="tooltip-container">
+                <Link to="/login" aria-label="로그인">
+                  <img src="/M-MALL/images/icons/ico_login.png" alt="로그인" />
+                </Link>
+                <span className="tooltip">로그인</span>
+              </li>
+              <li className="tooltip-container">
+                <Link to="/signup" aria-label="회원가입">
+                  <img src="/M-MALL/images/icons/ico_signup.png" alt="회원가입" />
+                </Link>
+                <span className="tooltip">회원가입</span>
+              </li>
+            </>
           )}
         </ul>
-        {/* 서브메뉴 배경 */}
-        <div className={`sub-bg ${hoveredMenu !== null ? 'visible' : ''}`}></div>
-      </nav>
-      {/* 우측 회원 */}
-      <ul className="lnb">
-        <li className="tooltip-container">
-          <button onClick={handleSearch} aria-label="검색">
-            <img src="/M-MALL/images/icons/ico_search.png" alt="검색" />
-          </button>
-          <span className="tooltip">검색</span>
-        </li>
-
-        <li className="tooltip-container">
-          <Link to="/cart" aria-label="쇼핑백">
-            <img src="/M-MALL/images/icons/ico_bag.png" alt="쇼핑백" />
-          </Link>
-          <span className="tooltip">쇼핑백</span>
-        </li>
-
-        {user ? (
-          <>
-            <li className="tooltip-container">
-              <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
-                {userInfo?.name}<span>님</span>
-              </Link>
-              <span className="tooltip">마이페이지</span>
-            </li>
-            <li className="tooltip-container">
-              <button onClick={handleLogout} aria-label="로그아웃">
-                <img src="/M-MALL/images/icons/ico_logout.png" alt="로그아웃" />
-              </button>
-              <span className="tooltip">로그아웃</span>
-            </li>
-          </>
-        ) : (
-          <>
-            <li className="tooltip-container">
-              <Link to="/login" aria-label="로그인">
-                <img src="/M-MALL/images/icons/ico_login.png" alt="로그인" />
-              </Link>
-              <span className="tooltip">로그인</span>
-            </li>
-            <li className="tooltip-container">
-              <Link to="/signup" aria-label="회원가입">
-                <img src="/M-MALL/images/icons/ico_signup.png" alt="회원가입" />
-              </Link>
-              <span className="tooltip">회원가입</span>
-            </li>
-          </>
-        )}
-      </ul>
-    </header>
+      </header>
+    </div>
   );
 };
 

@@ -273,7 +273,6 @@ const Checkout = () => {
                 <span>총 결제 금액</span>
                 <span>{pricing.finalTotal.toLocaleString()}원</span>
               </div>
-              
               <button 
                 className="btn-order"
                 onClick={handleOrder}
