@@ -175,12 +175,22 @@ const Footer = () => {
       <div className="footerInforWrap">
         <img src="/M-MALL/images/footer/footerCardLogo.png" alt="현대카드" />
         <ul className="footerInfor">
-          <li>서울특별시 영등포구 의사당대로3 현대카드빌딩 1관</li>
-          <li>대표이사 김 데이비드 덕환</li>
           <li>
-            사업자등록번호 213-86-15419
+            백유선
             <span>
-              <a href="#">(사업자정보확인 &gt;)</a>
+              <a href="https://github.com/yuseon4455" target='_blank'>GitHub</a>
+            </span>
+          </li>
+          <li>
+            김환희
+            <span>
+              <a href="https://github.com/rlaksl" target='_blank'>GitHub</a>
+            </span>
+          </li>
+          <li>
+            김예지
+            <span>
+              <a href="https://github.com/yjkdev21" target='_blank'>GitHub</a>
             </span>
           </li>
         </ul>

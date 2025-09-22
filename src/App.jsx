@@ -8,6 +8,7 @@ import AuthCallback from './contexts/AuthCallback';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 
+import Search from './pages/search/Search';
 import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/order/orderdetail/:orderId" element={<OrderDetail/>} />
 
             {/* 사용자 관련 페이지들 */}
+            <Route path="/search" element={<Search />} />
             <Route path="/mypage" element={<div>마이페이지</div>} />
             <Route path="/cart" element={<div>장바구니</div>} />
             <Route path="/login" element={<Login />} />
