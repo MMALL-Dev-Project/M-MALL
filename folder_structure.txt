@@ -1,0 +1,91 @@
+# M-MALL React 프로젝트 폴더 구조
+
+```
+src/
+├── assets/                          # 정적 파일 (이미지, 아이콘 등)
+├── components/                      # 재사용 가능한 컴포넌트
+│   ├── common/                      # 공통 컴포넌트
+│   │   ├── modal/
+│   │   │   └── Modal.jsx           # 모달 컴포넌트
+│   │   ├── Footer.css
+│   │   ├── Footer.jsx              # 푸터 컴포넌트
+│   │   ├── Header.css
+│   │   └── Header.jsx              # 헤더 컴포넌트
+│   └── products/                    # 상품 관련 컴포넌트
+│       ├── product-detail/          # 상품 상세 관련 컴포넌트
+│       │   ├── ProductActions.jsx   # 상품 액션 (장바구니, 구매 등)
+│       │   ├── ProductGallery.jsx   # 상품 이미지 갤러리
+│       │   ├── ProductInfo.jsx      # 상품 정보
+│       │   ├── ProductReviews.jsx   # 상품 리뷰
+│       │   └── SelectionOptions.jsx # 옵션 선택
+│       ├── ProductCard.css
+│       └── ProductCard.jsx          # 상품 카드 컴포넌트
+├── config/
+│   └── supabase.js                  # Supabase 설정
+├── contexts/                        # React Context
+│   ├── AuthCallback.css
+│   ├── AuthCallback.jsx             # 인증 콜백 처리
+│   └── AuthContext.jsx              # 인증 Context
+├── lib/
+│   └── supabase.js                  # Supabase 라이브러리
+├── pages/                           # 페이지 컴포넌트
+│   ├── admin/
+│   │   └── Dashboard.jsx            # 관리자 대시보드
+│   ├── auth/                        # 인증 관련 페이지
+│   │   ├── Login.css
+│   │   ├── Login.jsx                # 로그인 페이지
+│   │   ├── SignUp.css
+│   │   └── SignUp.jsx               # 회원가입 페이지
+│   ├── cart/
+│   │   └── Cart.jsx                 # 장바구니 페이지
+│   ├── error/
+│   │   └── NotFound.jsx             # 404 에러 페이지
+│   ├── home/
+│   │   └── Home.jsx                 # 메인 홈 페이지
+│   ├── mypage/
+│   │   └── Profile.jsx              # 마이페이지
+│   ├── order/                       # 주문 관련 페이지
+│   │   ├── AddressModal.jsx         # 주소 모달
+│   │   ├── Checkout.css
+│   │   ├── Checkout.jsx             # 주문/결제 페이지
+│   │   ├── OrderDetail.css
+│   │   ├── OrderDetail.jsx          # 주문 상세
+│   │   ├── OrderSummary.jsx         # 주문 요약
+│   │   └── useCheckout.js           # 주문 관련 커스텀 훅
+│   ├── search/                      # 검색 관련
+│   │   ├── Search.css
+│   │   └── Search.jsx               # 검색 페이지
+│   ├── support/                     # 고객지원
+│   │   ├── FAQ.jsx                  # FAQ 페이지
+│   │   ├── Notice.css
+│   │   ├── Notice.jsx               # 공지사항 페이지
+│   │   └── useNotices.js            # 공지사항 커스텀 훅
+│   ├── CategoryPage.jsx             # 카테고리 페이지
+│   └── ProductDetail.jsx            # 상품 상세 페이지
+├── utils/                           # 유틸리티 함수
+│   ├── image.js                     # 이미지 관련 유틸
+│   └── storage.js                   # 스토리지 관련 유틸
+├── App.css                          # 앱 전체 스타일
+├── App.jsx                          # 메인 앱 컴포넌트
+├── index.css                        # 전역 스타일
+└── main.jsx                         # 앱 진입점 (React 18+ 방식)
+```
+
+### **components/**
+- **common/**: 헤더, 푸터, 모달 등 전체 앱에서 공통으로 사용하는 컴포넌트
+- **products/**: 상품 관련 컴포넌트들을 모아둔 폴더
+
+### **pages/**
+- 각 라우트에 해당하는 페이지 컴포넌트들
+- 폴더별로 관련 기능을 그룹화 (auth, order, support 등)
+
+### **contexts/**
+- React Context API를 사용한 전역 상태 관리
+- 인증 관련 상태와 로직 포함
+
+### **config/ & lib/**
+- **config/**: 설정 파일들
+- **lib/**: 외부 라이브러리 초기화 및 설정
+
+### **utils/**
+- 재사용 가능한 유틸리티 함수들
