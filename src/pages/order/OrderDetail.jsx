@@ -258,12 +258,6 @@ console.log('user_addresses:', order.user_addresses);
                 <span className="label">결제 금액</span>
                 <span className="value">{orderData.total_amount.toLocaleString()}원</span>
               </div>
-              <div className="payment-row">
-                <span className="label">적립 포인트</span>
-                <span className="value points">
-                  {orderItems.reduce((sum, item) => sum + Math.floor((item.unit_sale_price * item.quantity) * 0.1), 0).toLocaleString()}P
-                </span>
-              </div>
             </div>
           </div>
         </section>

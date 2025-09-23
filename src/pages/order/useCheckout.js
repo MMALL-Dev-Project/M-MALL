@@ -23,7 +23,7 @@ export const useCheckout = () => {
   const [selectedPayment, setSelectedPayment] = useState('card');
   const [selectedCard, setSelectedCard] = useState('');
   
-  // 가격 계산 상태 (적립 포인트 제거)
+  // 가격 계산 상태
   const [pricing, setPricing] = useState({
     subtotal: 0,
     pointDiscount: 0,
@@ -107,10 +107,14 @@ export const useCheckout = () => {
       }
 
       // 이미 완전한 데이터가 있는 경우 (상품 상세페이지에서 온 경우)
-      if (orderItemsData[0].product && orderItemsData[0].sku) {
-        setOrderItems(orderItemsData);
-        return;
-      }
+if (orderItemsData[0].product && orderItemsData[0].sku) {
+  const fixedItems = orderItemsData.map(item => ({
+    ...item,
+    itemTotal: item.quantity * (item.product.price + (item.sku.additional_price || 0))
+  }));
+  setOrderItems(fixedItems);
+  return;
+}
 
       // 기본 데이터만 있는 경우 (장바구니에서 온 경우) - 상품 상세 정보 로드
       const itemsWithDetails = await Promise.all(
@@ -344,7 +348,7 @@ export const useCheckout = () => {
     resetAddressForm();
   };
 
-  // 주문 처리 (적립 포인트 제거, 재고 차감 개선)
+  // 주문 처리 (재고 차감)
   const handleOrder = async () => {
     if (!selectedAddress) {
       alert('배송지를 선택해주세요.');
@@ -381,15 +385,29 @@ export const useCheckout = () => {
         }
 
         // 재고 차감
-        const { error: updateError } = await supabase
-          .from('product_skus')
-          .update({
-            stock_qty: currentSku.stock_qty - item.quantity,
-            updated_at: new Date().toISOString()
-          })
-          .eq('skid', item.skid);
+        // 재고 차감
+console.log('재고 차감 시작:', {
+  skid: item.skid,
+  현재재고: currentSku.stock_qty,
+  차감량: item.quantity,
+  새재고: currentSku.stock_qty - item.quantity
+});
 
-        if (updateError) throw new Error(`재고 차감 실패: ${updateError.message}`);
+const { data: updateResult, error: updateError } = await supabase
+  .from('product_skus')
+  .update({
+    stock_qty: currentSku.stock_qty - item.quantity,
+    updated_at: new Date().toISOString()
+  })
+  .eq('skid', item.skid)
+  .select();
+
+console.log('재고 차감 결과:', { updateResult, updateError });
+
+if (updateError) {
+  console.error('재고 차감 실패 상세:', updateError);
+  throw new Error(`재고 차감 실패: ${updateError.message}`);
+}
 
         // 재고 로그 기록
         const { error: logError } = await supabase

@@ -227,7 +227,7 @@ const ProductInfo = ({ product }) => {
     return discountedPrice;
   }
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     if (!user) {
         navigate('/login');
         return;
@@ -246,6 +246,33 @@ const ProductInfo = ({ product }) => {
             return;
         }
     }
+     // 10분 후 만료시간
+    localStorage.setItem('orderTimer', Date.now() + (10 * 60 * 1000));
+
+// 재고 예약 추가
+try {
+    for (const card of selectedOptionCards) {
+        // 현재 reserved_qty 값을 먼저 가져오기
+        const { data: currentSku } = await supabase
+            .from('product_skus')
+            .select('reserved_qty')
+            .eq('skid', card.sku.skid)
+            .single();
+
+        // 그 값에 수량을 더해서 업데이트
+        const { error } = await supabase
+            .from('product_skus')
+            .update({ 
+                reserved_qty: (currentSku.reserved_qty || 0) + card.quantity
+            })
+            .eq('skid', card.sku.skid);
+        
+        if (error) throw error;
+    }
+    console.log('📦 재고 예약 완료!');
+} catch (error) {
+    console.error('재고 예약 실패:', error);
+}
 
     // 선택된 모든 옵션카드를 주문 아이템으로 변환
     const orderItems = selectedOptionCards.map(card => ({

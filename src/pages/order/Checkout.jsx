@@ -1,9 +1,13 @@
-import React from 'react';
 import { useCheckout } from './useCheckout';
 import AddressModal from './AddressModal';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../config/supabase';
 import './Checkout.css';
 
 const Checkout = () => {
+  const navigate = useNavigate();
+  
   const {
     // 상태
     orderItems,
@@ -40,6 +44,88 @@ const Checkout = () => {
     handleOrder
   } = useCheckout();
 
+  // 타이머 코드
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [showExtendButton, setShowExtendButton] = useState(false);
+  const [extendButtonTimer, setExtendButtonTimer] = useState(null);
+
+  // 재고 예약 해제 함수
+  const releaseReservedStock = async () => {
+    try {
+      const checkoutItems = JSON.parse(sessionStorage.getItem('checkoutItems') || '[]');
+      
+      for (const item of checkoutItems) {
+        const { data: currentSku } = await supabase
+          .from('product_skus')
+          .select('reserved_qty')
+          .eq('skid', item.skid)
+          .single();
+
+        await supabase
+          .from('product_skus')
+          .update({ 
+            reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity)
+          })
+          .eq('skid', item.skid);
+      }
+      console.log('재고 예약 해제 완료');
+    } catch (error) {
+      console.error('재고 예약 해제 실패:', error);
+    }
+  };
+
+  useEffect(() => {
+    const endTime = localStorage.getItem('orderTimer');
+    if (!endTime) return;
+
+    const timer = setInterval(() => {
+      const remaining = parseInt(endTime) - Date.now();
+      
+      if (remaining <= 0) {
+        // 시간 만료 - 재고 예약 해제 후 뒤로가기
+        releaseReservedStock();
+        localStorage.removeItem('orderTimer');
+        navigate(-1);
+        clearInterval(timer);
+        return;
+      }
+      
+      setTimeLeft(remaining);
+      
+      // 2분 남았을 때 연장 버튼 표시
+      if (remaining <= 2 * 60 * 1000 && !showExtendButton) {
+        setShowExtendButton(true);
+        
+        // 1분 후 자동으로 뒤로가기
+        const autoExit = setTimeout(() => {
+          releaseReservedStock();
+          localStorage.removeItem('orderTimer');
+          navigate(-1);
+        }, 60 * 1000);
+        
+        setExtendButtonTimer(autoExit);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+      if (extendButtonTimer) clearTimeout(extendButtonTimer);
+    };
+  }, [showExtendButton]);
+
+  const handleExtend = () => {
+    const newEndTime = Date.now() + (10 * 60 * 1000);
+    localStorage.setItem('orderTimer', newEndTime.toString());
+    setTimeLeft(10 * 60 * 1000);
+    setShowExtendButton(false);
+    
+    // 기존 자동 종료 타이머 취소
+    if (extendButtonTimer) {
+      clearTimeout(extendButtonTimer);
+      setExtendButtonTimer(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="checkout-loading">
@@ -51,6 +137,35 @@ const Checkout = () => {
   return (
     <div className="checkout-container">
       <div className="checkout-wrapper">
+        {showExtendButton && (
+          <div style={{
+            background: 'linear-gradient(135deg, #ff4444, #cc0000)',
+            color: 'white',
+            padding: '15px',
+            textAlign: 'center',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            fontWeight: 'bold'
+          }}>
+            주문 시간이 2분 남았습니다. 1분 후 자동으로 나갑니다.
+            <button 
+              onClick={handleExtend}
+              style={{
+                marginLeft: '15px',
+                padding: '8px 16px',
+                background: 'rgba(255,255,255,0.2)',
+                border: '2px solid white',
+                color: 'white',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              10분 연장
+            </button>
+          </div>
+        )}
+        
         <div className="checkout-header">
           <h2>주문서</h2>
         </div>
