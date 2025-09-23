@@ -8,6 +8,7 @@
 .search-input-section {
   text-align: center;
   margin-bottom: 40px;
+  position: relative; /* 추가: 드롭다운 positioning을 위해 */
 }
 
 .search-input-section form {
@@ -53,6 +54,178 @@
 
 .search-button:hover .material-symbols-outlined {
   color: #666;
+}
+
+/* 검색 드롭다운 */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  max-width: 90vw;
+  border: 2px solid #333;
+  z-index: 1000;
+  margin-top: -2px;
+}
+
+/* 3섹션 컨테이너 */
+.dropdown-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 400px;
+  background-color: #fff;
+}
+
+/* 개별 섹션 스타일 */
+.recent-section,
+.popular-section,
+.realtime-section {
+  padding: 20px;
+  border-right: 1px solid #eee;
+}
+
+.realtime-section {
+  border-right: none;
+}
+
+/* 섹션 헤더 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 16px; */
+  padding-bottom: 12px;
+}
+
+.section-header span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 전체삭제 버튼 */
+.clear-btn {
+  color: #999;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  color: #666;
+}
+
+/* 섹션 콘텐츠 */
+.section-content {
+  max-height: 320px;
+  overflow-y: auto; /* 세로 스크롤*/
+}
+
+/* 키워드 아이템 공통 스타일 */
+.keyword-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.keyword-item:hover {
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.keyword-item:last-child {
+  border-bottom: none;
+}
+
+/* 순위 표시 */
+.rank {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 15px;
+  color: #007bff;
+}
+
+/* 키워드 텍스트 */
+.keyword {
+  font-size: 14px;
+  color: #333;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+
+.keyword:hover {
+  color: #007bff;
+}
+
+/* 삭제 버튼 (최근 검색어용) */
+.delete-btn {
+  color: #999;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #333;
+}
+
+/* 데이터 없음 메시지 */
+.no-data {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 40px 20px;
+}
+
+/* 검색어 저장 비활성화 알림 */
+.disabled-notice {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 40px 20px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+/* 검색어 저장 OFF 전체 알림 (하단) */
+.search-disabled-notice {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #856404;
+  z-index: 999;
+}
+
+/* 스크롤바 스타일링 */
+.section-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.section-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.section-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
+.section-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 /* 검색 탭 UI */
@@ -160,7 +333,7 @@
   margin: 20px 0;
 }
 
-/* 반응형 */
+/* 반응형 디자인 */
 @media (max-width: 768px) {
   .search-container {
     padding: 20px 15px;
@@ -175,6 +348,7 @@
   }
   
   .search-tabs {
+    width: 100%;
     margin: 20px 0 15px 0;
   }
   
@@ -191,5 +365,36 @@
   .brand-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
+  }
+
+  /* 드롭다운 반응형 */
+  .search-dropdown {
+    width: 95vw;
+    margin-top: 4px;
+  }
+  
+  .dropdown-sections {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  
+  .recent-section,
+  .popular-section,
+  .realtime-section {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding: 16px;
+  }
+  
+  .realtime-section {
+    border-bottom: none;
+  }
+  
+  .section-content {
+    max-height: 200px;
+  }
+  
+  .search-disabled-notice {
+    width: 90vw;
   }
 }

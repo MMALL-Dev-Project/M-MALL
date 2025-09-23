@@ -2,9 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
 import ProductCard from '../../components/products/ProductCard.jsx';
+import { useUserSettings } from '../../hooks/useUserSettings.js'
+import { useSearchHistory } from '../../hooks/useSearchHistory.js'
 import './Search.css';
 
 const Search = () => {
+  const { settings } = useUserSettings();
+  const {
+    searchHistory,
+    saveSearchKeyword,
+    deleteSearchKeyword,
+    clearAllSearchHistory,
+    isSearchHistoryEnabled
+  } = useSearchHistory();
   const [searchValue, setSearchValue] = useState('');
   const [placeholder, setPlaceholder] = useState('검색어를 입력하세요');
   const [activeTab, setActiveTab] = useState('product');
@@ -20,6 +30,16 @@ const Search = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const inputRef = useRef(null);
+
+  // 검색 기록 관련 상태
+  const [showHistory, setShowHistory] = useState(false);
+
+  const [popularKeywords, setPopularKeywords] = useState([
+    '임시 데이터1', '임시 데이터2', '임시 데이터3', '임시 데이터4', '임시 데이터5', '콩나물국밥', '새우구이', '초밥', '배고파', '저녁뭐먹지'
+  ]);
+  const [realtimeKeywords, setRealtimeKeywords] = useState([
+    '임시 데이터1', '추석 연휴', '추석 선물', '여행', '국내 여행', '해외 여행', '패딩', '자켓', '샴푸', '신발'
+  ]);
 
   const getBrandBasedPlaceholder = () => { // 아직은 안씀 나중에 관리자 페이지 할 때 수정할 예정
     const now = new Date();
@@ -124,13 +144,46 @@ const Search = () => {
     }
   }, [searchParams]);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (searchValue.trim()) {
+      // 검색어 저장
+      await saveSearchKeyword(searchValue.trim());
+
       setIsSearching(true);
       navigate(`/search?q=${encodeURIComponent(searchValue)}`);
+      setShowHistory(false); // 검색 기록 숨기기
     }
   };
+
+  // 검색 기록 클릭 처리 함수
+  const handleHistoryClick = async (keyword) => {
+    setSearchValue(keyword);
+    // 검색어 저장 
+    await saveSearchKeyword(keyword);
+    setIsSearching(true);
+    navigate(`/search?q=${encodeURIComponent(keyword)}`);
+    setShowHistory(false);
+  };
+
+  // 검색창 포커스 처리
+  const handleInputFocus = () => {
+    setShowHistory(true);
+  };
+
+  // 검색창 바깥 클릭 시 기록 숨기기 (새로 추가)
+  const handleClickOutside = (e) => {
+    if (!e.target.closest('.search-input-section')) {
+      setShowHistory(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   const handleClearSearch = () => {
     setSearchValue('');
@@ -205,9 +258,10 @@ const Search = () => {
             placeholder={placeholder}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={handleInputFocus} // 추가
           />
-          <button 
-            type={isSearching ? "button" : "submit"} 
+          <button
+            type={isSearching ? "button" : "submit"}
             className="search-button"
             onClick={isSearching ? handleClearSearch : undefined}
           >
@@ -216,6 +270,126 @@ const Search = () => {
             </span>
           </button>
         </form>
+        {/* 검색 기록 드롭다운 (새로 추가) */}
+        {/*
+        {showHistory && isSearchHistoryEnabled && (
+          <div className="search-history-dropdown">
+            <div className="history-header">
+              <span>최근 검색어</span>
+              {searchHistory.length > 0 && (
+                <button
+                  onClick={clearAllSearchHistory}
+                  className="clear-all-btn"
+                >
+                  전체삭제
+                </button>
+              )}
+            </div>
+
+            <div className="history-list">
+              {searchHistory.length > 0 ? (
+                searchHistory.map((keyword, index) => (
+                  <div key={index} className="history-item">
+                    <span
+                      onClick={() => handleHistoryClick(keyword)}
+                      className="keyword"
+                    >
+                      {keyword}
+                    </span>
+                    <button
+                      onClick={() => deleteSearchKeyword(keyword)}
+                      className="delete-btn"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="no-history">최근 검색어가 없습니다</div>
+              )}
+            </div>
+          </div>
+        )}*/}
+        {/* 검색 드롭다운 - 3섹션 구조 */}
+        {showHistory && (
+          <div className="search-dropdown">
+            <div className="dropdown-sections">
+
+              {/* 왼쪽: 최근 검색어 */}
+              <div className="recent-section">
+                <div className="section-header">
+                  <span>최근 검색어</span>
+                  {isSearchHistoryEnabled && searchHistory.length > 0 && (
+                    <button onClick={clearAllSearchHistory} className="clear-btn">
+                      전체삭제
+                    </button>
+                  )}
+                </div>
+                <div className="section-content">
+                  {isSearchHistoryEnabled ? (
+                    searchHistory.length > 0 ? (
+                      searchHistory.map((keyword, index) => (
+                        <div key={index} className="keyword-item">
+                          <span onClick={() => handleHistoryClick(keyword)} className="keyword">
+                            {keyword}
+                          </span>
+                          <button onClick={() => deleteSearchKeyword(keyword)} className="delete-btn">
+                            ×
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="no-data">최근 검색어가 없습니다</div>
+                    )
+                  ) : (
+                    <div className="disabled-notice">검색어 저장이 꺼져있습니다</div>
+                  )}
+                </div>
+              </div>
+
+              {/* 가운데: 인기 검색어 */}
+              <div className="popular-section">
+                <div className="section-header">
+                  <span>인기 검색어</span>
+                </div>
+                <div className="section-content">
+                  {popularKeywords.map((keyword, index) => (
+                    <div key={index} className="keyword-item">
+                      <span className="rank">{index + 1}</span>
+                      <span onClick={() => handleHistoryClick(keyword)} className="keyword">
+                        {keyword}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 오른쪽: 실시간 키워드 */}
+              <div className="realtime-section">
+                <div className="section-header">
+                  <span>실시간 키워드</span>
+                </div>
+                <div className="section-content">
+                  {realtimeKeywords.map((keyword, index) => (
+                    <div key={index} className="keyword-item">
+                      <span className="rank">{index + 1}</span>
+                      <span onClick={() => handleHistoryClick(keyword)} className="keyword">
+                        {keyword}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 검색어 저장 OFF 상태 안내 (새로 추가) */}
+        {showHistory && !isSearchHistoryEnabled && (
+          <div className="search-disabled-notice">
+            검색어 저장 기능이 꺼져있습니다.
+          </div>
+        )}
       </div>
 
       <div className="search-content">
@@ -225,31 +399,31 @@ const Search = () => {
           <>
             {/* 탭 UI 추가 */}
             <div className="search-tabs">
-              <button 
+              <button
                 className={`tab ${activeTab === 'product' ? 'active' : ''}`}
                 onClick={() => handleTabClick('product')}
               >
                 PRODUCT ({searchResults.products.length})
               </button>
-              <button 
+              <button
                 className={`tab ${activeTab === 'brand' ? 'active' : ''}`}
                 onClick={() => handleTabClick('brand')}
               >
                 BRAND ({searchResults.brands.length})
               </button>
-              <button 
+              <button
                 className={`tab ${activeTab === 'event' ? 'active' : ''}`}
                 onClick={() => handleTabClick('event')}
               >
                 EVENT ({searchResults.events.length})
               </button>
-              <button 
+              <button
                 className={`tab ${activeTab === 'content' ? 'active' : ''}`}
                 onClick={() => handleTabClick('content')}
               >
                 CONTENT ({searchResults.contents.length})
               </button>
-              <button 
+              <button
                 className={`tab ${activeTab === 'lookbook' ? 'active' : ''}`}
                 onClick={() => handleTabClick('lookbook')}
               >
