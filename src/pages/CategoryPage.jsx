@@ -132,7 +132,7 @@ const CategoryPage = React.memo(() => {
   }
 
   return (
-    <div style={{ marginTop: '100px' }}>
+    <div style={{ marginTop: '120px' }}>
       <h2 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '40px' }}>
         {data.category?.name} {data.subcategory && `> ${data.subcategory.name}`}
       </h2>

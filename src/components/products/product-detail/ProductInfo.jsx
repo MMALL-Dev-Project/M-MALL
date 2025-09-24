@@ -18,7 +18,7 @@ const ProductInfo = ({ product }) => {
   const [selectedOptionCards, setSelectedOptionCards] = useState([]); // 장바구니에 담을 선택된 옵션카드들
   const [quantity, setQuantity] = useState(1);
 
-  // 품절 상태
+  // 품절 상태(대기 상품 제외)
   const [soldOut, setSoldOut] = useState(false);
 
   // 좋아요 상태
@@ -96,7 +96,7 @@ const ProductInfo = ({ product }) => {
 
         setProductSkus(skusData || []);
 
-        console.log(`PID ${product.pid}의 활성화된 SKU 데이터:`, skusData);
+        // console.log(`PID ${product.pid}의 활성화된 SKU 데이터:`, skusData);
       } catch (error) {
         console.error('SKU 데이터 로드 에러:', error);
         setProductSkus([]);
@@ -110,8 +110,8 @@ const ProductInfo = ({ product }) => {
     }
   }, [product.pid]);
 
-  // 전체 재고 확인 및 품절 상태 설정
-  useEffect(() => {
+  // 재고 품절 상태 확인 함수
+  const checkSoldOut = () => {
     if (productSkus.length > 0) {
       // 모든 SKU의 재고량 합산
       const totalStock = productSkus.reduce((sum, sku) => sum + (sku.stock_qty || 0), 0);
@@ -119,17 +119,27 @@ const ProductInfo = ({ product }) => {
       // 총 재고가 0이면 전체 상품 품절 처리
       setSoldOut(totalStock === 0);
 
-      console.log(`PID ${product.pid} 총 재고: ${totalStock}개, 품절상태: ${totalStock === 0}`);
+
+      return totalStock;
     }
+    return 0;
+  };
+
+  // 재고 품절 상태 확인 함수 호출
+  useEffect(() => {
+    checkSoldOut();
   }, [productSkus, product.pid]);
 
-  // console.log("품절여부(soldOut):", soldOut);
 
-  // 초기 기본 옵션카드 생성 - options가 null인 상품(단일 상품)의 경우
-  useEffect(() => {
+  // 초기 기본 옵션카드 생성 함수 (단일 옵션)
+  const initDefaultCard = () => {
+    // 단일 옵션이 아닐 경우 초기화
+    setSelectedOptionCards([]);
+
     // 옵션이 없는 상품의 경우 기본 SKU를 자동으로 선택된 상태로 표시
     if (productSkus.length > 0 && (!product.option_types || Object.keys(product.option_types).length === 0)) {
       const defaultSku = productSkus[0];
+
       // 재고가 있는 경우에만 기본 옵션카드 추가
       if (defaultSku && defaultSku.stock_qty > 0) {
         setSelectedOptionCards([{
@@ -138,6 +148,10 @@ const ProductInfo = ({ product }) => {
         }]);
       }
     }
+  }
+
+  useEffect(() => {
+    initDefaultCard();
   }, [productSkus, product.option_types]);
 
   // 선택된 옵션에 맞는 SKU 찾기 - 사용자가 선택한 옵션 조합으로 해당하는 SKU 매칭
@@ -227,73 +241,196 @@ const ProductInfo = ({ product }) => {
     return discountedPrice;
   }
 
+  // 최신 SKU 데이터 다시 불러오기
+  const refreshProductSkus = async () => {
+    try {
+      const { data: skusData, error } = await supabase
+        .from('product_skus')
+        .select('*')
+        .eq('pid', product.pid)
+        .eq('is_active', true);
+
+      if (!error) {
+        setProductSkus(skusData || []);
+        return skusData || [];
+      }
+      return [];
+    } catch (error) {
+      console.error('SKU 데이터 새로고침 에러:', error);
+      return [];
+    }
+  };
+
+  // 장바구니 핸들러 함수
+  const handleAddToCart = async () => {
+    // 로그인 확인
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    // 선택된 옵션카드가 없으면 경고
+    if (selectedOptionCards.length === 0) {
+      alert('구매할 상품을 선택해주세요.');
+      return;
+    }
+
+    // 최신 재고 데이터 조회
+    const latestSkus = await refreshProductSkus();
+
+    // 최신 데이터로 품절 상태 확인
+    const totalStock = latestSkus.reduce((sum, sku) => sum + (sku.stock_qty || 0), 0);
+
+    if (totalStock === 0) {
+      alert('상품이 품절되었습니다.');
+      setSoldOut(true);
+      return;
+    }
+
+    // 선택된 카드별 재고 확인
+    for (const card of selectedOptionCards) {
+      const latestSku = latestSkus.find(sku => sku.skid === card.sku.skid);
+      if (!latestSku || latestSku.stock_qty < card.quantity) {
+        alert(`선택한 상품의 재고가 부족합니다. (현재 재고: ${latestSku?.stock_qty || 0}개)`);
+        return;
+      }
+    }
+
+    // 콘솔에 선택된 카드 정보 출력
+    console.log('장바구니에 추가할 아이템들:');
+    selectedOptionCards.forEach(card => {
+      console.log({
+        skid: card.sku.skid,
+        quantity: card.quantity,
+        pid: product.pid,
+
+      });
+    });
+
+    try {
+      // 각 선택된 옵션카드를 cart_items 에 insert 또는 update
+      for (const card of selectedOptionCards) {
+        // 기존에 같은 skid와 uid가 있는지 확인
+        const { data: existingItems, error: selectError } = await supabase
+          .from('cart_items')
+          .select('caid, quantity')
+          .eq('skid', card.sku.skid)
+          .eq('uid', user.id);
+
+        if (selectError) {
+          throw selectError;
+        }
+
+        if (existingItems && existingItems.length > 0) {
+          // 기존 아이템이 있으면 수량만 업데이트
+          const existingItem = existingItems[0];
+          const newQuantity = existingItem.quantity + card.quantity;
+
+          const { error: updateError } = await supabase
+            .from('cart_items')
+            .update({
+              quantity: newQuantity
+            })
+            .eq('caid', existingItem.caid);
+
+          if (updateError) throw updateError;
+
+          // console.log(`기존 아이템 수량 업데이트: skid=${card.sku.skid}, ${existingItem.quantity} + ${card.quantity} = ${newQuantity}`);
+
+        } else {
+          // 새로운 아이템 추가
+          const { error: insertError } = await supabase
+            .from('cart_items')
+            .insert({
+              skid: card.sku.skid,
+              quantity: card.quantity,
+              pid: product.pid,
+              uid: user.id
+            });
+
+          if (insertError) throw insertError;
+
+          console.log(`새 아이템 추가: skid=${card.sku.skid}, quantity=${card.quantity}`);
+        }
+      }
+
+      alert('장바구니에 추가되었습니다!');
+
+      initDefaultCard();
+
+    } catch (error) {
+      console.error('장바구니 추가 실패:', error);
+      alert('장바구니 추가에 실패했습니다.');
+    }
+  };
+
+  // 주문하기 핸들러 함수
   const handlePurchase = async () => {
     if (!user) {
-        navigate('/login');
-        return;
+      navigate('/login');
+      return;
     }
 
     // 선택된 옵션카드가 없으면 경고
     if (selectedOptionCards.length === 0) {
-        alert('구매할 상품을 선택해주세요.');
-        return;
+      alert('구매할 상품을 선택해주세요.');
+      return;
     }
 
     // 모든 선택된 옵션카드의 재고 확인
     for (const card of selectedOptionCards) {
-        if (card.sku.stock_qty < card.quantity) {
-            alert(`선택한 수량이 재고보다 많습니다. (재고: ${card.sku.stock_qty}개)`);
-            return;
-        }
+      if (card.sku.stock_qty < card.quantity) {
+        alert(`선택한 수량이 재고보다 많습니다. (재고: ${card.sku.stock_qty}개)`);
+        return;
+      }
     }
-     // 10분 후 만료시간
+    // 10분 후 만료시간
     localStorage.setItem('orderTimer', Date.now() + (10 * 60 * 1000));
 
-// 재고 예약 추가
-try {
-    for (const card of selectedOptionCards) {
+    // 재고 예약 추가
+    try {
+      for (const card of selectedOptionCards) {
         // 현재 reserved_qty 값을 먼저 가져오기
         const { data: currentSku } = await supabase
-            .from('product_skus')
-            .select('reserved_qty')
-            .eq('skid', card.sku.skid)
-            .single();
+          .from('product_skus')
+          .select('reserved_qty')
+          .eq('skid', card.sku.skid)
+          .single();
 
         // 그 값에 수량을 더해서 업데이트
         const { error } = await supabase
-            .from('product_skus')
-            .update({ 
-                reserved_qty: (currentSku.reserved_qty || 0) + card.quantity
-            })
-            .eq('skid', card.sku.skid);
-        
+          .from('product_skus')
+          .update({
+            reserved_qty: (currentSku.reserved_qty || 0) + card.quantity
+          })
+          .eq('skid', card.sku.skid);
+
         if (error) throw error;
+      }
+      console.log('📦 재고 예약 완료!');
+    } catch (error) {
+      console.error('재고 예약 실패:', error);
     }
-    console.log('📦 재고 예약 완료!');
-} catch (error) {
-    console.error('재고 예약 실패:', error);
-}
 
     // 선택된 모든 옵션카드를 주문 아이템으로 변환
     const orderItems = selectedOptionCards.map(card => ({
+      pid: product.pid,
+      skid: card.sku.skid,
+      quantity: card.quantity,
+      // 주문서에서 필요한 추가 정보들
+      product: {
         pid: product.pid,
+        name: product.name,
+        price: product.price,
+        thumbnail_url: product.thumbnail_url,
+        brands: product.brands
+      },
+      sku: {
         skid: card.sku.skid,
-        quantity: card.quantity,
-        // 주문서에서 필요한 추가 정보들
-        product: {
-            pid: product.pid,
-            name: product.name,
-            price: product.price,
-            thumbnail_url: product.thumbnail_url,
-            brands: product.brands
-        },
-        sku: {
-            skid: card.sku.skid,
-            options: card.sku.options,
-            additional_price: card.sku.additional_price || 0,
-            sku_code: card.sku.sku_code
-        },
-        itemTotal: product.price + (card.sku.additional_price || 0)
+        options: card.sku.options,
+        additional_price: card.sku.additional_price || 0,
+        sku_code: card.sku.sku_code
+      },
+      itemTotal: product.price + (card.sku.additional_price || 0)
     }));
 
     // 세션스토리지에 저장
@@ -301,7 +438,7 @@ try {
 
     // 주문서 페이지로 이동
     navigate('/order/checkout');
-    };
+  };
 
   // 옵션 선택 핸들러 - 사용자가 드롭다운에서 옵션을 선택할 때 호출
   const handleOptionChange = (optionType, value) => {
@@ -458,7 +595,7 @@ try {
   return (
     <>
       {/* 상품 정보 영역 */}
-      <div className={`product-info ${soldOut && 'soldout'}`}>
+      <div className={`product-info ${soldOut ? 'soldout' : ''}`}>
         {/* 상품 이미지 */}
         <div className='photo'>
           <img src={getThumbnailSrc(product.thumbnail_url)} alt={product.name} />
@@ -557,7 +694,7 @@ try {
             </button>
             <div className='purchase-buttons'>
               <button
-                onClick={() => console.log("장바구니:", selectedOptionCards)}
+                onClick={handleAddToCart}
                 className='btn-cart'
                 disabled={selectedOptionCards.length === 0}
               >
