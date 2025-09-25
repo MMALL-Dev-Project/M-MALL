@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { supabase } from './config/supabase'
-import './App.css'
+import { supabase } from '@config/supabase'
+import '@/App.css'
 
-import { AuthProvider } from './contexts/AuthContext'
-import AuthCallback from './contexts/AuthCallback';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
+import { AuthProvider } from '@contexts/AuthContext'
+import AuthCallback from '@contexts/AuthCallback';
+import Header from '@components/common/Header';
+import Footer from '@components/common/Footer';
 
-import Search from './pages/search/Search';
-import SignUp from './pages/auth/SignUp';
-import Login from './pages/auth/Login';
+import Search from '@pages/search/Search';
+import SignUp from '@pages/auth/SignUp';
+import Login from '@pages/auth/Login';
 
-import CategoryPage from './pages/CategoryPage';
-import ProductDetail from './pages/ProductDetail';
+import CategoryPage from '@pages/product/CategoryPage';
+import ProductDetail from '@pages/product/ProductDetail';
 
-import Checkout from './pages/order/Checkout';
-import OrderDetail from './pages/order/OrderDetail';
+import Checkout from '@pages/order/Checkout';
+import OrderDetail from '@pages/order/OrderDetail';
 
-import Notice from './pages/support/Notice';
+import Notice from '@pages/support/Notice';
 
-import NotFound from './pages/error/NotFound';
+import NotFound from '@pages/error/NotFound';
 
 console.log('Supabase 연결:', supabase)
 
@@ -47,6 +47,7 @@ function App() {
 
             {/* 상품별 상세 페이지 - 동적 라우팅 */}
             <Route path="/product/:pid" element={<ProductDetail />} />
+            
 
             {/* 주문 관련 페이지들 */}
             <Route path="/order/checkout" element={<Checkout />} />
