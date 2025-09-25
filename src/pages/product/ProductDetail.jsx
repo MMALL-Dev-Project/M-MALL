@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { supabase } from '../config/supabase';
+import { supabase } from '@config/supabase';
 
-import ProductInfo from '../components/products/product-detail/ProductInfo';
-import ProductReview from '../components/products/product-detail/ProductReview';
-import ProductInquiry from '../components/products/product-detail/ProductInquiry';
-import '../components/products/product-detail/ProductDetail.css';
+import ProductInfo from '@components/products/product-detail/ProductInfo';
+import ProductReview from '@components/products/product-detail/ProductReview';
+import ProductInquiry from '@components/products/product-detail/ProductInquiry';
+import '@components/products/product-detail/ProductDetail.css';
 
 const ProductDetail = () => {
     const { pid } = useParams(); // URL 파라미터에서 상품 pid 추출

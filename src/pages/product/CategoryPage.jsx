@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '../config/supabase';
-import ProductCard from '../components/products/ProductCard';
+import { supabase } from '@config/supabase';
+import ProductCard from '@components/products/ProductCard';
 
 const ALL_CATEGORY_SLUG = 'all';
 
