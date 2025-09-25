@@ -29,8 +29,7 @@ console.log('Supabase 연결:', supabase)
 function App() {
   return (
     <AuthProvider>
-      {/* <Router basename='/M-MALL'> */}
-      <Router>
+      <Router basename={process.env.NODE_ENV === 'production' ? '/M-MALL' : '/'}>
         <div className='App'>
           {/* Header는 모든 페이지에서 공통으로 보여짐 */}
           <Header />
