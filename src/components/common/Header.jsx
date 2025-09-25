@@ -117,14 +117,14 @@ const Header = () => {
         <ul className="lnb">
           <li className="tooltip-container">
             <button onClick={handleSearch} aria-label="검색">
-              <img src="images/icons/ico_search.png" alt="검색" />
+              <img src={`${import.meta.env.BASE_URL}images/icons/ico_search.png`} alt="검색" />
             </button>
             <span className="tooltip">검색</span>
           </li>
 
           <li className="tooltip-container">
             <Link to="/cart" aria-label="쇼핑백">
-              <img src="images/icons/ico_bag.png" alt="쇼핑백" />
+              <img src={`${import.meta.env.BASE_URL}images/icons/ico_bag.png`} alt="쇼핑백" />
             </Link>
             <span className="tooltip">쇼핑백</span>
           </li>
@@ -139,7 +139,7 @@ const Header = () => {
               </li>
               <li className="tooltip-container">
                 <button onClick={handleLogout} aria-label="로그아웃">
-                  <img src="images/icons/ico_logout.png" alt="로그아웃" />
+                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_logout.png`} alt="로그아웃" />
                 </button>
                 <span className="tooltip">로그아웃</span>
               </li>
@@ -148,13 +148,13 @@ const Header = () => {
             <>
               <li className="tooltip-container">
                 <Link to="/login" aria-label="로그인">
-                  <img src="images/icons/ico_login.png" alt="로그인" />
+                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_login.png`} alt="로그인" />
                 </Link>
                 <span className="tooltip">로그인</span>
               </li>
               <li className="tooltip-container">
                 <Link to="/signup" aria-label="회원가입">
-                  <img src="/M-MALL/images/icons/ico_signup.png" alt="회원가입" />
+                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_signup.png`} alt="회원가입" />
                 </Link>
                 <span className="tooltip">회원가입</span>
               </li>

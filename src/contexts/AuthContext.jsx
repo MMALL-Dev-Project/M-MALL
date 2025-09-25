@@ -16,6 +16,11 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   console.log('AuthProvider 렌더링 - loading:', loading)
+  console.log('현재 환경:', {
+     origin: window.location.origin,
+     supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
+     production: import.meta.env.PROD
+   });
 
   // 인증 상태 변화 감지 추가
   useEffect(() => {
