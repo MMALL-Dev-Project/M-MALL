@@ -59,21 +59,21 @@ const Footer = () => {
         {/* 푸터 왼쪽 */}
         <div className="footerLeft">
           <p>
-            <img src="/M-MALL/images/footer/footerLogo.png" alt="M-Mall" />
+            <img src="images/footer/footerLogo.png" alt="M-Mall" />
           </p>
           <ul>
             <li className="appLink">
               <ul>
                 <li>
-                  <img src="/M-MALL/images/footer/footerAppStore.png" alt="앱 스토어" />
+                  <img src="images/footer/footerAppStore.png" alt="앱 스토어" />
                 </li>
                 <li>
-                  <img src="/M-MALL/images/footer/footerGooglePlay.png" alt="구글 플레이스토어" />
+                  <img src="images/footer/footerGooglePlay.png" alt="구글 플레이스토어" />
                 </li>
               </ul>
             </li>
             <li className="qrCode">
-              <img src="/M-MALL/images/footer/footerQR.png" alt="QR코드" />
+              <img src="images/footer/footerQR.png" alt="QR코드" />
             </li>
           </ul>
         </div>
@@ -158,7 +158,7 @@ const Footer = () => {
             </div>
             <div className="contact">
               <h3>
-                1:1 문의 <img src="/M-MALL/images/icons/ico_mail.png" alt="메일" />
+                1:1 문의 <img src="images/icons/ico_mail.png" alt="메일" />
               </h3>
               <p>업무시간 외에는 1:1 문의를 이용하세요.</p>
               <p className="mailAddress">mpointmall@hyundaicard.com</p>

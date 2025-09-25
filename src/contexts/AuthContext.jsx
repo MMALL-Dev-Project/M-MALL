@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         // 2. 로그인 상태면 user_info도 가져오기
         if (session?.user) {
           console.log('사용자 정보 조회 시작 - userId:', session.user.id)
-          
+
           //await fetchUserInfo(session.user.id)
           const { data, error } = await supabase
             .from('user_info')
@@ -63,27 +63,34 @@ export const AuthProvider = ({ children }) => {
     }
     getSession() // 즉시 실행
 
-    const { data: {subscription} } = supabase.auth.onAuthStateChange(
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        console.log('인증 상태 변화:', _event, session?.user?.email)
         setUser(session?.user ?? null)
-        // 로그아웃 시에만 userInfo 초기화
-        if (!session?.user) {
+
+        if (session?.user) {
+          console.log('로그인 감지 - fetchUserInfo 호출')
+          fetchUserInfo(session.user.id)
+        } else {
           setUserInfo(null)
         }
-        // 로그인 시 userInfo는 별도로 다시 조회하지 않음.
+
+        setLoading(false)
       }
     )
 
-    return () =>  {
+
+
+    return () => {
       console.log('subscription 해제')
-      subscription.unsubscribe() 
+      subscription.unsubscribe()
     }
   }, [])
 
   // user_id로 user_info 테이블에서 사용자 정보 가져오기
   const fetchUserInfo = async (userId) => {
     try {
-      const {data, error} = await supabase
+      const { data, error } = await supabase
         .from('user_info')
         .select('name, points_balance, role, profile_image, notification_settings')
         .eq('id', userId)
