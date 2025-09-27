@@ -21,6 +21,7 @@ import OrderDetail from '@pages/order/OrderDetail';
 import Notice from '@pages/support/Notice';
 
 import NotFound from '@pages/error/NotFound';
+import OrderManagement from './pages/admin/OrderManagement';
 
 console.log('Supabase 연결:', supabase)
 
@@ -66,6 +67,9 @@ function App() {
 
             {/* 404 페이지 */}
             <Route path="*" element={<NotFound/>} />
+
+            {/* admin */}
+            <Route path="/admin" element={<OrderManagement/>} />
           </Routes>
 
           {/* Footer도 모든 페이지에서 공통으로 보여짐 */}

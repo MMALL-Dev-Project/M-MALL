@@ -125,19 +125,20 @@ console.log('user_addresses:', order.user_addresses);
   }
 
   return (
-    <div className="order-detail-container">
-      <div className="order-detail-wrapper">
+    <div id="orderdetail" className="order-detail-container">
+      <div id="orderdetail" className="order-detail-wrapper">
         {/* 주문 정보 헤더 */}
-        <div className="order-header">
-          <div className="order-date">
+        <div id="orderdetail" className="order-header">
+          <div id="orderdetail" className="order-date">
             <h2>주문 상세</h2>
-            <div className="order-info">
-              <span className="date">{formatDate(orderData.created_at)}</span>
-              <span className="order-number">주문번호 {orderData.oid.toString().padStart(10, '0')}</span>
+            <div id="orderdetail" className="order-info">
+              <span id="orderdetail" className="date">{formatDate(orderData.created_at)}</span>
+              <span id="orderdetail" className="order-number">주문번호 {orderData.oid.toString().padStart(10, '0')}</span>
             </div>
           </div>
-          <div className="order-status">
+          <div id="orderdetail" className="order-status">
             <span 
+              id="orderdetail"
               className="status-badge"
               style={{ color: getStatusColor(orderData.status) }}
             >
@@ -147,15 +148,15 @@ console.log('user_addresses:', order.user_addresses);
         </div>
 
         {/* 배송지 정보 */}
-        <section className="order-section">
+        <section id="orderdetail" className="order-section">
         <h3>배송지</h3>
-        <div className="address-info">
+        <div id="orderdetail" className="address-info">
             {orderData.user_addresses ? (
             <>
-                <div className="address-recipient">
+                <div id="orderdetail" className="address-recipient">
                 {orderData.user_addresses.recipient_name} | {orderData.user_addresses.recipient_phone}
                 </div>
-                <div className="address-detail">
+                <div id="orderdetail" className="address-detail">
                 [{orderData.user_addresses.postal_code}] {orderData.user_addresses.address} {orderData.user_addresses.detail_address}
                 </div>
             </>
@@ -166,28 +167,28 @@ console.log('user_addresses:', order.user_addresses);
         </section>
 
         {/* 배송 정보 */}
-        <section className="order-section">
+        <section id="orderdetail" className="order-section">
           <h3>배송</h3>
-          <div className="shipping-info">
+          <div id="orderdetail" className="shipping-info">
             {orderData.tracking_number ? (
-              <div className="tracking-info">
-                <div className="tracking-row">
-                  <span className="label">택배사</span>
-                  <span className="value">{orderData.shipping_company}</span>
+              <div id="orderdetail" className="tracking-info">
+                <div id="orderdetail" className="tracking-row">
+                  <span id="orderdetail" className="label">택배사</span>
+                  <span id="orderdetail" className="value">{orderData.shipping_company}</span>
                 </div>
-                <div className="tracking-row">
-                  <span className="label">송장번호</span>
-                  <span className="value">{orderData.tracking_number}</span>
+                <div id="orderdetail" className="tracking-row">
+                  <span id="orderdetail" className="label">송장번호</span>
+                  <span id="orderdetail" className="value">{orderData.tracking_number}</span>
                 </div>
                 {orderData.shipped_at && (
-                  <div className="tracking-row">
-                    <span className="label">배송시작일</span>
-                    <span className="value">{formatDate(orderData.shipped_at)}</span>
+                  <div id="orderdetail" className="tracking-row">
+                    <span id="orderdetail" className="label">배송시작일</span>
+                    <span id="orderdetail" className="value">{formatDate(orderData.shipped_at)}</span>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="no-tracking">
+              <div id="orderdetail" className="no-tracking">
                 <p>배송 준비중입니다.</p>
               </div>
             )}
@@ -195,36 +196,36 @@ console.log('user_addresses:', order.user_addresses);
         </section>
 
         {/* 주문 상품 목록 */}
-        <section className="order-section">
+        <section id="orderdetail" className="order-section">
           <h3>주문 상품 {orderItems.length}개</h3>
-          <div className="order-items">
+          <div id="orderdetail" className="order-items">
             {orderItems.map((item, index) => (
-              <div key={index} className="order-item">
-                <div className="item-image">
+              <div key={index} id="orderdetail" className="order-item">
+                <div id="orderdetail" className="item-image">
                   <img 
                     src={item.products?.thumbnail_url || '/M-MALL/images/default-product.png'} 
                     alt={item.product_name}
                   />
                 </div>
-                <div className="item-info">
-                  <div className="item-brand">{item.product_brand}</div>
-                  <div className="item-name">{item.product_name}</div>
+                <div id="orderdetail" className="item-info">
+                  <div id="orderdetail" className="item-brand">{item.product_brand}</div>
+                  <div id="orderdetail" className="item-name">{item.product_name}</div>
                   {item.sku_options && Object.keys(item.sku_options).length > 0 && (
-                    <div className="item-options">
+                    <div id="orderdetail" className="item-options">
                       {Object.entries(item.sku_options).map(([key, value]) => (
                         <span key={key}>{key}: {value}</span>
                       ))}
                     </div>
                   )}
-                  <div className="item-quantity">수량: {item.quantity}개</div>
+                  <div id="orderdetail" className="item-quantity">수량: {item.quantity}개</div>
                 </div>
-                <div className="item-actions">
-                  <div className="item-price">
+                <div id="orderdetail" className="item-actions">
+                  <div id="orderdetail" className="item-price">
                     {(item.unit_sale_price * item.quantity).toLocaleString()}원
                   </div>
-                  <div className="action-buttons">
-                    <button className="btn-review">후기 작성</button>
-                    <button className="btn-inquiry">상품 문의</button>
+                  <div id="orderdetail" className="action-buttons">
+                    <button id="orderdetail" className="btn-review">후기 작성</button>
+                    <button id="orderdetail" className="btn-inquiry">상품 문의</button>
                   </div>
                 </div>
               </div>
@@ -233,38 +234,38 @@ console.log('user_addresses:', order.user_addresses);
         </section>
 
         {/* 결제 정보 */}
-        <section className="order-section">
+        <section id="orderdetail" className="order-section">
           <h3>결제 정보</h3>
-          <div className="payment-info">
-            <div className="payment-details">
-              <div className="payment-row">
-                <span className="label">상품 금액</span>
-                <span className="value">
+          <div id="orderdetail" className="payment-info">
+            <div id="orderdetail" className="payment-details">
+              <div id="orderdetail" className="payment-row">
+                <span id="orderdetail" className="label">상품 금액</span>
+                <span id="orderdetail" className="value">
                   {orderItems.reduce((sum, item) => sum + (item.unit_original_price * item.quantity), 0).toLocaleString()}원
                 </span>
               </div>
-              <div className="payment-row">
-                <span className="label">할인 금액</span>
-                <span className="value discount">
+              <div id="orderdetail" className="payment-row">
+                <span id="orderdetail" className="label">할인 금액</span>
+                <span id="orderdetail" className="value discount">
                   -{(orderItems.reduce((sum, item) => sum + (item.unit_original_price * item.quantity), 0) - orderData.total_amount).toLocaleString()}원
                 </span>
               </div>
-              <div className="payment-row">
-                <span className="label">배송비</span>
-                <span className="value">무료배송</span>
+              <div id="orderdetail" className="payment-row">
+                <span id="orderdetail" className="label">배송비</span>
+                <span id="orderdetail" className="value">무료배송</span>
               </div>
-              <div className="payment-divider"></div>
-              <div className="payment-row total">
-                <span className="label">결제 금액</span>
-                <span className="value">{orderData.total_amount.toLocaleString()}원</span>
+              <div id="orderdetail" className="payment-divider"></div>
+              <div id="orderdetail" className="payment-row total">
+                <span id="orderdetail" className="label">결제 금액</span>
+                <span id="orderdetail" className="value">{orderData.total_amount.toLocaleString()}원</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* 하단 버튼들 */}
-        <div className="order-actions">
-          <button className="btn-back" onClick={() => navigate('/mypage/orders')}>
+        <div id="orderdetail" className="order-actions">
+          <button id="orderdetail" className="btn-back" onClick={() => navigate('/mypage/orders')}>
             주문 내역 보기
           </button>
         </div>

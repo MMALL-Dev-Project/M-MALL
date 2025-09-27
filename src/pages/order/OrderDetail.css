@@ -1,25 +1,16 @@
-/* OrderDetail.css - M-MALL 주문 상세 페이지 스타일 */
-
-/* 전체 컨테이너 */
-.order-detail-container {
-  width: 100%;
+#orderdetail .order-detail-container {
   min-height: 100vh;
-  padding-top: 120px;
-  background-color: #fafafa;
+  padding: 20px;
 }
 
-.order-detail-wrapper {
-  max-width: 800px;
+#orderdetail .order-detail-wrapper {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 30px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 0 20px;
 }
 
-/* 로딩 및 에러 상태 */
-.order-detail-loading,
-.order-detail-error {
+#orderdetail .order-detail-loading,
+#orderdetail .order-detail-error {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,70 +19,67 @@
   text-align: center;
 }
 
-.loading-spinner {
+#orderdetail .loading-spinner {
   font-size: 1.2rem;
   color: #666;
 }
 
-.order-detail-error p {
+#orderdetail .order-detail-error p {
   font-size: 1.1rem;
   color: #666;
   margin-bottom: 20px;
 }
 
-.order-detail-error button {
-  background-color: #000;
+#orderdetail .order-detail-error button {
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
 }
 
-.order-detail-error button:hover {
-  background-color: #333;
+#orderdetail .order-detail-error button:hover {
+  background: #555555;
 }
 
-/* =================================== 주문 헤더 =================================== */
-
-.order-header {
+#orderdetail .order-header {
+  padding: 20px 0;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 40px 0 30px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #ccc;
 }
 
-.order-date h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #000;
+#orderdetail .order-date h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
   margin: 0 0 15px 0;
-  letter-spacing: -0.02em;
 }
 
-.order-info {
+#orderdetail .order-info {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
-.order-info .date {
-  font-size: 1.1rem;
+#orderdetail .order-info .date {
+  font-size: 16px;
   color: #333;
-  font-weight: 500;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-.order-info .order-number {
-  font-size: 0.9rem;
-  color: #666;
+#orderdetail .order-info .order-number {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 4px;
 }
 
-.order-status .status-badge {
+#orderdetail .order-status .status-badge {
   background-color: #f8f9fa;
   padding: 8px 16px;
   border-radius: 20px;
@@ -100,416 +88,398 @@
   border: 2px solid currentColor;
 }
 
-/* =================================== 섹션 공통 스타일 =================================== */
-
-.order-section {
-  padding: 40px 0;
-  border-bottom: 1px solid #f0f0f0;
+#orderdetail .order-section {
+  padding: 20px;
 }
 
-.order-section:last-child {
+#orderdetail .order-section:last-child {
   border-bottom: none;
 }
 
-.order-section h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #000;
-  margin: 0 0 25px 0;
-  letter-spacing: -0.02em;
+#orderdetail .order-section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 15px 0;
 }
 
-/* =================================== 배송 정보 =================================== */
-
-.shipping-info {
-  background-color: #f8f9fa;
-  padding: 25px;
-  border-radius: 8px;
-  border-left: 4px solid #016ACA;
+#orderdetail .shipping-info {
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  font-size: 14px;
 }
 
-.tracking-info {
+#orderdetail .tracking-info {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
-.tracking-row {
+#orderdetail .tracking-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.tracking-row .label {
-  font-size: 1rem;
+  margin-bottom: 10px;
   color: #333;
-  font-weight: 500;
-  min-width: 100px;
 }
 
-.tracking-row .value {
-  font-size: 1rem;
-  color: #000;
-  font-weight: 600;
-  text-align: right;
+#orderdetail .tracking-row:last-child {
+  margin-bottom: 0;
 }
 
-.no-tracking {
+#orderdetail .tracking-row .label {
+  font-size: 14px;
+  color: #333;
+  font-weight: normal;
+}
+
+#orderdetail .tracking-row .value {
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+
+#orderdetail .no-tracking {
+  color: #999999;
   text-align: center;
   padding: 20px;
-  color: #666;
 }
 
-.no-tracking p {
-  font-size: 1rem;
+#orderdetail .no-tracking p {
+  font-size: 14px;
   margin: 0;
 }
 
-/* =================================== 주문 상품 목록 =================================== */
-
-.order-items {
+#orderdetail .order-items {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
 }
 
-.order-item {
+#orderdetail .order-item {
   display: flex;
-  gap: 20px;
-  padding: 25px;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  background-color: #fafafa;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  margin-bottom: 10px;
 }
 
-.item-image {
-  width: 80px;
-  height: 80px;
+#orderdetail .item-image {
+  width: 70px;
+  height: 70px;
   flex-shrink: 0;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.item-image img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
+  margin-right: 15px;
 }
 
-.item-info {
+#orderdetail .item-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 
-.item-brand {
-  font-size: 0.9rem;
+#orderdetail .item-brand {
+  font-size: 14px;
   color: #666;
-  font-weight: 500;
 }
 
-.item-name {
-  font-size: 1rem;
-  color: #000;
-  font-weight: 600;
-  line-height: 1.4;
+#orderdetail .item-name {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.item-options {
+#orderdetail .item-options {
   display: flex;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: #999;
-}
-
-.item-options span {
-  padding: 2px 6px;
-  background-color: #f0f0f0;
-  border-radius: 3px;
-}
-
-.item-quantity {
-  font-size: 0.9rem;
+  gap: 5px;
+  font-size: 14px;
   color: #666;
 }
 
-.item-actions {
+#orderdetail .item-quantity {
+  font-size: 14px;
+  color: #666;
+}
+
+#orderdetail .item-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 15px;
 }
 
-.item-price {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #000;
+#orderdetail .item-price {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
 }
 
-.action-buttons {
+#orderdetail .action-buttons {
   display: flex;
   gap: 10px;
 }
 
-.btn-review,
-.btn-inquiry {
-  padding: 8px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #ffffff;
-  color: #333;
-  font-size: 0.85rem;
-  font-weight: 500;
+#orderdetail .btn-review,
+#orderdetail .btn-inquiry {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  color: #333333;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: none;
 }
 
-.btn-review:hover,
-.btn-inquiry:hover {
-  background-color: #f5f5f5;
-  border-color: #333;
+#orderdetail .btn-review:hover,
+#orderdetail .btn-inquiry:hover {
+  background: #f5f5f5;
 }
 
-/* =================================== 결제 정보 =================================== */
-
-.payment-info {
-  background-color: #f8f9fa;
-  padding: 25px;
-  border-radius: 8px;
+#orderdetail .payment-info {
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  font-size: 14px;
 }
 
-.payment-details {
+#orderdetail .payment-details {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.payment-row {
+#orderdetail .payment-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1rem;
-}
-
-.payment-row .label {
+  margin-bottom: 10px;
   color: #333;
 }
 
-.payment-row .value {
-  font-weight: 600;
-  color: #000;
+#orderdetail .payment-row:last-child {
+  margin-bottom: 0;
 }
 
-.payment-row .value.discount {
+#orderdetail .payment-row .label {
+  font-size: 14px;
+  color: #333;
+}
+
+#orderdetail .payment-row .value {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+#orderdetail .payment-row .value.discount {
   color: #ff4444;
 }
 
-.payment-row .value.points {
+#orderdetail .payment-row .value.points {
   color: #016ACA;
 }
 
-.payment-row.total {
-  padding-top: 15px;
-  border-top: 2px solid #e0e0e0;
-  font-size: 1.1rem;
-  font-weight: 700;
+#orderdetail .payment-row.total {
+  padding-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.payment-divider {
+#orderdetail .payment-divider {
   height: 1px;
-  background-color: #e0e0e0;
+  background-color: #eee;
   margin: 10px 0;
 }
 
-/* =================================== 혜택 정보 =================================== */
-
-.benefits-info {
-  background-color: #f8f9fa;
-  padding: 25px;
-  border-radius: 8px;
-  border-left: 4px solid #28a745;
+#orderdetail .benefits-info {
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  font-size: 14px;
 }
 
-.benefit-row {
+#orderdetail .benefit-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  font-size: 0.95rem;
-}
-
-.benefit-row .label {
+  margin-bottom: 10px;
   color: #333;
 }
 
-.benefit-row .value {
-  font-weight: 600;
-  color: #000;
+#orderdetail .benefit-row:last-child {
+  margin-bottom: 0;
 }
 
-.benefit-row.total {
-  border-top: 2px solid #e0e0e0;
-  padding-top: 15px;
+#orderdetail .benefit-row .label {
+  font-size: 14px;
+  color: #333;
+}
+
+#orderdetail .benefit-row .value {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+#orderdetail .benefit-row.total {
+  padding-top: 10px;
   margin-top: 10px;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.benefit-row.total .value {
+#orderdetail .benefit-row.total .value {
   color: #28a745;
 }
 
-/* =================================== 하단 액션 버튼 =================================== */
-
-.order-actions {
-  text-align: center;
-  padding: 40px 0;
+#orderdetail .order-actions {
+  padding: 20px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.btn-back {
-  background-color: #000;
+#orderdetail .btn-back {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: none;
 }
 
-.btn-back:hover {
-  background-color: #333;
+#orderdetail .address-info {
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  font-size: 14px;
 }
 
-/* =================================== 반응형 디자인 =================================== */
+#orderdetail .address-recipient {
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: bold;
+}
 
+#orderdetail .address-detail {
+  color: #333;
+}
+
+/* 반응형 */
 @media (max-width: 768px) {
-  .order-detail-container {
-    padding-top: 100px;
+  #orderdetail .order-detail-container {
+    padding: 15px;
   }
 
-  .order-detail-wrapper {
-    margin: 0 15px;
-    padding: 0 20px;
+  #orderdetail .order-detail-wrapper {
+    margin: 0 auto;
+    padding: 0 15px;
   }
 
-  .order-header {
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
-    padding: 30px 0 20px;
+  #orderdetail .order-date h2 {
+    font-size: 20px;
   }
 
-  .order-header h2 {
-    font-size: 1.5rem;
-  }
-
-  .order-section {
-    padding: 30px 0;
-  }
-
-  .order-section h3 {
-    font-size: 1.1rem;
-  }
-
-  .shipping-info,
-  .payment-info,
-  .benefits-info {
-    padding: 20px;
-  }
-
-  .order-item {
+  #orderdetail .order-header {
     flex-direction: column;
     gap: 15px;
-    padding: 20px;
+    align-items: flex-start;
   }
 
-  .item-image {
+  #orderdetail .order-item {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  #orderdetail .item-image {
     align-self: center;
-    width: 100px;
-    height: 100px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
-  .item-actions {
+  #orderdetail .item-actions {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
   }
 
-  .action-buttons {
+  #orderdetail .action-buttons {
     flex-direction: column;
     gap: 8px;
   }
 
-  .tracking-row,
-  .payment-row,
-  .benefit-row {
+  #orderdetail .tracking-row,
+  #orderdetail .payment-row,
+  #orderdetail .benefit-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
 
-  .tracking-row .value,
-  .payment-row .value,
-  .benefit-row .value {
+  #orderdetail .tracking-row .value,
+  #orderdetail .payment-row .value,
+  #orderdetail .benefit-row .value {
     text-align: left;
+  }
+
+  #orderdetail .order-actions {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
   }
 }
 
 @media (max-width: 480px) {
-  .order-detail-wrapper {
-    margin: 0 10px;
-    padding: 0 15px;
+  #orderdetail .order-detail-wrapper {
+    padding: 0 10px;
   }
 
-  .order-header {
-    padding: 20px 0 15px;
+  #orderdetail .order-header {
+    padding: 15px 0;
   }
 
-  .order-header h2 {
-    font-size: 1.3rem;
+  #orderdetail .order-date h2 {
+    font-size: 18px;
   }
 
-  .order-section {
-    padding: 25px 0;
-  }
-
-  .order-section h3 {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-
-  .shipping-info,
-  .payment-info,
-  .benefits-info {
+  #orderdetail .order-section {
     padding: 15px;
   }
 
-  .order-item {
+  #orderdetail .order-section h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #orderdetail .shipping-info,
+  #orderdetail .payment-info,
+  #orderdetail .benefits-info,
+  #orderdetail .address-info {
+    padding: 10px;
+  }
+
+  #orderdetail .order-item {
+    padding: 10px;
+  }
+
+  #orderdetail .btn-review,
+  #orderdetail .btn-inquiry {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  #orderdetail .order-actions {
     padding: 15px;
   }
 
-  .item-image {
-    width: 80px;
-    height: 80px;
-  }
-
-  .btn-review,
-  .btn-inquiry {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
-  .order-actions {
-    padding: 30px 0;
-  }
-
-  .btn-back {
-    padding: 10px 25px;
-    font-size: 0.9rem;
+  #orderdetail .btn-back {
+    padding: 10px 20px;
+    font-size: 12px;
   }
 }

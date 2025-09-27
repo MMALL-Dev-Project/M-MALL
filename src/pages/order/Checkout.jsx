@@ -375,6 +375,14 @@ const Checkout = () => {
                 <span>무료</span>
               </div>
               
+              {/* 무료배송 안내 */}
+              <div className="free-shipping-notice">
+                <div className="shipping-benefit">
+                  <div className="shipping-text">
+                  </div>
+                </div>
+              </div>
+              
               {usePoints && pricing.pointDiscount > 0 && (
                 <div className="price-row discount">
                   <span>M포인트 할인</span>
@@ -388,6 +396,17 @@ const Checkout = () => {
                 <span>총 결제 금액</span>
                 <span>{pricing.finalTotal.toLocaleString()}원</span>
               </div>
+              
+              {/* 추가 혜택 안내 */}
+              <div className="order-benefits">
+                <div className="benefit-item">
+                  <div className="shipping-desc">
+                    전 상품 무료배송으로 배송비 걱정 없이<br></br> 쇼핑하세요!
+                  </div>
+                  <span>평일 오후 2시 이전 주문 시 당일 발송</span>
+                </div>
+              </div>
+              
               <button 
                 className="btn-order"
                 onClick={handleOrder}
