@@ -89,10 +89,10 @@ const AddressModal = ({
               <label>연락처</label>
               <input
                 type="tel"
-                name="recipient_phone"
                 value={addressForm.recipient_phone}
-                onChange={onAddressFormChange}
+                onChange={(e) => onAddressFormChange('recipient_phone', e.target.value)}
                 placeholder="휴대폰번호를 입력해주세요."
+                maxLength="13"
                 required
               />
             </div>

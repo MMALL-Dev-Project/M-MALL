@@ -216,13 +216,27 @@ if (orderItemsData[0].product && orderItemsData[0].sku) {
   };
 
   // 주소 폼 변경
-  const handleAddressFormChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setAddressForm(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+const handleAddressFormChange = (field, value) => {
+  let formattedValue = value;
+  
+  // 전화번호 필드인 경우 자동 포맷팅
+  if (field === 'recipient_phone') {
+    const phoneNumber = value.replace(/[^\d]/g, '');
+    
+    if (phoneNumber.length <= 3) {
+      formattedValue = phoneNumber;
+    } else if (phoneNumber.length <= 7) {
+      formattedValue = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    } else {
+      formattedValue = `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`;
+    }
+  }
+
+  setAddressForm(prev => ({
+    ...prev,
+    [field]: formattedValue
+  }));
+};
 
   // 주소 찾기
   const openPostcodeSearch = () => {

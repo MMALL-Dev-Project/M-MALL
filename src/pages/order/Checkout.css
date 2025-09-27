@@ -2,29 +2,27 @@
 
 /* 전체 컨테이너 */
 .checkout-container {
-  width: 100%;
   min-height: 100vh;
-  padding-top: 120px;
-  background-color: #fafafa;
+  padding: 20px;
 }
 
 .checkout-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 20px;
 }
 
 .checkout-header {
-  text-align: center;
-  padding: 30px 0 40px;
+  border-bottom: 1px solid #333;
+  padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 .checkout-header h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
   margin: 0;
-  letter-spacing: -0.02em;
 }
 
 /* 로딩 상태 */
@@ -52,7 +50,7 @@
 .checkout-left {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 /* 오른쪽 고정 영역 */
@@ -64,69 +62,54 @@
 
 /* 섹션 공통 스타일 */
 .checkout-section {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .section-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #000;
-  margin: 0 0 20px 0;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 15px 0;
 }
 
 .btn-change {
-  background: none;
-  border: 1px solid #e0e0e0;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #565656;
-  transition: all 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  color: #333333;
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: none;
 }
-
-.btn-change:hover {
-  background-color: #f5f5f5;
-  border-color: #000;
-  color: #000;
-}
-
-/* =================================== 주문 상품 섹션 =================================== */
 
 .order-items {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .order-item {
   display: flex;
-  gap: 15px;
-  padding: 20px;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  background-color: #fafafa;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  margin-bottom: 10px;
 }
 
 .item-image {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   flex-shrink: 0;
-  border-radius: 6px;
-  overflow: hidden;
+  object-fit: cover;
+  margin-right: 15px;
 }
 
 .item-image img {
@@ -143,23 +126,22 @@
 }
 
 .item-brand {
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #666;
-  font-weight: 500;
 }
 
 .item-name {
-  font-size: 1rem;
-  color: #000;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .item-options {
   display: flex;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: #999;
+  gap: 5px;
+  font-size: 14px;
+  color: #666;
 }
 
 .item-options span {
@@ -169,7 +151,7 @@
 }
 
 .item-quantity {
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #666;
 }
 
@@ -182,87 +164,75 @@
 }
 
 .item-price .price {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #000;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
 }
 
 .point-info {
-  font-size: 0.85rem;
+  font-size: 14px;
   color: #016ACA;
-  font-weight: 500;
 }
 
 /* =================================== 배송지 섹션 =================================== */
 
 .address-info {
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #016ACA;
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  font-size: 14px;
 }
 
 .address-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .address-recipient {
-  font-size: 1rem;
+  font-size: 14px;
   color: #333;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .address-detail {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.4;
+  font-size: 14px;
+  color: #333;
   margin-bottom: 10px;
 }
 
 .default-badge {
-  background-color: #016ACA;
+  background-color: #333;
   color: #ffffff;
   padding: 3px 8px;
   border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .no-address {
+  color: #999999;
   text-align: center;
-  padding: 40px 20px;
-  color: #999;
+  padding: 20px;
 }
 
 .no-address p {
   margin-bottom: 20px;
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 .btn-add-address {
-  background-color: #016ACA;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
 }
-
-.btn-add-address:hover {
-  background-color: #0056a0;
-}
-
-/* =================================== M포인트 섹션 =================================== */
 
 .points-section {
   display: flex;
@@ -280,8 +250,8 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .points-toggle input[type="checkbox"] {
@@ -292,68 +262,53 @@
 }
 
 .points-balance {
-  font-size: 0.95rem;
+  font-size: 14px;
   color: #016ACA;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .points-input-section {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
+  padding: 15px;
+  border: 1px solid #eeeeee;
 }
 
 .points-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   margin-bottom: 15px;
 }
 
 .points-input-wrapper input {
   flex: 1;
-  height: 45px;
-  padding: 0 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
   text-align: right;
-  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .points-input-wrapper input:focus {
   outline: none;
-  border-color: #016ACA;
+  border-color: #333;
 }
 
 .points-unit {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: bold;
   color: #016ACA;
-  margin-left: -50px;
-  pointer-events: none;
+  margin-left: -40px;
 }
 
 .btn-use-all {
-  background-color: #333;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-.btn-use-all:hover {
-  background-color: #555;
+  font-size: 14px;
 }
 
 .points-info {
-  font-size: 0.85rem;
+  font-size: 14px;
   color: #666;
 }
 
@@ -361,28 +316,19 @@
   margin: 3px 0;
 }
 
-/* =================================== 결제 수단 섹션 =================================== */
-
 .payment-methods {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .payment-option {
   display: flex;
   align-items: center;
   padding: 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #eeeeee;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-}
-
-.payment-option:hover {
-  border-color: #016ACA;
-  background-color: #f8f9fa;
+  font-size: 14px;
 }
 
 .payment-option input[type="radio"] {
@@ -404,46 +350,45 @@
 
 .card-selection select {
   width: 100%;
-  height: 45px;
-  padding: 0 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: 'Noto Sans KR', sans-serif;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
   cursor: pointer;
 }
 
 .card-selection select:focus {
   outline: none;
-  border-color: #016ACA;
+  border-color: #333;
 }
 
-/* =================================== 결제 요약 (오른쪽 고정) =================================== */
-
 .payment-summary {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 2px solid #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 20px;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
 }
 
 .payment-summary h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #000;
-  margin: 0 0 25px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 30px 0;
   text-align: center;
-  letter-spacing: -0.02em;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
-  font-size: 1rem;
+  margin-bottom: 15px;
   color: #333;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.price-row:last-child {
+  margin-bottom: 0;
 }
 
 .price-row.discount {
@@ -451,64 +396,51 @@
 }
 
 .price-row.discount span:last-child {
-  font-weight: 600;
-}
-
-.price-divider {
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 20px 0;
+  font-weight: bold;
 }
 
 .price-row.total {
-  padding: 15px 0;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #000;
-  border-top: 2px solid #f0f0f0;
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 .earn-points {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  font-size: 0.95rem;
+  margin-bottom: 30px;
   color: #016ACA;
-  margin-bottom: 20px;
+  font-size: 14px;
+  padding: 15px 0;
 }
 
 .earn-points .points {
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .btn-order {
   width: 100%;
-  height: 55px;
-  background-color: #000;
+  padding: 20px 15px;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border: 1px solid #333;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: auto;
 }
 
 .btn-order:hover:not(:disabled) {
-  background-color: #333;
-  transform: translateY(-1px);
+  background: #555555;
 }
 
 .btn-order:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-  transform: none;
 }
-
-/* =================================== 모달 스타일 =================================== */
 
 .modal-overlay {
   position: fixed;
@@ -525,81 +457,58 @@
 
 .modal-content {
   background: #ffffff;
-  border-radius: 12px;
+  border: 1px solid #cccccc;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 30px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 20px;
 }
 
 .modal-header h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
   margin: 0;
 }
 
 .modal-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  font-size: 20px;
   color: #999;
   padding: 5px;
-  transition: color 0.2s ease;
-}
-
-.modal-close:hover {
-  color: #333;
 }
 
 .modal-body {
-  padding: 30px;
+  padding: 5px;
 }
 
-.modal-divider {
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 25px 0;
-}
-
-/* 기존 주소 목록 */
 .existing-addresses h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #000;
-  margin: 0 0 20px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 15px 0;
 }
 
 .address-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.address-item:hover {
-  border-color: #016ACA;
-  background-color: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #eeeeee;
+  margin-bottom: 20px;
 }
 
 .address-item.selected {
-  border-color: #016ACA;
-  background-color: #f0f8ff;
+  border-color: #333;
+  background: #f5f5f5;
 }
 
 .address-content {
@@ -613,65 +522,48 @@
 
 .btn-edit,
 .btn-delete {
-  padding: 6px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  padding: 8px 12px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
 }
 
 .btn-edit {
-  background-color: #ffffff;
-  color: #016ACA;
-  border-color: #016ACA;
-}
-
-.btn-edit:hover {
-  background-color: #016ACA;
-  color: #ffffff;
+  background: #ffffff;
+  color: #333333;
 }
 
 .btn-delete {
-  background-color: #ffffff;
+  background: #ffffff;
   color: #ff4444;
   border-color: #ff4444;
 }
 
 .btn-delete:hover {
-  background-color: #ff4444;
-  color: #ffffff;
+  background: #f5f5f5;
 }
 
-/* 폼 스타일 */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #000;
-  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-group input {
   width: 100%;
-  height: 45px;
-  padding: 0 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: 'Noto Sans KR', sans-serif;
-  transition: border-color 0.2s ease;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  font-size: 14px;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #016ACA;
+  border-color: #333;
 }
 
 .form-group input:read-only {
@@ -689,21 +581,12 @@
 }
 
 .btn-postcode {
-  background-color: #333;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 0 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 14px;
   white-space: nowrap;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-.btn-postcode:hover {
-  background-color: #555;
 }
 
 .checkbox-label {
@@ -721,95 +604,97 @@
 
 .modal-actions {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   justify-content: flex-end;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #f0f0f0;
+  margin-top: 20px;
+  padding-top: 15px;
 }
 
 .btn-save {
-  background-color: #016ACA;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  background: #333333;
   color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-.btn-save:hover {
-  background-color: #0056a0;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .btn-cancel {
-  background-color: #ffffff;
-  color: #666;
-  border: 1px solid #e0e0e0;
-  padding: 12px 24px;
-  border-radius: 6px;
+  padding: 10px 15px;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  color: #333333;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+/* 무료배송 및 혜택 안내 스타일 */
+.order-benefits {
+  margin: 25px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #e8f5e8;
+  border-radius: 6px;
+}
+
+.benefit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.shipping-desc {
   font-weight: 500;
-  transition: all 0.2s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  color: #28a745;
+  margin-bottom: 8px;
 }
 
-.btn-cancel:hover {
-  background-color: #f5f5f5;
-  border-color: #333;
-  color: #333;
-}
-
-/* =================================== 반응형 디자인 =================================== */
-
-@media (max-width: 1024px) {
-  .checkout-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .checkout-right {
-    position: static;
-    order: -1;
-  }
-
-  .payment-summary {
-    position: sticky;
-    top: 100px;
-    z-index: 10;
-  }
+.delivery-info {
+  color: #666;
+  font-size: 12px;
 }
 
 @media (max-width: 768px) {
   .checkout-container {
-    padding-top: 100px;
+    padding: 15px;
   }
 
   .checkout-wrapper {
-    padding: 0 20px;
+    padding: 0 15px;
   }
 
   .checkout-section {
-    padding: 20px;
+    padding: 15px;
   }
 
   .checkout-header h2 {
-    font-size: 1.6rem;
+    font-size: 20px;
+  }
+
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .checkout-right {
+    position: static;
   }
 
   .order-item {
     flex-direction: column;
     gap: 15px;
+    align-items: flex-start;
   }
 
   .item-image {
     align-self: center;
-    width: 100px;
-    height: 100px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
   .item-price {
@@ -824,7 +709,7 @@
 
   .points-input-wrapper {
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
   }
 
   .points-input-wrapper input {
@@ -838,11 +723,6 @@
     margin-right: 15px;
   }
 
-  .payment-summary {
-    position: static;
-    margin-bottom: 20px;
-  }
-
   .address-item {
     flex-direction: column;
     gap: 15px;
@@ -854,13 +734,13 @@
   }
 
   .modal-content {
-    width: 95%;
+    width: 100%;
     margin: 20px;
   }
 
   .modal-header,
   .modal-body {
-    padding: 20px;
+    padding: 15px;
   }
 
   .postcode-input {
@@ -874,52 +754,48 @@
 
 @media (max-width: 480px) {
   .checkout-wrapper {
-    padding: 0 15px;
+    padding: 0 10px;
   }
 
   .checkout-section {
-    padding: 15px;
+    padding: 10px;
   }
 
   .checkout-header {
-    padding: 20px 0 30px;
+    padding: 15px 0;
   }
 
   .checkout-header h2 {
-    font-size: 1.4rem;
+    font-size: 18px;
   }
 
   .section-title {
-    font-size: 1.1rem;
+    font-size: 14px;
   }
 
   .payment-summary {
-    padding: 20px;
+    padding: 15px;
   }
 
   .payment-summary h3 {
-    font-size: 1.1rem;
+    font-size: 14px;
   }
 
   .btn-order {
-    height: 50px;
-    font-size: 1rem;
+    font-size: 14px;
   }
 
   .price-row.total {
-    font-size: 1.1rem;
+    font-size: 14px;
   }
 
   .form-group input,
   .points-input-wrapper input {
-    height: 40px;
-    font-size: 0.9rem;
+    font-size: 12px;
   }
 
   .btn-postcode,
   .btn-use-all {
-    height: 40px;
-    padding: 0 15px;
-    font-size: 0.85rem;
+    font-size: 12px;
   }
 }
