@@ -1,0 +1,19 @@
+#brand-wrap {
+    position: relative;
+    background-color: #999;
+    color: #fff;
+}
+
+.brand-info-wrap {
+    max-width: 1300px;
+    padding: 120px 15px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+
+.brand-info-wrap h2 {
+    font-size: 2em;
+    padding: 20px;
+}

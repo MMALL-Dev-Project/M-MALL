@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { getThumbnailSrc } from "../../utils/image";
+import { getThumbnailSrc } from "@utils/image";
 import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
@@ -13,7 +13,11 @@ const ProductCard = ({ product }) => {
         <img src={getThumbnailSrc(product.thumbnail_url)} alt={product.name + " 썸네일"} />
       </div>
       {product.brands && product.brands.bid ? (
-        <Link className='brand' to={`/brand/${product.brands.bid}`}>
+        <Link
+          className='brand'
+          to={`/brand/${product.brands.bid}`}
+          onClick={(e) => e.stopPropagation()}
+        >
           {product.brands.name}
         </Link>
       )

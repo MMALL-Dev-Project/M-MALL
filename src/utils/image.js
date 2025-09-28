@@ -9,3 +9,12 @@ export const getThumbnailSrc = (thumb) => {
 
   return thumb?.startsWith(thumbUrl) ? thumb : `${thumbUrl}${thumb}`;
 };
+
+// 브랜드 로고 이미지 유틸
+export const getLogoSrc = (logo) => {
+  const logoUrl = BASE_STORAGE + "brand-logos/";
+
+  if (!logo) return null;
+
+  return logo?.startsWith(logoUrl) ? logo : `${logoUrl}${logo}`;
+};
