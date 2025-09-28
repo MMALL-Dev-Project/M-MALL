@@ -15,6 +15,8 @@ import Login from '@pages/auth/Login';
 import CategoryPage from '@pages/product/CategoryPage';
 import ProductDetail from '@pages/product/ProductDetail';
 
+import Brand from './pages/product/Brand';
+
 import Checkout from '@pages/order/Checkout';
 import OrderDetail from '@pages/order/OrderDetail';
 
@@ -49,7 +51,9 @@ function App() {
             {/* 상품별 상세 페이지 - 동적 라우팅 */}
             <Route path="/product/:pid" element={<ProductDetail />} />
             
-
+            {/* 브랜드별 상세 페이지 - 동적 라우팅 */}
+            <Route path="/brand/:bid" element={<Brand />} />
+            
             {/* 주문 관련 페이지들 */}
             <Route path="/order/checkout" element={<Checkout />} />
             <Route path="/order/orderdetail/:orderId" element={<OrderDetail/>} />

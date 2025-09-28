@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../../config/supabase';
-import { useAuth } from "../../../contexts/AuthContext";
-import { getThumbnailSrc } from "../../../utils/image";
+import { supabase } from '@config/supabase';
+import { useAuth } from "@contexts/AuthContext";
+import { getThumbnailSrc } from "@utils/image";
 import SelectedOptionCard from './SelectedOptionCard';
+import { useLike } from "@hooks/useLike";
 
 const ProductInfo = ({ product }) => {
   // 사용자 정보
@@ -21,9 +22,12 @@ const ProductInfo = ({ product }) => {
   // 품절 상태(대기 상품 제외)
   const [soldOut, setSoldOut] = useState(false);
 
-  // 좋아요 상태
-  const [likeCount, setLikeCount] = useState(product?.like_count || 0);
-  const [liked, setLiked] = useState(false);
+  // 좋아요 기능을 위한 hook 사용
+  const { liked, likeCount, toggleLike } = useLike({
+    targetType: 'PRODUCT',
+    targetId: product?.pid,
+    initialLikeCount: product?.like_count || 0
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -55,31 +59,6 @@ const ProductInfo = ({ product }) => {
     fetchUserPoints();
   }, []);
 
-  // 좋아요 상태 불러오기
-  useEffect(() => {
-    if (!user) return;
-    const fetchLikeStatus = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('likes')
-          .select('*')
-          .eq('pid', product.pid)
-          .eq('target_type', 'PRODUCT')
-          .eq('uid', user.id)
-          .order('created_at', { ascending: true })
-          .maybeSingle();
-
-        // 좋아요 상태 설정
-        if (!error && data) {
-          setLiked(true);
-        }
-
-      } catch (error) {
-        console.error('좋아요 상태 조회 에러:', error);
-      }
-    }
-    fetchLikeStatus();
-  }, [user, product.pid]);
 
   // SKU 데이터 불러오기 - 상품의 재고 및 옵션별 정보
   useEffect(() => {
@@ -551,46 +530,7 @@ const ProductInfo = ({ product }) => {
   };
 
   // 좋아요 토글 핸들러
-  const handleLikeToggle = async () => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-    try {
-      if (liked) {
-        // 좋아요 취소
-        const { error } = await supabase
-          .from('likes')
-          .delete()
-          .eq('pid', product.pid)
-          .eq('target_type', 'PRODUCT')
-          .eq('uid', user.id);
-
-        if (error) throw error;
-
-        setLiked(false);
-        setLikeCount(prev => Math.max(0, prev - 1));
-
-      } else {
-        // 좋아요 추가
-        const { error } = await supabase
-          .from('likes')
-          .insert({
-            pid: product.pid,
-            target_type: 'PRODUCT',
-            uid: user.id
-          });
-
-        if (error) throw error;
-
-        setLiked(true);
-        setLikeCount(prev => prev + 1);
-
-      }
-    } catch (error) {
-      console.error('좋아요 토글 에러:', error);
-    }
-  };
+  const handleLikeToggle = toggleLike;
 
   return (
     <>
@@ -607,7 +547,7 @@ const ProductInfo = ({ product }) => {
             <Link
               to={
                 product.bid
-                  ? `/brands/${product.brands?.bid}`
+                  ? `/brand/${product.brands?.bid}`
                   : `/${product.categories?.slug}/${product.sub_categories?.slug}`
               } className='category-brand'
             >
