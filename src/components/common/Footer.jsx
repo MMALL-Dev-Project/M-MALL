@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import { supabase } from '@/config/supabase';
 
 const Footer = () => {
   const [activeTab, setActiveTab] = useState('notice');
-  const noticeList = [
-    {
-      title: '· M몰 스노우피크 리빙쉘 롱Pro. 상품 정보 오등록으로 인한 주문 취소 안내',
-      date: '2024.07.18'
-    },
-    {
-      title: '· 5월 첫구매 이벤트 리워드 적립 일정 변경',
-      date: '2024.06.28'
-    },
-    {
-      title: "· 'Apple Day' 운영 방식 변경 안내 (선착순 구매 방식 적용)",
-      date: '2024.04.19'
-    },
-    {
-      title: "· 'Apple Day' 운영 방식 변경 안내",
-      date: '2024.01.19'
-    },
-    {
-      title: '· M몰 Grand Festa 럭키드로우 3차 당점차 발표(12/28일)',
-      date: '2023.12.26'
-    }
-  ];
+  // DB에서 공지 가져오기
+  const [noticeList, setNoticeList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // const noticeList = [
+  //   {
+  //     title: '· M몰 스노우피크 리빙쉘 롱Pro. 상품 정보 오등록으로 인한 주문 취소 안내',
+  //     date: '2024.07.18'
+  //   },
+  //   {
+  //     title: '· 5월 첫구매 이벤트 리워드 적립 일정 변경',
+  //     date: '2024.06.28'
+  //   },
+  //   {
+  //     title: "· 'Apple Day' 운영 방식 변경 안내 (선착순 구매 방식 적용)",
+  //     date: '2024.04.19'
+  //   },
+  //   {
+  //     title: "· 'Apple Day' 운영 방식 변경 안내",
+  //     date: '2024.01.19'
+  //   },
+  //   {
+  //     title: '· M몰 Grand Festa 럭키드로우 3차 당점차 발표(12/28일)',
+  //     date: '2023.12.26'
+  //   }
+  // ];
 
   const eventList = [
     {
@@ -41,6 +46,46 @@ const Footer = () => {
       date: '2024.04.19'
     }
   ];
+
+  useEffect(() => {
+    fetchNotices();
+  }, []);
+
+  const fetchNotices = async () => {
+    try {
+      setLoading(true);
+
+      // notices 테이블에서 활성화된 공지사항 5개만 가져오기
+      const { data, error } = await supabase
+        .from('notices')
+        .select('nid, title, created_at')
+        .eq('is_active', true)
+        .order('is_important', { ascending: false}) // 중요 공지 우선
+        .order('created_at', {ascending: false}) // 최신순
+        .limit(5);
+
+      if (error) throw error;
+
+      // 날짜 형석
+      const formattedData = data.map(notice => ({
+        nid: notice.nid,
+        title: `· ${notice.title}`,
+        date: new Date(notice.created_at).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).replace(/\. /g, '.').replace(/\.$/, '')
+      }));
+
+      setNoticeList(formattedData);
+    }catch(error) {
+      console.error('공지사항 불러오기 오류:', error);
+      // 에러 시 빈 배열로 설정
+      setNoticeList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleTabClick = (tab, e) => {
     e.preventDefault();
@@ -101,16 +146,24 @@ const Footer = () => {
 
               {/* 공지사항 리스트 */}
               <div className={`noticeList ${activeTab === 'notice' ? '' : 'hidden'}`}>
-                <ul>
-                  {noticeList.map((item, index) => (
-                    <li key={index}>
-                      <a href="#">
-                        {item.title}
-                        <span>{item.date}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                {loading ? (
+                  <p>로딩중...</p>
+                ) : (
+                  <ul>
+                    {noticeList.length > 0 ? (
+                      noticeList.map((item) => (
+                        <li key={item.nid}>
+                          <Link to={`/support/notice/${item.nid}`}>
+                            {item.title}
+                            <span>{item.date}</span>
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      <li>공지사항이 없습니다.</li>
+                    )}
+                  </ul>
+                )}
               </div>
 
               {/* 이벤트 리스트 */}
