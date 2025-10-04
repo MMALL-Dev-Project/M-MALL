@@ -96,6 +96,10 @@
   display: block;
   text-decoration: none;
   color: #000;
+  width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #footer .footerWrap .footerRight .rightCenter .centerTop .noticeList ul li a span {
