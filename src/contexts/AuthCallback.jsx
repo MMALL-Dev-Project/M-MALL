@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../config/supabase';
+import Modal from '@/components/common/modal/Modal';
 
 const AuthCallback = () => {
-  const [status, setStatus] = useState('이메일 인증 완료 중...');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,18 +14,21 @@ const AuthCallback = () => {
         const { data: { session }, error } = await supabase.auth.getSession();
 
         if (error || !session) {
-          setStatus('인증에 실패했습니다.');
-          setTimeout(() => navigate('/'), 3000);
+          navigate('/login');
           return;
         }
 
-        setStatus('인증이 완료되었습니다');
-        setTimeout(() => navigate('/'), 3000);
+        const name = session.user.user_metadata?.name || '회원';
+        setUserName(name);
+        setModalOpen(true);
+
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
 
       } catch (err) {
         console.error('AuthCallback 에러:', err);
-        setStatus('오류가 발생했습니다.');
-        setTimeout(() => navigate('/'), 3000);
+        navigate('/login');
       }
     };
 
@@ -31,16 +36,16 @@ const AuthCallback = () => {
   }, [navigate]);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh'
-    }}>
-      <h2>이메일 인증</h2>
-      <p>{status}</p>
-    </div>
+    <Modal isOpen={modalOpen} onClose={() => navigate('/')}>
+      <div style={{ textAlign: 'center', padding: '1rem' }}>
+        <h2 style={{ marginBottom: '1rem', color: '#333' }}>
+          {userName}님 환영합니다! 🎉
+        </h2>
+        <p style={{ color: '#666', lineHeight: '1.6' }}>
+          이메일 인증이 완료되었습니다.
+        </p>
+      </div>
+    </Modal>
   );
 };
 
