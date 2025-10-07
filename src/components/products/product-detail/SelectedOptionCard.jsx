@@ -29,12 +29,19 @@ const SelectedOptionCard = ({ sku, quantity, onQuantityChange, onRemove }) => {
     return (
         <div className='selected-option-card'>
             {/* 선택된 옵션 정보 표시 */}
-            {Object.keys(skuOptions).length > 0 ?
-                <p className='option-name'>{Object.values(skuOptions).join(' / ')}</p>
-                :
-                <p className='option-name'>FREE</p>
-            }
-
+            <p className='option-name'>
+                {Object.keys(skuOptions).length > 0 ?
+                    Object.values(skuOptions).join(' / ')
+                    :
+                    'FREE'
+                }
+                {/* 재고 임박 표시 */}
+                {
+                    sku.stock_qty <= 5 ?
+                        <span className='low-stock'>재고임박</span>
+                        : ''
+                }
+            </p>
             {/* 수량 선택 및 제거 버튼 */}
             <div className='option-controls'>
                 <div className='option-quantity'>

@@ -513,6 +513,31 @@ const ProductInfo = ({ product }) => {
     });
   };
 
+  // select 내에서 특정 옵션값의 재고 확인 함수
+  const getOptionStock = (optionType, optionValue) => {
+    const testOptions = { ...selectedOptions, [optionType]: optionValue };
+
+    const matchingSkus = productSkus.filter(sku => {
+      let skuOptions;
+      if (typeof sku.options === 'string') {
+        try {
+          skuOptions = JSON.parse(sku.options);
+        } catch (e) {
+          return false;
+        }
+      } else {
+        skuOptions = sku.options || {};
+      }
+
+      return Object.entries(testOptions).every(([type, value]) => {
+        return !value || skuOptions[type] === value;
+      });
+    });
+
+    if (matchingSkus.length === 0) return 0;
+    return Math.min(...matchingSkus.map(sku => sku.stock_qty || 0));
+  };
+
   // 다음 옵션 선택박스가 활성화되어야 하는지 확인 (순차적 활성화)
   const isNextOptionEnabled = (currentOptionType) => {
     const optionKeys = Object.keys(product.option_types || {});
@@ -531,7 +556,7 @@ const ProductInfo = ({ product }) => {
 
   // 좋아요 토글 핸들러
   const handleLikeToggle = toggleLike;
-
+  console.log("productSkus", productSkus)
   return (
     <>
       {/* 상품 정보 영역 */}
@@ -601,15 +626,26 @@ const ProductInfo = ({ product }) => {
                     <option value="">
                       {optionType.toUpperCase()}
                     </option>
-                    {options.map((option) => (
-                      <option
-                        key={option}
-                        value={option}
-                        disabled={!isOptionAvailable(optionType, option)}
-                      >
-                        {option} {!isOptionAvailable(optionType, option) ? '(품절)' : ''}
-                      </option>
-                    ))}
+                    {options.map((option, index) => {
+                      const stock = getOptionStock(optionType, option);
+                      const isAvailable = isOptionAvailable(optionType, option);
+                      return (
+                        <option
+                          key={option}
+                          value={option}
+                          disabled={!isAvailable}
+                        >
+                          {option}
+                          {!isAvailable
+                            ? ' (품절)'
+                            : stock > 0 && stock <= 5
+                              ? ' (재고임박)'
+                              : ''
+                          }
+                        </option>
+                      );
+                    }
+                    )}
                   </select>
                 </div>
               ))}
