@@ -132,6 +132,15 @@
     margin-bottom: 20px;
 }
 
+.selected-option-card .low-stock {
+    display: inline-block;
+    padding: 5px;
+    margin-left: 10px;
+    color: white;
+    background-color: black;
+    font-size: 0.875em;
+}
+
 .selected-option-card .option-controls {
     display: flex;
     justify-content: space-between;
