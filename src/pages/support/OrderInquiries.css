@@ -1,0 +1,513 @@
+#inquiries.inquiries-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+#inquiries .page-header {
+  max-width: 1400px;
+  margin: 0 auto 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #333;
+}
+
+#inquiries .page-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#inquiries .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 18px;
+  color: #666;
+}
+
+#inquiries .empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #999;
+}
+
+#inquiries .empty-state p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* 배지 공통 스타일 */
+#inquiries .type-badge,
+#inquiries .purchase-badge {
+  padding: 0;
+  font-size: 14px;
+  font-weight: normal;
+  display: inline-block;
+  color: #333;
+  background: none;
+  min-width: 70px;
+  text-align: left;
+}
+
+#inquiries .status-badge {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 50px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* 관리자 뷰 */
+#inquiries.admin-view .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#inquiries.admin-view .filter-section {
+  display: flex;
+  gap: 10px;
+}
+
+#inquiries.admin-view .filter-section select {
+  padding: 10px 15px;
+  border: 1px solid #333;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#inquiries.admin-view .admin-table-container {
+  max-width: 1400px;
+  margin: 0 auto 20px;
+}
+
+#inquiries.admin-view .inquiries-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+#inquiries.admin-view .inquiries-table thead {
+  background: #f5f5f5;
+  border-bottom: 2px solid #333;
+}
+
+#inquiries.admin-view .inquiries-table th {
+  padding: 15px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  border-right: 1px solid #eee;
+}
+
+#inquiries.admin-view .inquiries-table th:last-child {
+  border-right: none;
+}
+
+#inquiries.admin-view .inquiries-table td {
+  padding: 15px 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+}
+
+#inquiries.admin-view .inquiries-table td:last-child {
+  border-right: none;
+}
+
+#inquiries.admin-view .inquiries-table .inquiry-title {
+  text-align: left !important;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#inquiries.admin-view .user-email {
+  font-size: 12px;
+  color: #666;
+}
+
+#inquiries.admin-view .btn-detail {
+  padding: 8px 15px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+  font-size: 13px;
+}
+
+/* 일반 유저 뷰 */
+#inquiries.user-view .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+}
+
+#inquiries.user-view .btn-write {
+  padding: 12px 24px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#inquiries.user-view .user-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+#inquiries.user-view .inquiry-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+
+#inquiries.user-view .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+#inquiries.user-view .card-meta {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#inquiries.user-view .card-date {
+  font-size: 14px;
+  color: #999;
+}
+
+#inquiries.user-view .card-content {
+  margin-bottom: 15px;
+}
+
+#inquiries.user-view .card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#inquiries.user-view .card-preview {
+  font-size: 14px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+}
+
+#inquiries.user-view .card-amount {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+#inquiries.user-view .card-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 15px;
+}
+
+#inquiries.user-view .btn-edit,
+#inquiries.user-view .btn-delete {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+#inquiries.user-view .btn-delete {
+  border-color: red;
+  color: red;
+}
+
+
+#inquiries.user-view .admin-answer-preview {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-left: 3px solid #333;
+  font-size: 14px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+#inquiries.user-view .admin-answer-preview strong {
+  color: #333;
+  margin-right: 5px;
+}
+
+/* === 모달 스타일 === */
+#inquiries .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#inquiries .modal-content {
+  background: #fff;
+  padding: 30px;
+  width: 700px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+#inquiries .modal-content h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #333;
+}
+
+#inquiries .modal-content h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+#inquiries .detail-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+}
+
+#inquiries .detail-row {
+  display: flex;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+#inquiries .detail-row .label {
+  width: 100px;
+  font-weight: bold;
+  color: #333;
+}
+
+#inquiries .detail-row .value {
+  flex: 1;
+  color: #666;
+}
+
+#inquiries .content-section {
+  margin-bottom: 25px;
+}
+
+#inquiries .content-section p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+#inquiries .content-text {
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+#inquiries .order-total-amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  text-align: right;
+}
+
+#inquiries .answer-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  border: 1px solid #eee;
+}
+
+#inquiries .answer-info {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+
+#inquiries .form-group {
+  margin-bottom: 20px;
+}
+
+#inquiries .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+#inquiries .form-group select,
+#inquiries .form-group input,
+#inquiries .form-group textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+#inquiries .form-group textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+#inquiries .modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+#inquiries .btn-submit,
+#inquiries .btn-primary {
+  flex: 1;
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#inquiries .btn-approve {
+  flex: 1;
+  padding: 12px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#inquiries .btn-reject {
+  flex: 1;
+  padding: 12px 20px;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#inquiries .btn-cancel,
+#inquiries .btn-secondary {
+  flex: 1;
+  padding: 12px 20px;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  #inquiries.inquiries-container {
+    padding: 20px 15px;
+  }
+
+  #inquiries .page-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start !important;
+  }
+
+  #inquiries .page-header h1 {
+    font-size: 22px;
+  }
+
+  #inquiries.admin-view .filter-section {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  #inquiries.admin-view .filter-section select {
+    width: 100%;
+  }
+
+  #inquiries.admin-view .inquiries-table {
+    font-size: 12px;
+  }
+
+  #inquiries.admin-view .inquiries-table th,
+  #inquiries.admin-view .inquiries-table td {
+    padding: 10px 5px;
+  }
+
+  #inquiries.admin-view .inquiries-table .inquiry-title {
+    max-width: 150px;
+  }
+
+  #inquiries.user-view .card-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  #inquiries .modal-content {
+    padding: 20px;
+  }
+
+  #inquiries .detail-row {
+    flex-direction: column;
+  }
+
+  #inquiries .detail-row .label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #inquiries .modal-actions {
+    flex-direction: column;
+  }
+}

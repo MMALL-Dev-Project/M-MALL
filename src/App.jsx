@@ -19,11 +19,13 @@ import Brand from './pages/product/Brand';
 
 import Checkout from '@pages/order/Checkout';
 import OrderDetail from '@pages/order/OrderDetail';
+import OrderList from '@pages/order/OrderList';
 
 import Notice from '@pages/support/Notice';
+import OrderInquiries from '@pages/support/OrderInquiries';
 
 import NotFound from '@pages/error/NotFound';
-import OrderManagement from './pages/admin/OrderManagement';
+import OrderManagement from '@pages/admin/OrderManagement';
 
 console.log('Supabase 연결:', supabase)
 
@@ -58,6 +60,7 @@ function AppContent() {
         {/* 주문 관련 페이지들 */}
         <Route path="/order/checkout" element={<Checkout />} />
         <Route path="/order/orderdetail/:orderId" element={<OrderDetail />} />
+        <Route path="/order/orderList" element={<OrderList />} />
 
         {/* 사용자 관련 페이지들 */}
         <Route path="/search" element={<Search />} />
@@ -70,11 +73,14 @@ function AppContent() {
         <Route path="/support/notice" element={<Notice />} />
         <Route path="/support/notice/:nid" element={<Notice />} />
 
+        {/* 문의 */}
+        <Route path="/support/inquiries" element={<OrderInquiries />} />
+
         {/* 404 페이지 */}
         <Route path="*" element={<NotFound />} />
 
         {/* admin */}
-        <Route path="/admin" element={<OrderManagement />} />
+        <Route path="/admin/ordermanagement" element={<OrderManagement />} />
       </Routes>
 
       {/* 로그인, 회원가입, 콜백 페이지 푸터X*/}
