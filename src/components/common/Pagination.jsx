@@ -1,5 +1,5 @@
 import React from 'react';
-import './OrderPagination.css';
+import './Pagination.css';
 
 const Pagination = ({ 
   currentPage, 
@@ -45,8 +45,6 @@ const Pagination = ({
     
     return pages;
   };
-
-  if (totalPages <= 1) return null;
 
   return (
     <div className="pagination-container">

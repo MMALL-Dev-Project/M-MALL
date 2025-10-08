@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../config/supabase';
-import Pagination from './OrderPagination';
+import Pagination from '../../components/common/Pagination';
 import './OrderManagement.css';
 
 const OrderManagement = () => {
