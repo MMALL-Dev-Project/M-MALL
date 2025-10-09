@@ -82,37 +82,37 @@ export const AuthProvider = ({ children }) => {
   }
   //회원가입
   const signUp = async (email, password, userData) => {
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback`,
-        data: {
-          // 트리거에서 사용할 데이터를 user_metadata에 저장
-          user_id: userData.user_id,
-          name: userData.name,
-          phone: userData.phone,
-          address: userData.address || null,
-          birth_date: userData.birth_date || null,
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback`,
+          data: {
+            // 트리거에서 사용할 데이터를 user_metadata에 저장
+            user_id: userData.user_id,
+            name: userData.name,
+            phone: userData.phone,
+            address: userData.address || null,
+            birth_date: userData.birth_date || null,
+          }
         }
-      }
-    });
+      });
 
-    if (error) {
-      alert('회원가입 실패: ' + error.message);
+      if (error) {
+        alert('회원가입 실패: ' + error.message);
+        return { success: false, error };
+      }
+
+      alert('이메일을 확인하고, 인증 링크를 클릭해주세요!');
+      return { success: true, data };
+
+    } catch (error) {
+      console.error('회원가입 에러:', error);
+      alert('회원가입 중 오류가 발생했습니다.');
       return { success: false, error };
     }
-
-    alert('이메일을 확인하고, 인증 링크를 클릭해주세요!');
-    return { success: true, data };
-
-  } catch (error) {
-    console.error('회원가입 에러:', error);
-    alert('회원가입 중 오류가 발생했습니다.');
-    return { success: false, error };
   }
-}
 
   // 로그인
   const signIn = async (email, password) => {
