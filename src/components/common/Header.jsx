@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext";
 import './Header.css';
 import { supabase } from "../../config/supabase";
 
 const Header = () => {
   const { user, userInfo, signOut } = useAuth();
+
+  // 관리자
+  const isAdmin = userInfo?.role === 'admin';
+
   const navigate = useNavigate();
   const [hoveredMenu, setHoveredMenu] = useState(null);
   const [menuData, setMenuData] = useState([]);
@@ -69,7 +73,18 @@ const Header = () => {
   };
 
   return (
-    <div id="header-wrap">
+    <div id="header-wrap" className={isAdmin ? 'has-admin-bar' : ''}>
+      {/* 관리자 전용 상단 바 */}
+      {userInfo && isAdmin && (
+        <div className="admin-bar">
+          <nav className="admin-nav">
+            <NavLink to="/admin/users" className="admin-link">회원 관리</NavLink>
+            <NavLink to="/admin/orders" className="admin-link">배송 관리</NavLink>
+            <NavLink to="/admin/ordermanagement" className="admin-link">주문 관리</NavLink>
+            <NavLink to="/admin/products" className="admin-link">상품 관리</NavLink>
+          </nav>
+        </div>
+      )}
       <header id="header">
         <h1 className="logo">
           <Link to="/">
@@ -122,20 +137,29 @@ const Header = () => {
             <span className="tooltip">검색</span>
           </li>
 
-          <li className="tooltip-container">
-            <Link to="/cart" aria-label="쇼핑백">
-              <img src={`${import.meta.env.BASE_URL}images/icons/ico_bag.png`} alt="쇼핑백" />
-            </Link>
-            <span className="tooltip">쇼핑백</span>
-          </li>
-
+          {/* 관리자는 쇼핑백 x */}
+          {!isAdmin && (
+            <li className="tooltip-container">
+              <Link to="/cart" aria-label="쇼핑백">
+                <img src={`${import.meta.env.BASE_URL}images/icons/ico_bag.png`} alt="쇼핑백" />
+              </Link>
+              <span className="tooltip">쇼핑백</span>
+            </li>
+          )}
           {user ? (
             <>
               <li className="tooltip-container">
-                <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
-                  {userInfo?.name}<span>님</span>
-                </Link>
-                <span className="tooltip">마이페이지</span>
+                {/* 관리자는 마이페이지 x */}
+                {isAdmin ? (
+                  <span className="user-greeting admin-name">
+                    {userInfo?.name}<span></span>
+                  </span>
+                ) : (
+                  <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
+                    {userInfo?.name}<span>님</span>
+                  </Link>
+                )}
+                <span className="tooltip">{isAdmin ? '관리자' : '마이페이지'}</span>
               </li>
               <li className="tooltip-container">
                 <button onClick={handleLogout} aria-label="로그아웃">
