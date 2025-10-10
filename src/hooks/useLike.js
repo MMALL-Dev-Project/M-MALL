@@ -12,6 +12,11 @@ export const useLike = ({
 	const [likeCount, setLikeCount] = useState(initialLikeCount);
 	const [loading, setLoading] = useState(false);
 
+	// initialLikeCount가 변경되면 likeCount 업데이트
+	useEffect(() => {
+		setLikeCount(initialLikeCount);
+	}, [initialLikeCount]);
+
 	// 좋아요 상태 조회
 	useEffect(() => {
 		if (!user || !targetId) return;

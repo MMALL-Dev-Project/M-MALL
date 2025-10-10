@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@config/supabase';
-import ProductCard from '@components/products/ProductCard';
+import ProductList from '@components/products/ProductList';
 
 const ALL_CATEGORY_SLUG = 'all';
 
@@ -95,25 +95,6 @@ const CategoryPage = React.memo(() => {
     fetchData();
   }, [categorySlug, subcategorySlug]);
 
-  // 상품 목록만 메모화
-  const ProductList = useMemo(() => {
-    if (data.products.length === 0) {
-      return (
-        <p style={{ textAlign: 'center', marginTop: 50 }}>
-          해당 카테고리에 상품이 없습니다.
-        </p>
-      );
-    }
-
-    return (
-      <ul className='product-list'>
-        {data.products.map(product => (
-          <ProductCard key={product.pid} product={product} />
-        ))}
-      </ul>
-    );
-  }, [data.products]);
-
   if (loading) {
     return (
       <div style={{ padding: '300px 20px', textAlign: 'center' }}>
@@ -136,7 +117,7 @@ const CategoryPage = React.memo(() => {
       <h2 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '40px' }}>
         {data.category?.name} {data.subcategory && `> ${data.subcategory.name}`}
       </h2>
-      <div>{ProductList}</div>
+      <ProductList products={data.products} />
     </div>
   );
 });
