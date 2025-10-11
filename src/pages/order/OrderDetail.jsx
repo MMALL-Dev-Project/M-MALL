@@ -225,7 +225,24 @@ console.log('user_addresses:', order.user_addresses);
                   </div>
                   <div id="orderdetail" className="action-buttons">
                     <button id="orderdetail" className="btn-review">후기 작성</button>
-                    <button id="orderdetail" className="btn-inquiry">상품 문의</button>
+                    <button 
+                      id="orderdetail" 
+                      className="btn-inquiry" 
+                      onClick={() => {
+                        navigate('/support/inquiries', {
+                          state: {
+                            productInfo: {
+                              pid: item.pid,
+                              name: item.product_name,
+                              brand: item.product_brand,
+                              thumbnail: item.products?.thumbnail_url
+                            }
+                          }
+                        });
+                      }}
+                    >
+                      상품 문의
+                    </button>
                   </div>
                 </div>
               </div>
@@ -263,10 +280,9 @@ console.log('user_addresses:', order.user_addresses);
           </div>
         </section>
 
-        {/* 하단 버튼들 */}
         <div id="orderdetail" className="order-actions">
-          <button id="orderdetail" className="btn-back" onClick={() => navigate('/mypage/orders')}>
-            주문 내역 보기
+          <button id="orderdetail" className="btn-back" onClick={() => navigate('/order/orderList')}>
+            주문 내역
           </button>
         </div>
       </div>

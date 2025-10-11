@@ -86,16 +86,17 @@ const AddressModal = ({
             </div>
 
             <div className="form-group">
-              <label>연락처</label>
-              <input
-                type="tel"
-                value={addressForm.recipient_phone}
-                onChange={(e) => onAddressFormChange('recipient_phone', e.target.value)}
-                placeholder="휴대폰번호를 입력해주세요."
-                maxLength="13"
-                required
-              />
-            </div>
+  <label>연락처</label>
+  <input
+    type="tel"
+    name="recipient_phone"
+    value={addressForm.recipient_phone}
+    onChange={onAddressFormChange}  // 이렇게 변경!
+    placeholder="휴대폰번호를 입력해주세요"
+    maxLength="13"
+    required
+  />
+</div>
 
             <div className="form-group">
               <label>주소</label>

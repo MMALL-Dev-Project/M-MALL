@@ -37,7 +37,11 @@
   margin-bottom: 20px;
 }
 
-/* 배지 공통 스타일 */
+#inquiries .pagination-wrapper {
+  max-width: 1300px;
+  margin: 30px auto;
+}
+
 #inquiries .type-badge,
 #inquiries .purchase-badge {
   padding: 0;
@@ -59,6 +63,12 @@
   border-radius: 50px;
   white-space: nowrap;
   display: inline-block;
+}
+
+#inquiries .image-badge,
+#inquiries .image-count {
+  font-size: 14px;
+  color: #666;
 }
 
 /* 관리자 뷰 */
@@ -143,6 +153,7 @@
   color: #fff;
   border: 1px solid #333;
   font-size: 13px;
+  cursor: pointer;
 }
 
 /* 일반 유저 뷰 */
@@ -160,6 +171,7 @@
   border: 1px solid #333;
   font-size: 15px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #inquiries.user-view .user-list {
@@ -223,6 +235,33 @@
   padding-top: 10px;
 }
 
+#inquiries.user-view .card-images {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+#inquiries.user-view .card-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+#inquiries.user-view .more-images {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+}
+
 #inquiries.user-view .card-actions {
   display: flex;
   gap: 10px;
@@ -243,7 +282,6 @@
   border-color: red;
   color: red;
 }
-
 
 #inquiries.user-view .admin-answer-preview {
   margin-top: 15px;
@@ -302,6 +340,7 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 #inquiries .detail-section {
@@ -356,6 +395,7 @@
   background: #f8f9fa;
   border: 1px solid #eee;
   text-align: right;
+  margin-top: 15px;
 }
 
 #inquiries .answer-section {
@@ -369,6 +409,106 @@
   font-size: 12px;
   color: #999;
   text-align: right;
+}
+
+#inquiries .image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#inquiries .inquiry-image {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+
+#inquiries .image-section-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+
+#inquiries .existing-images,
+#inquiries .preview-images {
+  margin-bottom: 20px;
+}
+
+#inquiries .image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#inquiries .image-preview-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#inquiries .image-preview-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#inquiries .remove-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+#inquiries .image-upload-box {
+  margin-top: 15px;
+}
+
+#inquiries .image-input {
+  display: none;
+}
+
+#inquiries .image-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
+}
+
+#inquiries .upload-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+#inquiries .image-upload-label span:last-child {
+  font-size: 14px;
+  color: #666;
 }
 
 #inquiries .form-group {
@@ -417,6 +557,11 @@
   font-weight: bold;
 }
 
+#inquiries .btn-submit:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
 #inquiries .btn-approve {
   flex: 1;
   padding: 12px 20px;
@@ -448,6 +593,26 @@
   border: 1px solid #ddd;
   font-size: 15px;
   cursor: pointer;
+}
+
+#inquiries .btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.order-thumbnail {
+  width: 100px;
+  height: 120px;
+}
+
+.order-brand,
+.order-detail-brand{
+  margin: 10px 0 20px 0;
+}
+
+.order-detail-image{
+  width: 200px;
+  height: 250px;
 }
 
 /* 반응형 */
@@ -496,6 +661,7 @@
 
   #inquiries .modal-content {
     padding: 20px;
+    width: 95vw;
   }
 
   #inquiries .detail-row {
@@ -509,5 +675,18 @@
 
   #inquiries .modal-actions {
     flex-direction: column;
+  }
+
+  #inquiries .image-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  #inquiries .inquiry-image {
+    height: 100%;
+  }
+
+  #inquiries .image-preview-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
