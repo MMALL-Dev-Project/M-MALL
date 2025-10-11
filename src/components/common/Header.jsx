@@ -79,7 +79,7 @@ const Header = () => {
         <div className="admin-bar">
           <nav className="admin-nav">
             <NavLink to="/admin/users" className="admin-link">회원 관리</NavLink>
-            <NavLink to="/admin/orders" className="admin-link">배송 관리</NavLink>
+            <NavLink to="/support/inquiries" className="admin-link">문의 관리</NavLink>
             <NavLink to="/admin/ordermanagement" className="admin-link">주문 관리</NavLink>
             <NavLink to="/admin/products" className="admin-link">상품 관리</NavLink>
           </nav>

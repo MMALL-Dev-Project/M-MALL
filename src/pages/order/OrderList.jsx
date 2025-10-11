@@ -8,14 +8,14 @@ import './OrderList.css';
 const OrderList = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalOrders, setTotalOrders] = useState(0);
   const itemsPerPage = 5;
-  
+
   // 모달 상태
   const [cancelModal, setCancelModal] = useState(null);
   const [refundModal, setRefundModal] = useState(null);
@@ -37,7 +37,7 @@ const OrderList = () => {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      
+
       let countQuery = supabase
         .from('orders')
         .select('*', { count: 'exact', head: true })
@@ -49,9 +49,9 @@ const OrderList = () => {
 
       const { count } = await countQuery;
       setTotalOrders(count || 0);
-      
+
       const startIndex = (currentPage - 1) * itemsPerPage;
-      
+
       let ordersQuery = supabase
         .from('orders')
         .select(`
@@ -74,7 +74,7 @@ const OrderList = () => {
       }
 
       const { data: ordersData, error: ordersError } = await ordersQuery;
-      
+
       if (ordersError) throw ordersError;
 
       const ordersWithAddress = await Promise.all(
@@ -94,9 +94,23 @@ const OrderList = () => {
             }
           }
 
+          // 환불 요청 여부 확인
+          let hasRefundRequest = false;
+          const { data: inquiryData, error: inquiryError } = await supabase
+            .from('inquiries')
+            .select('iid')
+            .eq('oid', order.oid)
+            .eq('type', 'REFUND')
+            .maybeSingle();
+
+          if (!inquiryError && inquiryData) {
+            hasRefundRequest = true;
+          }
+
           return {
             ...order,
-            user_addresses: addressInfo
+            user_addresses: addressInfo,
+            has_refund_request: hasRefundRequest
           };
         })
       );
@@ -183,39 +197,40 @@ const OrderList = () => {
   };
 
   // 환불 요청 실행
-  const submitRefund = async () => {
-    if (!refundReason) {
-      alert('환불 사유를 선택해주세요.');
-      return;
-    }
-    if (!refundDetail.trim()) {
-      alert('상세 사유를 입력해주세요.');
-      return;
-    }
+const submitRefund = async () => {
+  if (!refundReason) {
+    alert('환불 사유를 선택해주세요.');
+    return;
+  }
+  if (!refundDetail.trim()) {
+    alert('상세 사유를 입력해주세요.');
+    return;
+  }
 
-    try {
-      const { error } = await supabase
-        .from('inquiries')
-        .insert({
-          uid: user.id,
-          oid: refundModal.oid,
-          type: 'REFUND',
-          title: `환불 요청 - ${refundReason}`,
-          content: `환불 사유: ${refundReason}\n상세 내용: ${refundDetail}\n\n총 결제금액: ${refundModal.total_amount.toLocaleString()}원`,
-          status: 'PENDING'
-        });
+  try {
+    const { error } = await supabase
+      .from('inquiries')
+      .insert({
+        uid: user.id,
+        oid: refundModal.oid,
+        type: 'REFUND',
+        title: `환불 요청 - ${refundReason}`,
+        content: refundDetail,
+        status: 'PENDING'
+      });
 
-      if (error) throw error;
+    if (error) throw error;
 
-      alert('환불 요청이 접수되었습니다.\n문의 내역에서 확인하실 수 있습니다.');
-      setRefundModal(null);
-      setRefundReason('');
-      setRefundDetail('');
-    } catch (error) {
-      console.error('환불 요청 오류:', error);
-      alert('환불 요청에 실패했습니다.');
-    }
-  };
+    alert('환불 요청이 접수되었습니다.\n문의 내역에서 확인하실 수 있습니다.');
+    setRefundModal(null);
+    setRefundReason('');
+    setRefundDetail('');
+    loadOrders();
+  } catch (error) {
+    console.error('환불 요청 오류:', error);
+    alert('환불 요청에 실패했습니다.');
+  }
+};
 
   if (loading) {
     return (
@@ -230,10 +245,10 @@ const OrderList = () => {
       <div className="orders-header">
         <div className="container">
           <h1 className="orders-title">주문 내역</h1>
-          
+
           <div className="filter-section">
-            <select 
-              value={statusFilter} 
+            <select
+              value={statusFilter}
               onChange={(e) => handleFilterChange(e.target.value)}
               className="status-filter"
             >
@@ -272,7 +287,7 @@ const OrderList = () => {
               <h4>주문 상품</h4>
               {order.order_items?.map((item, index) => (
                 <div key={index} className="order-item">
-                  <img 
+                  <img
                     src={item.products?.thumbnail_url || '/default-product.png'}
                     alt={item.product_name}
                     className="item-image"
@@ -283,7 +298,7 @@ const OrderList = () => {
                       <div className="item-brand">{item.products.brands.name}</div>
                     )}
                     <div className="item-meta">
-                      수량: {item.quantity}개 | 
+                      수량: {item.quantity}개 |
                       가격: {(item.unit_sale_price * item.quantity).toLocaleString()}원
                     </div>
                   </div>
@@ -331,7 +346,7 @@ const OrderList = () => {
                     주문 취소
                   </button>
                 )}
-                
+
                 {order.status === 'SHIPPED' && (
                   <button
                     onClick={() => window.open(`https://tracker.delivery/#/ko/${order.shipping_company}/${order.tracking_number}`, '_blank')}
@@ -343,12 +358,21 @@ const OrderList = () => {
 
                 {order.status === 'DELIVERED' && (
                   <>
-                    <button
-                      onClick={() => setRefundModal(order)}
-                      className="btn btn-refund"
-                    >
-                      환불 요청
-                    </button>
+                    {!order.has_refund_request ? (
+                      <button
+                        onClick={() => setRefundModal(order)}
+                        className="btn btn-refund"
+                      >
+                        환불 요청
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        className="btn btn-refund-disabled"
+                      >
+                        환불 요청됨
+                      </button>
+                    )}
                     <button
                       onClick={() => navigate(`/mypage/reviews/write?oid=${order.oid}`)}
                       className="btn btn-review"
@@ -358,7 +382,7 @@ const OrderList = () => {
                   </>
                 )}
               </div>
-              
+
               <div className="total-amount">
                 <span className="amount-label">총 결제금액</span>
                 <span className="amount-value">{order.total_amount?.toLocaleString()}원</span>
@@ -382,7 +406,7 @@ const OrderList = () => {
           <div className="empty-message">
             {statusFilter === 'ALL' ? '주문 내역이 없습니다.' : `${getStatusText(statusFilter)} 상태의 주문이 없습니다.`}
           </div>
-          <button 
+          <button
             onClick={() => navigate('/products')}
             className="btn btn-shop"
           >
@@ -396,12 +420,12 @@ const OrderList = () => {
         <div className="modal-overlay" onClick={() => setCancelModal(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3 className="modal-title">주문 취소</h3>
-            
+
             <div className="modal-order-info">
               <div className="order-item">
                 {cancelModal.order_items?.[0] && (
                   <>
-                    <img 
+                    <img
                       src={cancelModal.order_items[0].products?.thumbnail_url || '/default-product.png'}
                       alt={cancelModal.order_items[0].product_name}
                       className="item-image"
@@ -460,7 +484,7 @@ const OrderList = () => {
               <button onClick={submitCancel} className="btn btn-primary">
                 취소접수
               </button>
-              <button 
+              <button
                 onClick={() => {
                   setCancelModal(null);
                   setCancelReason('');
@@ -480,12 +504,12 @@ const OrderList = () => {
         <div className="modal-overlay" onClick={() => setRefundModal(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3 className="modal-title">환불 요청</h3>
-            
+
             <div className="modal-order-info">
               <div className="order-item">
                 {refundModal.order_items?.[0] && (
                   <>
-                    <img 
+                    <img
                       src={refundModal.order_items[0].products?.thumbnail_url || '/default-product.png'}
                       alt={refundModal.order_items[0].product_name}
                       className="item-image"
@@ -553,7 +577,7 @@ const OrderList = () => {
               <button onClick={submitRefund} className="btn btn-primary">
                 환불접수
               </button>
-              <button 
+              <button
                 onClick={() => {
                   setRefundModal(null);
                   setRefundReason('');

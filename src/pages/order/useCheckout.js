@@ -7,22 +7,22 @@ export const useCheckout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, userInfo } = useAuth();
-  
+
   // 주문 관련 상태
   const [orderItems, setOrderItems] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // 포인트 관련 상태
   const [usePoints, setUsePoints] = useState(false);
   const [pointsToUse, setPointsToUse] = useState(0);
   const [maxPointsUsable, setMaxPointsUsable] = useState(0);
-  
+
   // 결제 수단 상태
   const [selectedPayment, setSelectedPayment] = useState('card');
   const [selectedCard, setSelectedCard] = useState('');
-  
+
   // 가격 계산 상태
   const [pricing, setPricing] = useState({
     subtotal: 0,
@@ -63,7 +63,7 @@ export const useCheckout = () => {
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
     document.head.appendChild(script);
-    
+
     return () => {
       if (document.head.contains(script)) {
         document.head.removeChild(script);
@@ -71,7 +71,6 @@ export const useCheckout = () => {
     };
   }, []);
 
-  // 초기 데이터 로드
   const loadInitialData = async () => {
     try {
       await Promise.all([
@@ -99,7 +98,7 @@ export const useCheckout = () => {
         // 2. 세션스토리지에 없으면 location.state에서 확인
         orderItemsData = location.state.orderItems;
       }
-      
+
       if (orderItemsData.length === 0) {
         alert('주문할 상품이 없습니다.');
         navigate('/cart');
@@ -107,14 +106,14 @@ export const useCheckout = () => {
       }
 
       // 이미 완전한 데이터가 있는 경우 (상품 상세페이지에서 온 경우)
-if (orderItemsData[0].product && orderItemsData[0].sku) {
-  const fixedItems = orderItemsData.map(item => ({
-    ...item,
-    itemTotal: item.quantity * (item.product.price + (item.sku.additional_price || 0))
-  }));
-  setOrderItems(fixedItems);
-  return;
-}
+      if (orderItemsData[0].product && orderItemsData[0].sku) {
+        const fixedItems = orderItemsData.map(item => ({
+          ...item,
+          itemTotal: item.quantity * (item.product.price + (item.sku.additional_price || 0))
+        }));
+        setOrderItems(fixedItems);
+        return;
+      }
 
       // 기본 데이터만 있는 경우 (장바구니에서 온 경우) - 상품 상세 정보 로드
       const itemsWithDetails = await Promise.all(
@@ -130,7 +129,7 @@ if (orderItemsData[0].product && orderItemsData[0].sku) {
             .single();
 
           const sku = product.product_skus.find(s => s.skid === item.skid);
-          
+
           return {
             ...item,
             product,
@@ -160,7 +159,7 @@ if (orderItemsData[0].product && orderItemsData[0].sku) {
       if (error) throw error;
 
       setAddresses(data || []);
-      
+
       // 기본 주소가 있으면 선택
       const defaultAddress = data?.find(addr => addr.is_default);
       if (defaultAddress) {
@@ -176,17 +175,17 @@ if (orderItemsData[0].product && orderItemsData[0].sku) {
   // 가격 계산 (적립 포인트 제거)
   const calculatePricing = () => {
     const subtotal = orderItems.reduce((sum, item) => sum + (item.itemTotal || (item.itemPrice * item.quantity)), 0);
-    
+
     // 포인트 사용 가능 최대 금액 (상품 금액의 30%)
     const maxPointsFromPrice = Math.floor(subtotal * 0.3);
     const maxPointsFromBalance = userInfo?.points_balance || 0;
     const maxUsable = Math.min(maxPointsFromPrice, maxPointsFromBalance);
-    
+
     setMaxPointsUsable(maxUsable);
-    
+
     // 실제 사용할 포인트
     const actualPointsToUse = Math.min(pointsToUse, maxUsable);
-    
+
     const finalTotal = subtotal - actualPointsToUse;
 
     setPricing({
@@ -216,11 +215,12 @@ if (orderItemsData[0].product && orderItemsData[0].sku) {
   };
 
   // 주소 폼 변경
-const handleAddressFormChange = (field, value) => {
-  let formattedValue = value;
+const handleAddressFormChange = (e) => {
+  const { name, value, type, checked } = e.target;
+  let formattedValue = type === 'checkbox' ? checked : value;
   
   // 전화번호 필드인 경우 자동 포맷팅
-  if (field === 'recipient_phone') {
+  if (name === 'recipient_phone' && typeof value === 'string') {
     const phoneNumber = value.replace(/[^\d]/g, '');
     
     if (phoneNumber.length <= 3) {
@@ -234,7 +234,7 @@ const handleAddressFormChange = (field, value) => {
 
   setAddressForm(prev => ({
     ...prev,
-    [field]: formattedValue
+    [name]: formattedValue
   }));
 };
 
@@ -242,7 +242,7 @@ const handleAddressFormChange = (field, value) => {
   const openPostcodeSearch = () => {
     if (window.daum && window.daum.Postcode) {
       new window.daum.Postcode({
-        oncomplete: function(data) {
+        oncomplete: function (data) {
           setAddressForm(prev => ({
             ...prev,
             postal_code: data.zonecode,
@@ -261,7 +261,7 @@ const handleAddressFormChange = (field, value) => {
   // 주소 저장
   const handleSaveAddress = async (e) => {
     e.preventDefault();
-    
+
     try {
       if (editingAddress) {
         // 수정
@@ -272,7 +272,7 @@ const handleAddressFormChange = (field, value) => {
             updated_at: new Date().toISOString()
           })
           .eq('aid', editingAddress.aid);
-          
+
         if (error) throw error;
       } else {
         // 새로 추가
@@ -282,7 +282,7 @@ const handleAddressFormChange = (field, value) => {
             ...addressForm,
             uid: user.id
           }]);
-          
+
         if (error) throw error;
       }
 
@@ -299,7 +299,7 @@ const handleAddressFormChange = (field, value) => {
       setShowAddressModal(false);
       setEditingAddress(null);
       resetAddressForm();
-      
+
       await loadUserAddresses();
     } catch (error) {
       console.error('주소 저장 오류:', error);
@@ -338,15 +338,21 @@ const handleAddressFormChange = (field, value) => {
   // 주소 삭제
   const handleDeleteAddress = async (addressId) => {
     if (!confirm('이 주소를 삭제하시겠습니까?')) return;
-    
+
     try {
       const { error } = await supabase
         .from('user_addresses')
         .delete()
         .eq('aid', addressId);
-        
-      if (error) throw error;
-      
+
+      if (error) {
+        if (error.code === '23503') {
+          alert('이 배송지는 주문 내역에서 사용 중이어서 삭제할 수 없습니다.');
+          return;
+        }
+        throw error;
+      }
+
       alert('주소가 삭제되었습니다.');
       await loadUserAddresses();
     } catch (error) {
@@ -398,30 +404,28 @@ const handleAddressFormChange = (field, value) => {
           throw new Error(`재고가 부족합니다. (상품: ${item.product?.name || '알 수 없음'})`);
         }
 
-        // 재고 차감
-        // 재고 차감
-console.log('재고 차감 시작:', {
-  skid: item.skid,
-  현재재고: currentSku.stock_qty,
-  차감량: item.quantity,
-  새재고: currentSku.stock_qty - item.quantity
-});
+        console.log('재고 차감 시작:', {
+          skid: item.skid,
+          현재재고: currentSku.stock_qty,
+          차감량: item.quantity,
+          새재고: currentSku.stock_qty - item.quantity
+        });
 
-const { data: updateResult, error: updateError } = await supabase
-  .from('product_skus')
-  .update({
-    stock_qty: currentSku.stock_qty - item.quantity,
-    updated_at: new Date().toISOString()
-  })
-  .eq('skid', item.skid)
-  .select();
+        const { data: updateResult, error: updateError } = await supabase
+          .from('product_skus')
+          .update({
+            stock_qty: currentSku.stock_qty - item.quantity,
+            updated_at: new Date().toISOString()
+          })
+          .eq('skid', item.skid)
+          .select();
 
-console.log('재고 차감 결과:', { updateResult, updateError });
+        console.log('재고 차감 결과:', { updateResult, updateError });
 
-if (updateError) {
-  console.error('재고 차감 실패 상세:', updateError);
-  throw new Error(`재고 차감 실패: ${updateError.message}`);
-}
+        if (updateError) {
+          console.error('재고 차감 실패 상세:', updateError);
+          throw new Error(`재고 차감 실패: ${updateError.message}`);
+        }
 
         // 재고 로그 기록
         const { error: logError } = await supabase
@@ -526,7 +530,7 @@ if (updateError) {
 
       alert('주문이 완료되었습니다!');
       navigate(`/order/orderdetail/${order.oid}`);
-      
+
     } catch (error) {
       console.error('주문 처리 오류:', error);
       alert(error.message || '주문 처리 중 오류가 발생했습니다.');
