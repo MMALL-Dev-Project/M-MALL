@@ -1,0 +1,104 @@
+.profile-edit-container {
+  width: 100%;
+}
+
+.content-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.form-container {
+  max-width: 640px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.profile-edit {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-image-large {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #6b7280;
+  overflow: hidden;
+}
+
+.profile-image-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.edit-btn {
+  border: 1px solid #000000;
+  background: #ffffff;
+  padding: 8px 24px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+.form-input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.form-help {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.form-submit {
+  padding-top: 16px;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 32px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #1f2937;
+}

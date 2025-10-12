@@ -1,0 +1,63 @@
+.dashboard-container {
+  width: 100%;
+}
+
+.content-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  background-color: #f9fafb;
+  border-color: #000000;
+}
+
+.stat-card .stat-number {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+.stat-card .stat-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.quick-btn {
+  flex: 1;
+  padding: 16px 24px;
+  border: 1px solid #000000;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-btn:hover {
+  background-color: #000000;
+  color: #ffffff;
+}

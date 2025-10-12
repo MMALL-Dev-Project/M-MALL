@@ -26,6 +26,7 @@ import OrderInquiries from '@pages/support/OrderInquiries';
 
 import NotFound from '@pages/error/NotFound';
 import OrderManagement from '@pages/admin/OrderManagement';
+import MyPage from '@pages/mypage/MyPage';
 
 console.log('Supabase 연결:', supabase)
 
@@ -64,7 +65,7 @@ function AppContent() {
 
         {/* 사용자 관련 페이지들 */}
         <Route path="/search" element={<Search />} />
-        <Route path="/mypage" element={<div>마이페이지</div>} />
+        <Route path="/myPage" element={<MyPage />} />
         <Route path="/cart" element={<div>장바구니</div>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
