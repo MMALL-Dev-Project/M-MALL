@@ -1,0 +1,35 @@
+.review-section-container {
+  width: 100%;
+}
+
+.content-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.review-notice {
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  text-align: center;
+  background-color: #f9fafb;
+}
+
+.review-notice p {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.submit-btn {
+  padding: 12px 32px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.submit-btn:hover {
+  background-color: #1f2937;
+}
