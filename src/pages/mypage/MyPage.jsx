@@ -1,11 +1,10 @@
-// src/pages/mypage/MyPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import { supabase } from '@config/supabase';
 import Dashboard from '@components/mypage/Dashboard';
 import OrderHistory from '@components/mypage/OrderHistory';
-import LikedProducts from '@components/mypage/LikedProducts';
+import LikedItems from '@components/mypage/LikedItems';
 import ProfileEdit from '@components/mypage/ProfileEdit';
 import NotificationSettings from '@components/mypage/NotificationSettings';
 import ReviewSection from '@components/mypage/ReviewSection';
@@ -19,6 +18,7 @@ export default function MyPage() {
   const [activeMenu, setActiveMenu] = useState('대시보드');
   const [detailedUserInfo, setDetailedUserInfo] = useState(null);
   const [likedProducts, setLikedProducts] = useState([]);
+  const [likedBrands, setLikedBrands] = useState([]);
   const [reviewCount, setReviewCount] = useState(0);
   const [recentOrders, setRecentOrders] = useState([]);
   const [orderStats, setOrderStats] = useState({
@@ -45,6 +45,7 @@ export default function MyPage() {
     await Promise.all([
       fetchUserDetailInfo(),
       fetchLikedProducts(),
+      fetchLikedBrands(),
       fetchReviewCount(),
       fetchRecentOrders(),
       fetchOrderStats()
@@ -89,7 +90,7 @@ export default function MyPage() {
           )
         `)
         .eq('uid', user.id)
-        .eq('target_type', 'product')
+        .eq('target_type', 'PRODUCT')
         .order('created_at', { ascending: false })
         .limit(8);
 
@@ -97,6 +98,33 @@ export default function MyPage() {
       setLikedProducts(data || []);
     } catch (error) {
       console.error('좋아요 목록 조회 실패:', error);
+    }
+  };
+
+  // 좋아요한 브랜드
+  const fetchLikedBrands = async () => {
+    if (!user) return;
+    try {
+      const { data, error } = await supabase
+        .from('likes')
+        .select(`
+          *,
+          brands (
+          bid,
+          name,
+          logo_url,
+          like_count
+          )  
+        `)
+        .eq('uid', user.id)
+        .eq('target_type', 'BRAND')
+        .order('created_at', { ascending: false })
+        .limit(8);
+
+      if (error) throw error;
+      setLikedBrands(data || []);
+    } catch (error) {
+      console.error('브랜드 좋아요 목록 조회 실패: ', error);
     }
   };
 
@@ -215,6 +243,23 @@ export default function MyPage() {
     } catch (error) {
       console.error('좋아요 취소 실패:', error);
       alert('좋아요 취소에 실패했습니다.');
+    }
+  };
+
+  // 브랜드 좋아요 취소
+  const handleUnlikeBrand = async (lid, bid) => {
+    try {
+      const { error } = await supabase
+        .from('likes')
+        .delete()
+        .eq('lid', lid);
+
+      if (error) throw error;
+
+      await fetchLikedBrands();
+    } catch (error) {
+      console.error('브랜드 좋아요 취소 실패:', error);
+      alert('브랜드 좋아요 취소에 실패했습니다.');
     }
   };
 
@@ -428,31 +473,33 @@ export default function MyPage() {
           )}
 
           {activeMenu === '주문 내역' && (
-            <OrderHistory 
-              orderStats={orderStats} 
-              recentOrders={recentOrders} 
+            <OrderHistory
+              orderStats={orderStats}
+              recentOrders={recentOrders}
             />
           )}
 
           {activeMenu === '좋아요' && (
-            <LikedProducts 
-              likedProducts={likedProducts} 
-              onUnlike={handleUnlike} 
+            <LikedItems
+              likedProducts={likedProducts}
+              likedBrands={likedBrands}
+              onUnlike={handleUnlike}
+              onUnlikeBrand={handleUnlikeBrand}
             />
           )}
 
           {activeMenu === '회원정보 수정' && (
-            <ProfileEdit 
-              userInfo={userInfo} 
-              detailedUserInfo={detailedUserInfo} 
-              onSave={handleSaveProfile} 
+            <ProfileEdit
+              userInfo={userInfo}
+              detailedUserInfo={detailedUserInfo}
+              onSave={handleSaveProfile}
             />
           )}
 
           {activeMenu === '알림 설정' && (
-            <NotificationSettings 
-              detailedUserInfo={detailedUserInfo} 
-              onSave={handleSaveNotifications} 
+            <NotificationSettings
+              detailedUserInfo={detailedUserInfo}
+              onSave={handleSaveNotifications}
             />
           )}
 
