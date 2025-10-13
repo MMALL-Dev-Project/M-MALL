@@ -1,0 +1,281 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* 모달 헤더 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+}
+
+.modal-close-btn:hover {
+  color: #000;
+}
+
+/* 상품 정보 */
+.modal-product-info {
+  display: flex;
+  gap: 15px;
+  padding: 20px 24px;
+}
+
+.modal-product-info .product-thumbnail {
+  width: 120x;
+  height: 120px;
+  object-fit: cover;
+}
+
+.modal-product-info .product-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-product-info .brand-name {
+  color: #666;
+  margin: 0 0 5px 0;
+}
+
+.modal-product-info .product-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 리뷰 폼 */
+.review-modal-form {
+  padding: 24px;
+}
+
+/* 적립 마일리지 정보 */
+.review-point-info {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.review-point-info span {
+  font-size: 13px;
+  color: #666;
+  margin-right: 10px;
+}
+
+.review-point-info strong {
+  font-size: 16px;
+  color: #ff6b00;
+}
+
+.point-conditions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.point-conditions label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #999;
+}
+
+.point-conditions input[type="checkbox"] {
+  margin: 0;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-group label.required::before {
+  content: '*';
+  color: #ff6b00;
+  margin-right: 4px;
+}
+
+.sub-label {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 0 10px 0;
+  line-height: 1.4;
+}
+
+/* 별점 (큰 사이즈) */
+.star-rating-large {
+  display: flex;
+  gap: 10px;
+  font-size: 40px;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.star-rating-large .star {
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  color: #ddd;
+}
+
+.star-rating-large .star.active {
+  color: #ffd700;
+}
+
+.star-rating-large .star:hover {
+  transform: scale(1.1);
+}
+
+/* 이미지 업로드 */
+.image-upload-area {
+  display: flex;
+  gap: 10px;
+}
+
+.upload-box {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ddd;
+  /* display: flex; */
+  /* align-items: center; */
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-icon {
+  font-size: 40px;
+  color: #999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+/* 텍스트 영역 */
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  /* font-size: 14px; */
+  transition: border-color 0.3s;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+/* 안내사항 */
+.review-notice {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.review-notice ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.review-notice a {
+  color: #333;
+  text-decoration: underline;
+}
+
+/* 제출 버튼 */
+.submit-review-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-review-btn:hover {
+  background-color: #555;
+}
+
+.submit-review-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .star-rating-large {
+    font-size: 32px;
+  }
+}
