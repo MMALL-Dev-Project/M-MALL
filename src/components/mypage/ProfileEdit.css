@@ -102,3 +102,78 @@
 .submit-btn:hover {
   background-color: #1f2937;
 }
+
+/* 비밀번호 변경 섹션 추가 스타일 */
+.password-change-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 24px;
+  margin-top: 32px;
+}
+
+.password-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.password-input-group .form-input {
+  flex: 1;
+}
+
+.verify-btn {
+  height: 50px;
+  background: #333;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.verify-btn:disabled {
+  background-color: #000000;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.password-change-section .form-input {
+  margin-bottom: 12px;
+}
+
+.change-password-btn {
+  width: 100%;
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
+  padding: 12px 24px;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.profile-edit-btn {
+  border: 1px solid #333;
+  background: #fff;
+  padding: 8px 18px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .content-title {
+    font-size: 18px;
+  }
+
+  .profile-edit {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .password-input-group {
+    flex-direction: column;
+  }
+
+  .verify-btn {
+    width: 100%;
+  }
+}
