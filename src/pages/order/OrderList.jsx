@@ -374,9 +374,9 @@ const submitRefund = async () => {
                       </button>
                     )}
                     <button
-                      onClick={() => navigate(`/mypage/reviews/write?oid=${order.oid}`)}
+                      onClick={() => navigate(`/review/write/?oid=${order.oid}`)}
                       className="btn btn-review"
-                    >
+                    > 
                       리뷰 작성
                     </button>
                   </>

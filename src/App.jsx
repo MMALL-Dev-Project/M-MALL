@@ -7,6 +7,7 @@ import { AuthProvider } from '@contexts/AuthContext'
 import AuthCallback from '@contexts/AuthCallback';
 import Header from '@components/common/Header';
 import Footer from '@components/common/Footer';
+import Home from '@pages/home/Home';
 
 import Search from '@pages/search/Search';
 import SignUp from '@pages/auth/SignUp';
@@ -43,7 +44,7 @@ function AppContent() {
       <Header />
       {/* Routes는 Header와 Footer 사이에 독립적으로 위치 */}
       <Routes>
-        <Route path="/" element={<div>홈 페이지</div>} />
+        <Route path="/" element={<Home />} />
 
         {/* 인증 콜백 라우트 */}
         <Route path="/auth/callback" element={<AuthCallback />} />
