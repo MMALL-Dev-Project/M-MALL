@@ -622,6 +622,7 @@ const ProductInfo = ({ product }) => {
                     value={selectedOptions[optionType] || ''}
                     onChange={(e) => handleOptionChange(optionType, e.target.value)}
                     disabled={!isNextOptionEnabled(optionType) || soldOut}
+                    className="select-common"
                   >
                     <option value="">
                       {optionType.toUpperCase()}

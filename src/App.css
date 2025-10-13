@@ -1,0 +1,12 @@
+/* 기본 셀렉트박스 스타일 */
+
+.select-common {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url("../public/images/icons/ico_down.png") no-repeat right 12px center / 20px;
+    padding: 8px 36px 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}

@@ -1,12 +1,33 @@
-.product-list {
+/* ========== 상품 목록 ========== */
+
+.category-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.product-list-wrap {
     padding: 0 60px;
+}
+
+.product-list {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
 
+/* ========== 상품 정렬 ========== */
+
+.product-list-sort {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+/* ========== 상품 카드 ========== */
+
 .product-card {
     cursor: pointer;
+    margin-bottom: 30px;
 }
 
 .product-card .photo {
