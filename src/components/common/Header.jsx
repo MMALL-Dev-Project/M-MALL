@@ -14,6 +14,17 @@ const Header = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
   const [menuData, setMenuData] = useState([]);
 
+  // 프로필 이미지
+  const getProfileImage = () => {
+    const profileImg = userInfo?.profile_image;
+    const DEFAULT_AVATAR = '/images/default-avatar.png';
+    
+    if (!profileImg || profileImg === 'default.jpg' || profileImg === "'default.jpg'" || profileImg.includes('default')) {
+      return DEFAULT_AVATAR;
+    }
+    return profileImg;
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -156,6 +167,11 @@ const Header = () => {
                   </span>
                 ) : (
                   <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
+                    <img 
+                      src={getProfileImage()} 
+                      alt="프로필" 
+                      className="profile-image-small"
+                    />
                     {userInfo?.name}<span>님</span>
                   </Link>
                 )}
