@@ -1,7 +1,6 @@
-import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getThumbnailSrc } from "@utils/image";
-import './ProductCard.css';
+import './Product.css';
 
 const ProductCard = ({ product }) => {
   const isSoldout = product.is_soldout;

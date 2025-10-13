@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@config/supabase';
 import ProductList from '@components/products/ProductList';
 
 const ALL_CATEGORY_SLUG = 'all';
 
-const CategoryPage = React.memo(() => {
+const CategoryPage = () => {
   const { categorySlug, subcategorySlug } = useParams();
   const [data, setData] = useState({
     category: null,
@@ -114,13 +114,13 @@ const CategoryPage = React.memo(() => {
 
   return (
     <div style={{ marginTop: '120px' }}>
-      <h2 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '40px' }}>
+      <h2 className='category-title'>
         {data.category?.name} {data.subcategory && `> ${data.subcategory.name}`}
       </h2>
       <ProductList products={data.products} />
     </div>
   );
-});
+};
 
 CategoryPage.displayName = 'CategoryPage';
 
