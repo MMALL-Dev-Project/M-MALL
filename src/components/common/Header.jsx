@@ -167,11 +167,13 @@ const Header = () => {
                   </span>
                 ) : (
                   <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
-                    <img 
-                      src={getProfileImage()} 
-                      alt="프로필" 
-                      className="profile-image-small"
-                    />
+                    <div className="profile-img-container">
+                      <img 
+                        src={getProfileImage()} 
+                        alt="프로필" 
+                        className="profile-img-small"
+                      />
+                    </div>
                     {userInfo?.name}<span>님</span>
                   </Link>
                 )}
