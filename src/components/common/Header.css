@@ -1,6 +1,9 @@
 #header-wrap {
-  height: 120px;
+  height: 80px;
   position: relative;
+}
+#header-wrap.has-admin-bar {
+  height: 120px;
 }
 
 /* 관리자 전용 상단 바 */
@@ -34,12 +37,13 @@
   margin-right: 0;
 }
 
-/* 일반 유저 헤더 - 기본은 top: 0 */
+/* 일반 유저 헤더 */
 #header {
   position: fixed;
   top: 0;
   padding: 0 60px;
   width: 100%;
+  height: 80px;
   z-index: 100;
   background: #f9f9f9;
   display: flex;
@@ -175,18 +179,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s ease;
-}
-
-#header .lnb li button:hover,
-#header .lnb li a:hover {
-  transform: scale(1.1);
 }
 
 #header .lnb li img {

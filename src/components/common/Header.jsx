@@ -18,7 +18,7 @@ const Header = () => {
   const getProfileImage = () => {
     const profileImg = userInfo?.profile_image;
     const DEFAULT_AVATAR = '/images/default-avatar.png';
-    
+
     if (!profileImg || profileImg === 'default.jpg' || profileImg === "'default.jpg'" || profileImg.includes('default')) {
       return DEFAULT_AVATAR;
     }
@@ -143,7 +143,7 @@ const Header = () => {
         <ul className="lnb">
           <li className="tooltip-container">
             <button onClick={handleSearch} aria-label="검색">
-              <img src={`${import.meta.env.BASE_URL}images/icons/ico_search.png`} alt="검색" />
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </button>
             <span className="tooltip">검색</span>
           </li>
@@ -152,7 +152,9 @@ const Header = () => {
           {!isAdmin && (
             <li className="tooltip-container">
               <Link to="/cart" aria-label="쇼핑백">
-                <img src={`${import.meta.env.BASE_URL}images/icons/ico_bag.png`} alt="쇼핑백" />
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                  <path d="M200-80q-33 0-56.5-23.5T120-160v-480q0-33 23.5-56.5T200-720h80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720h80q33 0 56.5 23.5T840-640v480q0 33-23.5 56.5T760-80H200Zm0-80h560v-480H200v480Zm280-240q83 0 141.5-58.5T680-600h-80q0 50-35 85t-85 35q-50 0-85-35t-35-85h-80q0 83 58.5 141.5T480-400ZM360-720h240q0-50-35-85t-85-35q-50 0-85 35t-35 85ZM200-160v-480 480Z" />
+                </svg>
               </Link>
               <span className="tooltip">쇼핑백</span>
             </li>
@@ -166,22 +168,23 @@ const Header = () => {
                     {userInfo?.name}<span></span>
                   </span>
                 ) : (
-                  <Link to="/mypage" className="user-greeting" aria-label="마이페이지">
+                  <Link to="/mypage" aria-label="마이페이지">
                     <div className="profile-img-container">
-                      <img 
-                        src={getProfileImage()} 
-                        alt="프로필" 
+                      <img
+                        src={getProfileImage()}
+                        alt="프로필"
                         className="profile-img-small"
                       />
                     </div>
-                    {userInfo?.name}<span>님</span>
                   </Link>
                 )}
                 <span className="tooltip">{isAdmin ? '관리자' : '마이페이지'}</span>
               </li>
               <li className="tooltip-container">
                 <button onClick={handleLogout} aria-label="로그아웃">
-                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_logout.png`} alt="로그아웃" />
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+                  </svg>
                 </button>
                 <span className="tooltip">로그아웃</span>
               </li>
@@ -190,13 +193,17 @@ const Header = () => {
             <>
               <li className="tooltip-container">
                 <Link to="/login" aria-label="로그인">
-                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_login.png`} alt="로그인" />
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                    <path d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z" />
+                  </svg>
                 </Link>
                 <span className="tooltip">로그인</span>
               </li>
               <li className="tooltip-container">
                 <Link to="/signup" aria-label="회원가입">
-                  <img src={`${import.meta.env.BASE_URL}images/icons/ico_signup.png`} alt="회원가입" />
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                    <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+                  </svg>
                 </Link>
                 <span className="tooltip">회원가입</span>
               </li>
