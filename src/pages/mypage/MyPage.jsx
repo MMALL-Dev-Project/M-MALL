@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import { supabase } from '@config/supabase';
 import Dashboard from '@components/mypage/Dashboard';
@@ -12,6 +12,7 @@ import './MyPage.css';
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, userInfo } = useAuth();
 
   // ========== 상태 관리 ==========
@@ -32,6 +33,18 @@ export default function MyPage() {
     returned: 0
   });
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (location.state?.activeMenu) {
+      setActiveMenu(location.state.activeMenu);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (user) {
+      loadAllData();
+    }
+  }, [user]);
 
   // ========== 데이터 로드 ==========
   useEffect(() => {
@@ -91,8 +104,7 @@ export default function MyPage() {
         `)
         .eq('uid', user.id)
         .eq('target_type', 'PRODUCT')
-        .order('created_at', { ascending: false })
-        .limit(8);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setLikedProducts(data || []);
@@ -118,8 +130,7 @@ export default function MyPage() {
         `)
         .eq('uid', user.id)
         .eq('target_type', 'BRAND')
-        .order('created_at', { ascending: false })
-        .limit(8);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setLikedBrands(data || []);
@@ -170,8 +181,7 @@ export default function MyPage() {
         `)
         .eq('uid', user.id)
         .gte('created_at', oneMonthAgo.toISOString())
-        .order('created_at', { ascending: false })
-        .limit(3);
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setRecentOrders(data || []);
@@ -400,14 +410,6 @@ export default function MyPage() {
                   주문 내역
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => navigate('/order/orderList?status=CANCELLED')}
-                  className={activeMenu === '교환/반품/취소 내역' ? 'active' : ''}
-                >
-                  교환/반품/취소 내역
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -476,6 +478,7 @@ export default function MyPage() {
             <OrderHistory
               orderStats={orderStats}
               recentOrders={recentOrders}
+              onRefresh={fetchRecentOrders}
             />
           )}
 
@@ -504,7 +507,10 @@ export default function MyPage() {
           )}
 
           {activeMenu === '상품리뷰' && (
-            <ReviewSection reviewCount={reviewCount} />
+            <ReviewSection
+              reviewCount={reviewCount}
+              initialTab={location.state?.activeTab}
+            />
           )}
         </main>
       </div>

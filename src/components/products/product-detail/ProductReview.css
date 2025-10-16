@@ -1,0 +1,524 @@
+/* ========== 헤더 섹션 ========== */
+.review-header-section {
+  max-width: 1270px;
+  font-size: 24px;
+  padding-top: 50px;
+}
+
+.review-title-with-stars {
+  height: 66px;
+  display: flex;
+  font-size: 24px;
+  border-bottom: 2px solid black;
+}
+
+#review-title {
+  height: 66px;
+  font-size: 24px;
+  font-weight: 700;
+  border-bottom: none !important;
+}
+
+.header-rating {
+  line-height: 66px;
+  padding-left: 20px;
+  font-size: 24px;
+}
+
+/* ========== 리뷰 통계 + 사진 갤러리 컨테이너 ========== */
+.review-stats-gallery-container {
+  display: flex;
+  gap: 40px;
+  margin: 30px 0;
+  align-items: flex-start;
+}
+
+/* ========== 리뷰 통계 (왼쪽) ========== */
+.review-stats {
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.average-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.rating-number {
+  font-size: 48px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1;
+}
+
+.rating-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-label {
+  width: 40px;
+  font-size: 14px;
+  color: #666;
+}
+
+.bar-container {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #ffd700;
+  transition: width 0.3s;
+}
+
+.rating-count {
+  width: 40px;
+  text-align: right;
+  font-size: 14px;
+  color: #666;
+}
+
+/* ========== 사진 리뷰 갤러리 (오른쪽) - 한 줄로 6개 ========== */
+#photo-review-gallery {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 50px;
+}
+
+.photo-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.photo-item:hover {
+  opacity: 0.9;
+}
+
+#photo-review-gallery .photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========== 포토 갤러리 더보기 오버레이 ========== */
+.photo-item.more-overlay {
+  position: relative;
+}
+
+.photo-item.more-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.more-overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.more-text {
+  font-size: 16px;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.more-count {
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== 포토리뷰 갤러리 모달 ========== */
+.photo-gallery-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.photo-gallery-modal-content {
+  background: white;
+  width: 90%;
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-gallery-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.photo-gallery-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.photo-gallery-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+}
+
+.photo-gallery-close:hover {
+  color: #000;
+}
+
+.photo-gallery-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.photo-gallery-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.photo-gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.photo-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-gallery-close-btn {
+  margin: 20px;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.photo-gallery-close-btn:hover {
+  background: #000;
+}
+
+/* ========== 리뷰 작성 버튼 ========== */
+.write-review-section {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.write-review-btn {
+  padding: 12px 32px;
+  background: #333;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  transition: background 0.3s;
+}
+
+.write-review-btn:hover {
+  background: #000;
+}
+
+/* ========== 리뷰 목록 ========== */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.review-item {
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.reviewer-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.review-date {
+  font-size: 14px;
+  color: #999;
+}
+
+.review-content {
+  margin-top: 15px;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.review-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.review-images {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.review-images img {
+  width: 100px;
+  height: 100px;
+  flex: 0 0 100px;
+  object-fit:fill;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+/* ========== 빈 리뷰 ========== */
+.no-reviews {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.no-reviews p {
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+/* ========== 로딩 ========== */
+.reviews-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+/* ========== 별점 스타일 ========== */
+.star-rating {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.star-rating .star {
+  font-size: 24px;
+  color: #ddd;
+}
+
+.star-rating .star.filled {
+  color: #ffd700;
+}
+
+/* ========== 이미지 모달 ========== */
+.image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.image-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.image-nav-btn {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.image-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.image-nav-btn.prev {
+  left: -70px;
+}
+
+.image-nav-btn.next {
+  right: -70px;
+}
+
+.image-counter {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========== 모바일 대응 ========== */
+@media (max-width: 768px) {
+  .review-stats-gallery-container {
+    flex-direction: column;
+  }
+
+  .review-stats {
+    flex: 1;
+    width: 100%;
+  }
+
+  #photo-review-gallery {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 20px;
+  }
+
+  .photo-gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .image-nav-btn.prev {
+    left: 10px;
+  }
+  
+  .image-nav-btn.next {
+    right: 10px;
+  }
+  
+  .image-modal-close {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .image-counter {
+    bottom: 20px;
+  }
+}
