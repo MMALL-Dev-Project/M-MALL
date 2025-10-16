@@ -82,7 +82,7 @@
 
 /* 주문 아이템 */
 .order-item {
-  border: 1px solid tomato;
+  border: 1px solid #e5e7eb;
   margin-bottom: 20px;
   display: block;
   padding: 0;

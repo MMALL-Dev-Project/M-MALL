@@ -1,9 +1,73 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReviewWriteModal from '@pages/review/ReviewWriteModal';
 import './OrderHistory.css';
+import { supabase } from '@/config/supabase';
 
-export default function OrderHistory({ orderStats, recentOrders }) {
+export default function OrderHistory({ orderStats, recentOrders, onRefresh }) {
   const navigate = useNavigate();
+
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedOrderItem, setSelectedOrderItem] = useState(null);
+  const [reviewStatuses, setReviewStatuses] = useState({});
+
+  // 리뷰 작성 여부 확인
+  const checkReviewStatuses = async () => {
+    try {
+      // recentOrders 모든 oild 추출
+      const allOiids = recentOrders.flatMap(order =>
+        order.order_items?.map(item => item.oiid) || []
+      );
+      // oild 없으면 함수 종료
+      if (allOiids.length === 0) return;
+
+      // 테이블 조회
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('oiid')
+        .in('oiid', allOiids); // allOiids 배열에 포함된 oiid만 조회
+
+      if (error) throw error;
+
+      const reviewedOiids = new Set(data?.map(review => review.oiid) || []);
+
+      const statuses = {};
+      allOiids.forEach(oiid => {
+        statuses[oiid] = reviewedOiids.has(oiid);
+      });
+
+      setReviewStatuses(statuses);
+    } catch (error) {
+      console.error('리뷰 상태 확인 중 오류:', error);
+    }
+  }
+
+  useEffect(() => {
+    if (recentOrders.length > 0) {
+      checkReviewStatuses();
+    }
+  }, [recentOrders]);
+
+  const handleReviewSuccess = () => {
+    checkReviewStatuses(); // 리뷰 상태 다시 확인
+    onRefresh(); // 주문 목록 새로고침
+  };
+
+  // 리뷰 작성 버튼
+  const handleWriteReview = (item) => {
+    setSelectedOrderItem(item);
+    setReviewModalOpen(true);
+  }
+
+  // 리뷰 보기 버튼
+  const handleViewReview = () => {
+    navigate('/mypage', { 
+      state: { 
+        activeMenu: '상품리뷰',
+        activeTab: 'written' 
+      } 
+    });
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -100,7 +164,7 @@ export default function OrderHistory({ orderStats, recentOrders }) {
               <div key={index} className="order-content">
                 <div className="product-info">
                   {/* 상품 이미지 */}
-                  <div 
+                  <div
                     className="product-image"
                     onClick={() => navigate(`/product/${item.products?.pid}`)}
                     style={{ cursor: 'pointer' }}
@@ -112,23 +176,23 @@ export default function OrderHistory({ orderStats, recentOrders }) {
 
                   <div className="product-details">
                     {/* 브랜드명 */}
-                    <p 
+                    <p
                       className="product-brand"
                       onClick={() => navigate(`/brand/${item.products?.brands?.bid}`)}
                       style={{ cursor: 'pointer' }}
                     >
                       {item.product_brand || item.products?.brands?.name}
                     </p>
-                    
+
                     {/* 상품명 */}
-                    <p 
+                    <p
                       className="product-name"
                       onClick={() => navigate(`/product/${item.products?.pid}`)}
                       style={{ cursor: 'pointer' }}
                     >
                       {item.product_name}
                     </p>
-                    
+
                     <p className="product-option">
                       {item.sku_options && Object.entries(item.sku_options).map(([key, value]) => (
                         `${key}: ${value}`
@@ -144,7 +208,7 @@ export default function OrderHistory({ orderStats, recentOrders }) {
 
                     {/* 배송중이거나 배송완료면 배송조회 버튼 표시 */}
                     {(order.status === 'SHIPPED' || order.status === 'DELIVERED') && (
-                      <button 
+                      <button
                         className="action-btn"
                         onClick={() => navigate(`/order/tracking/${order.oid}`)}
                       >
@@ -154,12 +218,30 @@ export default function OrderHistory({ orderStats, recentOrders }) {
 
                     {/* 배송완료면 리뷰작성 버튼도 표시 */}
                     {order.status === 'DELIVERED' && (
-                      <button 
-                        className="action-btn"
-                        onClick={() => navigate(`/review/write?orderItemId=${item.oiid}&productId=${item.products?.pid}`)}
-                      >
-                        리뷰작성
-                      </button>
+                      reviewStatuses[item.oiid] ? (
+                        // 리뷰 작성 완료 - 리뷰보기 버튼
+                        <button
+                          className="action-btn review-written"
+                          onClick={() => {
+                            navigate('/mypage', {
+                              state: {
+                                activeMenu: '상품리뷰',
+                                activeTab: 'written'
+                              }
+                            });
+                          }}
+                        >
+                          리뷰보기
+                        </button>
+                      ) : (
+                        // 리뷰 미작성 - 리뷰작성 버튼
+                        <button
+                          className="action-btn"
+                          onClick={() => handleWriteReview(item)}
+                        >
+                          리뷰작성
+                        </button>
+                      )
                     )}
                   </div>
                 </div>
@@ -171,6 +253,18 @@ export default function OrderHistory({ orderStats, recentOrders }) {
         <div className="empty-content">
           <p>최근 1개월 내 주문 내역이 없습니다.</p>
         </div>
+      )}
+
+      {/* 리뷰 작성 모달 */}
+      {reviewModalOpen && selectedOrderItem && (
+        <ReviewWriteModal
+          orderItem={selectedOrderItem}
+          onClose={() => {
+            setReviewModalOpen(false);
+            setSelectedOrderItem(null);
+          }}
+          onSuccess={handleReviewSuccess}
+        />
       )}
     </div>
   );

@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import { supabase } from '@config/supabase';
 import './ReviewWriteModal.css';
 
-export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
+export default function ReviewWriteModal({ orderItem, existingReview, onClose, onSuccess }) {
   const { user, userInfo } = useAuth();
+
+  const isEditMode = !!existingReview;
 
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [content, setContent] = useState('');
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (existingReview) {
+      setRating(existingReview.rating || 0);
+      setContent(existingReview.content || '');
+      setImages(existingReview.images || []);
+    }
+  }, [existingReview]);
+
+  const productInfo = isEditMode
+    ? existingReview.products // 수정 모드: existingReview
+    : orderItem?.products; // 작성 모드: orderItem
+
+  const productName = isEditMode
+    ? existingReview.products?.name
+    : (orderItem?.product_name || orderItem?.products?.name);
+
+  const brandName = isEditMode
+    ? existingReview.products?.brands?.name
+    : (orderItem?.product_brand || orderItem?.products?.brands?.name);
+
+  const thumbnailUrl = productInfo?.thumbnail_url;
 
   // 별점 클릭
   const handleRatingClick = (value) => {
@@ -18,10 +43,67 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
   };
 
   // 이미지 업로드
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    console.log('업로드할 파일:', files);
-    // TODO: 이미지 미리보기 추가
+
+    if (files.length === 0) return;
+
+    if (images.length + files.length > 5) {
+      alert('이미지는 최대 5개까지만 업로드 가능합니다.');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const uploadedUrls = [];
+
+      for (const file of files) {
+        // 파일 크기 체크
+        if (file.size > 5 * 1024 * 1024) {
+          alert(`${file.name}은(는) 5MB를 초과하여 업로드할 수 없습니다.`);
+          continue;
+        }
+
+        // 파일명 생성 (중복 방지)
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+        // storage에 업로드
+        const { data, error } = await supabase.storage
+          .from('reviews')
+          .upload(fileName, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+        if (error) throw error;
+
+        // public url 가져오기
+        const { data: { publicUrl } } = supabase.storage
+          .from('reviews')
+          .getPublicUrl(fileName);
+
+        uploadedUrls.push(publicUrl);
+      }
+
+      // 기존 이미지 + 새 이미지
+      setImages([...images, ...uploadedUrls]);
+
+      if (uploadedUrls.length > 0) {
+        alert(`${uploadedUrls.length}개의 이미지가 업로드되었습니다!`);
+      }
+
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      alert('이미지 업로드에 실패했습니다.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // 이미지 삭제
+  const handleRemoveImage = (index) => {
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
   };
 
   // 리뷰 제출
@@ -41,30 +123,50 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
     try {
       setSubmitting(true);
 
-      const { error } = await supabase
-        .from('reviews')
-        .insert({
-          uid: user.id,
-          oiid: orderItem.oiid,
-          pid: orderItem.pid,
-          rating: rating,
-          title: content.substring(0, 50), // 내용의 일부를 제목으로
-          content: content.trim(),
-          images: images.length > 0 ? images : null,
-          author_name: userInfo.name,
-          author_nickname: userInfo.user_id,
-          is_visible: true
-        });
+      if (isEditMode) {
+        // UPDATE
+        const { error } = await supabase
+          .from('reviews')
+          .update({
+            rating: rating,
+            title: content.substring(0, 50),
+            content: content.trim(),
+            images: images.length > 0 ? images : null,
+            updated_at: new Date().toISOString()
+          })
+          .eq('rid', existingReview.rid)
+          .eq('uid', user.id); // 본인 리뷰만 수정 가능
 
-      if (error) throw error;
+        if (error) throw error;
+        alert('리뷰가 수정되었습니다!');
 
-      alert('리뷰가 작성되었습니다!');
-      onSuccess(); // 리뷰 작성 후 목록 새로고침
+      } else {
+        // INSERT
+        const { error } = await supabase
+          .from('reviews')
+          .insert({
+            uid: user.id,
+            oiid: orderItem.oiid,
+            pid: orderItem.pid,
+            rating: rating,
+            title: content.substring(0, 50), // 글 앞부분을 제목으로
+            content: content.trim(),
+            images: images.length > 0 ? images : null,
+            author_name: userInfo.name,
+            author_nickname: userInfo.user_id,
+            is_visible: true
+          });
+
+        if (error) throw error;
+        alert('리뷰가 작성되었습니다!');
+      }
+
+      onSuccess(); // 리뷰 목록 새로고침
       onClose(); // 모달 닫기
 
     } catch (error) {
-      console.error('리뷰 작성 실패:', error);
-      alert('리뷰 작성에 실패했습니다.');
+      console.error('리뷰 작성/수정 실패:', error);
+      alert(isEditMode ? '리뷰 수정에 실패했습니다.' : '리뷰 작성에 실패했습니다.');
     } finally {
       setSubmitting(false);
     }
@@ -75,7 +177,7 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {/* 모달 헤더 */}
         <div className="modal-header">
-          <h2>리뷰 작성</h2>
+          <h2>{isEditMode ? '리뷰 수정' : '리뷰 작성'}</h2>
           <button className="modal-close-btn" onClick={onClose}>
             ✕
           </button>
@@ -83,37 +185,19 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
 
         {/* 상품 정보 */}
         <div className="modal-product-info">
-          <img 
-            src={orderItem.products?.thumbnail_url} 
-            alt={orderItem.product_name}
+          <img
+            src={thumbnailUrl}
+            alt={productName}
             className="product-thumbnail"
           />
           <div className="product-details">
-            <p className="brand-name">
-              {orderItem.product_brand || orderItem.products?.brands?.name}
-            </p>
-            <p className="product-name">
-              {orderItem.product_name || orderItem.products?.name}
-            </p>
+            <p className="brand-name">{brandName} </p>
+            <p className="product-name">{productName}</p>
           </div>
         </div>
 
         {/* 리뷰 폼 */}
         <form onSubmit={handleSubmit} className="review-modal-form">
-          {/* 적립 마일리지 정보 */}
-          <div className="review-point-info">
-            <div className="point-conditions">
-              <label>
-                <input type="checkbox" disabled checked />
-                50자 이상 작성
-              </label>
-              <label>
-                <input type="checkbox" disabled />
-                제품 사진 첨부
-              </label>
-            </div>
-          </div>
-
           {/* 별점 */}
           <div className="form-group">
             <label className="required">상품은 어떠셨나요?</label>
@@ -135,12 +219,48 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
 
           {/* 사진 첨부 */}
           <div className="form-group">
-            <label>상품 사진 또는 착용 사진을 올려주세요</label>
+            <label>상품 사진 또는 착용 사진을 올려주세요.</label>
             <p className="sub-label">
               상품과 상관없는 사진 및 동영상을 첨부한 리뷰는 통보없이 삭제될 수 있습니다.
             </p>
             <div className="image-upload-area">
-              <label htmlFor="image-upload" className="upload-box">
+              {/* 업로드된 이미지 미리보기 */}
+              {images.map((url, index) => (
+                <div key={index} className="uploaded-image">
+                  <img src={url} alt={`업로드 이미지 ${index + 1}`} />
+                  <button
+                    type="button"
+                    className="remove-image-btn"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+
+              {/* 5개 미만일 때만 업로드 버튼 표시 */}
+              {images.length < 5 && (
+                <label htmlFor="image-upload" className="upload-box">
+                  {uploading ? (
+                    <div className="upload-icon">⏳</div>
+                  ) : (
+                    <>
+                      <div className="upload-icon">+</div>
+                      <p>{images.length}/5</p>
+                    </>
+                  )}
+                </label>
+              )}
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+                disabled={uploading || images.length >= 5}
+              />
+              {/* <label htmlFor="image-upload" className="upload-box">
                 <div className="upload-icon">+</div>
               </label>
               <input
@@ -150,7 +270,7 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
                 multiple
                 onChange={handleImageUpload}
                 style={{ display: 'none' }}
-              />
+              /> */}
             </div>
           </div>
 
@@ -174,7 +294,10 @@ export default function ReviewWriteModal({ orderItem, onClose, onSuccess }) {
             disabled={submitting}
             className="submit-review-btn"
           >
-            {submitting ? '등록 중...' : '등록하기'}
+            {submitting
+              ? (isEditMode ? '수정 중...' : '등록 중...')
+              : (isEditMode ? '수정하기' : '등록하기')
+            }
           </button>
         </form>
       </div>
