@@ -3,7 +3,7 @@
 }
 
 .brand-bg {
-    background-color: #ccc;
+    background-color: #eee;
 }
 
 .brand-info-wrap {
@@ -13,6 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .brand-name-logo {
@@ -23,16 +24,24 @@
 .brand-info-wrap .logo {
     width: 80px;
     height: 80px;
+    border: 1px solid #000;
+    background-color: #fff;
     border-radius: 100%;
+    object-fit: cover;
 }
 
 .brand-info-wrap h2 {
     font-size: 1.5em;
     padding: 0 20px;
+    display: flex;
+    align-items: top;
 }
 
 .brand-info-wrap .btn-wish {
     position: relative;
+}
+.brand-info-wrap .btn-wish:disabled {
+    cursor: not-allowed;
 }
 .brand-info-wrap .btn-wish span {
     position: absolute;
@@ -46,4 +55,30 @@
 
 .brand-products-wrap {
     margin-top: 40px;
+}
+
+/* 관리자 버튼 */
+
+#brand-wrap .btn-admin {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#brand-wrap .active-badge {
+    padding: 6px 12px;
+    margin-left: 15px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 50px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+#brand-wrap .active-badge.false {
+    border-color: #ddd;
+    background: #ddd;
+    color: #666;
 }

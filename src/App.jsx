@@ -25,8 +25,11 @@ import OrderList from '@pages/order/OrderList';
 import Notice from '@pages/support/Notice';
 import OrderInquiries from '@pages/support/OrderInquiries';
 
-import NotFound from '@pages/error/NotFound';
 import OrderManagement from '@pages/admin/OrderManagement';
+import BrandManagement from '@pages/admin/BrandManagement';
+
+
+import NotFound from '@pages/error/NotFound';
 import MyPage from '@pages/mypage/MyPage';
 
 console.log('Supabase 연결:', supabase)
@@ -83,6 +86,7 @@ function AppContent() {
 
         {/* admin */}
         <Route path="/admin/ordermanagement" element={<OrderManagement />} />
+        <Route path="/admin/brands" element={<BrandManagement />} />
       </Routes>
 
       {/* 로그인, 회원가입, 콜백 페이지 푸터X*/}

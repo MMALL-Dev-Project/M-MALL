@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '@config/supabase';
 import { getLogoSrc } from '@/utils/image';
 import { useLike } from '@hooks/useLike';
+import { useCheckAdmin } from '@hooks/useAdminAuth';
 import ProductList from '@components/products/ProductList';
 import './Brand.css';
 
@@ -12,9 +13,11 @@ const Brand = () => {
   const { bid } = useParams();
   const [brand, setBrand] = useState(null);
   const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const isAdmin = useCheckAdmin();
+
 
   // 페이지 상단으로
   useEffect(() => {
@@ -87,12 +90,23 @@ const Brand = () => {
     <div id='brand-wrap'>
       <div className='brand-bg'>
         <div className='brand-info-wrap'>
-          <a className='brand-name-logo' href={`/brand/${brand.bid}`}>
-            <img src={getLogoSrc(brand.logo_url)} alt={brand.name} className='logo' />
-            <h2>{brand.name}</h2>
-          </a>
+          {isAdmin &&
+            <button type='button' className='btn-admin'>브랜드 관리</button>
+          }
+          <div className='brand-name-logo'>
+            <a href={`/brand/${brand.bid}`}>
+              <img src={getLogoSrc(brand.logo_url)} alt={brand.name} className='logo' />
+            </a>
+            <h2>
+              {brand.name}
+              {isAdmin &&
+                <span className={`active-badge ${brand.is_active}`}>
+                  {brand.is_active === true || brand.is_active === "true" ? "활성" : "비활성"}
+                </span>}
+            </h2>
+          </div>
           {/* 브랜드 좋아요 버튼 */}
-          <button className='btn-wish' onClick={handleLikeToggle}>
+          <button className='btn-wish' onClick={handleLikeToggle} disabled={isAdmin}>
             <img src={liked ? `${import.meta.env.BASE_URL}images/icons/ico_likeFull.png` : `${import.meta.env.BASE_URL}images/icons/ico_like.png`} alt="좋아요" />
             <span>{likeCount}</span>
           </button>
