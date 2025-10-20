@@ -10,3 +10,96 @@
     border: 1px solid #ddd;
     cursor: pointer;
 }
+
+/* 관리자 페이지 */
+.admin-wrap {
+    max-width: 1300px;
+    margin: 80px auto 0;
+    padding: 0 15px;
+}
+
+.admin-wrap .admin-title {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 관리자 페이지 - 표 */
+.admin-wrap .admin-table {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+.admin-wrap .admin-table thead {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #333;
+}
+
+.admin-wrap .admin-table th,
+.admin-wrap .admin-table td {
+    padding: 15px 10px;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-wrap .admin-table th:last-child,
+.admin-wrap .admin-table td:last-child {
+    border-right: none;
+}
+
+.admin-wrap .admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table .active-badge {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 50px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.admin-table .active-badge.false {
+    border-color: #ddd;
+    background: #ddd;
+    color: #666;
+}
+
+.admin-table button {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    background: #333;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .3s, border-color .3s;
+}
+
+.admin-table button:hover {
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-admin {
+    display: inline-block;
+    padding: 10px 8px 10px 32px;
+    background: url('../public/images/icons/ico_setting.png') no-repeat 8px center/20px;
+    color: #666;
+    background-color: #ddd;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-admin:hover {
+    background-color: #ccc;
+}

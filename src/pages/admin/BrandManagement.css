@@ -1,0 +1,134 @@
+/* 브랜드 관리 제목 */
+#brand-admin .brand-admin-title {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+#brand-admin .brand-admin-title div {
+    display: flex;
+    align-items: center;
+}
+
+#brand-admin .btn-brnad-add {
+    padding: 8px;
+    margin-left: 10px;
+    margin-bottom: -2px;
+    border: 1px solid #333;
+    background-color: #eee;
+    font-size: 1rem;
+    font-weight: normal;
+    display: block;
+    font-size: 0.875rem;
+    transition: background .3s, color .3s;
+}
+
+#brand-admin .btn-brnad-add:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.brand-admin-table {
+    text-align: center;
+}
+
+.brand-admin-table td.logo {
+    width: 80px;
+    padding: 0;
+}
+
+.brand-admin-table td.name {
+    width: 260px;
+}
+
+.brand-admin-table td.badge {
+    width: 110px;
+}
+
+.brand-admin-table td.page-btn {
+    width: 150px;
+}
+
+.brand-admin-table td.manage-btn {
+    width: 150px;
+}
+
+.brand-admin-card .brand-logo-img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.brand-admin-card .btn-detail {
+    background-color: #ddd;
+    border-color: #ddd;
+    color: #333;
+}
+
+.brand-admin-card .btn-detail:hover {
+    /* color: #fff; */
+    background-color: #aaa;
+    border-color: #aaa;
+}
+
+.brand-admin-card .btn-delete {
+    background-color: #a00;
+    border-color: #a00;
+    margin-left: 1px;
+}
+
+.brand-admin-card .btn-delete:hover {
+    background-color: #800;
+    border-color: #800;
+}
+
+/* 브랜드 생성 모달 */
+#brand-admin .modal-content {
+    width: 600px;
+}
+
+#brand-admin .modal-header {
+    padding: 0 0 20px 0;
+    margin-bottom: 20px;
+    border-color: #000;
+}
+
+#brand-admin .modal-header h3 {
+    font-size: 20px;
+    padding: 0;
+    border: 0;
+}
+
+#brand-admin .modal-content label {
+    margin-bottom: 20px;
+}
+#brand-admin .image-preview {
+    margin-bottom: 20px;
+}
+#brand-admin .image-preview img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid #eee;
+}
+
+#brand-admin .file-name {
+    margin-top: 10px;
+    color: #999;
+    font-size: 0.825em;
+}
+
+#brand-admin .modal-content .modal-actions {
+    padding: 0;
+}
+
+#brand-admin .modal-content .btn-submit {
+    border: 0;
+    background-color: #333;
+    color: #fff;
+}
+#brand-admin .modal-content .btn-submit:hover {
+    background-color: #000;
+}
