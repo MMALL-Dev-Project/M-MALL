@@ -25,9 +25,10 @@ import OrderList from '@pages/order/OrderList';
 import Notice from '@pages/support/Notice';
 import OrderInquiries from '@pages/support/OrderInquiries';
 
+import UserManagement from '@pages/admin/UserManagement';
 import OrderManagement from '@pages/admin/OrderManagement';
 import BrandManagement from '@pages/admin/BrandManagement';
-import ContentManagement from '@pages/admin/ContentManagement'; 
+import ContentManagement from '@pages/admin/ContentManagement';
 
 
 import NotFound from '@pages/error/NotFound';
@@ -86,6 +87,7 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
 
         {/* admin */}
+        <Route path="/admin/users" element={<UserManagement />} />
         <Route path="/admin/ordermanagement" element={<OrderManagement />} />
         <Route path="/admin/brands" element={<BrandManagement />} />
         <Route path="/admin/content" element={<ContentManagement />} />
