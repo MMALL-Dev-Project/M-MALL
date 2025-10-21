@@ -4,11 +4,11 @@ import { useAuth } from '../contexts/AuthContext';
 
 export const useUserSettings = () => {
   const { user } = useAuth(); // 현재 로그인한 사용자 정보
-  const [ settings, setSettings ] = useState({
+  const [settings, setSettings] = useState({
     save_search_history: true, // 검색어 저장 기본값
   });
 
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchUserSettings = async () => {
     setLoading(true); // 로딩 시작
@@ -20,7 +20,7 @@ export const useUserSettings = () => {
           .select('notification_settings')
           .eq('id', user.id)
           .single();
-        
+
         if (error) {
           console.error('설정 불러오기 오류:', error);
           return
@@ -51,7 +51,7 @@ export const useUserSettings = () => {
   const updateSetting = async (key, value) => {
     try {
       if (user) {
-        const { data: currentData } =await supabase
+        const { data: currentData } = await supabase
           .from('user_info')
           .select('notification_settings')
           .eq('id', user.id)
@@ -93,50 +93,66 @@ export const useUserSettings = () => {
 
   // 검색어 저장 설정 토글 함수
   const toggleSearchHistorySetting = async () => {
-    const newValue = !settings.save_search_history; // 현재 값의 반대
+    const newValue = !settings.save_search_history;
+
+    // 먼저 화면 상태 업데이트 (즉시 반영)
+    setSettings(prev => ({
+      ...prev,
+      save_search_history: newValue
+    }));
+
+    // 그 다음 DB 저장
     const success = await updateSetting('save_search_history', newValue);
 
-    // 토글 off 해도 데이터 보존됨
-    if (success && !newValue) {
-      console.log('검색어 저장이 꺼졌습니다. 기존 기록은 보존되며 화면에서만 숨겨집니다.');
-    } else if (success && newValue) {
-      console.log('검색어 저장이 켜졌습니다. 기존 기록이 다시 표시됩니다.');
+    // 실패하면 원래대로 되돌리기
+    if (!success) {
+      setSettings(prev => ({
+        ...prev,
+        save_search_history: !newValue
+      }));
     }
+
+    if (success && !newValue) {
+      console.log('검색어 저장이 꺼졌습니다.');
+    } else if (success && newValue) {
+      console.log('검색어 저장이 켜졌습니다.');
+    }
+
     return success;
   };
 
   // 검색 기록 삭제
-   const clearSearchHistory = async () => {
+  const clearSearchHistory = async () => {
     try {
       if (user) { // 로그인 사용자: DB에서 검색 기록 삭제
         const { error } = await supabase
           .from('search_history')
           .delete()
           .eq('uid', user.id);
-        
+
         if (error) throw error;
       } else { // 비로그인 사용자: localStorage에서 검색 기록 삭제
         localStorage.removeItem('searchHistory');
       }
       return true;
-    } catch (error) { 
+    } catch (error) {
       console.error('검색 기록 삭제 실패:', error);
       return false;
     }
   };
 
   // 컴포넌트가 처음 렌더링될 때, 또는 user가 변경될 때 설정 불러오기
-  useEffect (() => {
+  useEffect(() => {
     fetchUserSettings();
   }, [user]);
-  
+
   // 이 훅을 사용하는 컴포넌트에게 제공할 값들과 함수들
   return {
-    settings, // 현재 설정값들
-    loading, // 로딩 상태
-    updateSetting, // 설정 업데이트 함수
-    toggleSearchHistorySetting, // 검색어 저장 토글 함수
-    clearSearchHistory, // 검색 기록 삭제 함수
-    fetchUserSettings // 설정 다시 불러오기 함수
+    settings,
+    loading,
+    updateSetting,
+    toggleSearchHistorySetting,
+    clearSearchHistory,
+    fetchUserSettings
   };
 };
