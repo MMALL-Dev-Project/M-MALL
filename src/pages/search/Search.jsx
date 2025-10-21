@@ -2,19 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
 import ProductCard from '../../components/products/ProductCard.jsx';
-import { useUserSettings } from '../../hooks/useUserSettings.js'
+import { useUserSettings } from '../../hooks/useUserSettings.js';
 import { useSearchHistory } from '../../hooks/useSearchHistory.js'
 import './Search.css';
 
 const Search = () => {
-  const { settings } = useUserSettings();
+  const { settings, toggleSearchHistorySetting } = useUserSettings();
   const {
     searchHistory,
     saveSearchKeyword,
     deleteSearchKeyword,
     clearAllSearchHistory,
-    isSearchHistoryEnabled
   } = useSearchHistory();
+
+  // settings에서 직접 가져오기
+  const isSearchHistoryEnabled = settings?.save_search_history ?? true;
+
   const [searchValue, setSearchValue] = useState('');
   const [placeholder, setPlaceholder] = useState('검색어를 입력하세요');
   const [activeTab, setActiveTab] = useState('product');
@@ -26,21 +29,57 @@ const Search = () => {
     contents: [],
     lookbooks: []
   });
+
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const inputRef = useRef(null);
-
-  // 검색 기록 관련 상태
   const [showHistory, setShowHistory] = useState(false);
+  const [popularKeywords, setPopularKeywords] = useState([]);
+  const [realtimeKeywords, setRealtimeKeywords] = useState([]);
 
-  const [popularKeywords, setPopularKeywords] = useState([
-    '임시 데이터1', '임시 데이터2', '임시 데이터3', '임시 데이터4', '임시 데이터5', '콩나물국밥', '새우구이', '초밥', '배고파', '저녁뭐먹지'
-  ]);
-  const [realtimeKeywords, setRealtimeKeywords] = useState([
-    '임시 데이터1', '추석 연휴', '추석 선물', '여행', '국내 여행', '해외 여행', '패딩', '자켓', '샴푸', '신발'
-  ]);
+  //***** Placeholder 설정 및 검색 실행 *****
+  useEffect(() => {
+    setPlaceholder(getWeeklySpecialPlaceholder());
 
+    const query = searchParams.get('q');
+    if (query) {
+      setSearchValue(query);
+      setIsSearching(true);
+      performSearch(query);
+    } else {
+      setIsSearching(false);
+    }
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchParams]);
+
+  //***** 인기/실시간 검색어 로드 및 주기적 갱신 *****
+  useEffect(() => {
+    // 최초 로드
+    loadPopularKeywords();
+    loadRealtimeKeywords();
+
+    // 5분마다 자동 갱신
+    const interval = setInterval(() => {
+      loadPopularKeywords();
+      loadRealtimeKeywords();
+    }, 5 * 60 * 1000); // 5분 = 300,000ms
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 정리
+  }, []);
+
+  //***** 검색창 바깥 클릭 이벤트 *****
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  //***** Placeholder 생성 함수들 *****
   const getBrandBasedPlaceholder = () => { // 아직은 안씀 나중에 관리자 페이지 할 때 수정할 예정
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -127,77 +166,39 @@ const Search = () => {
     return categoryTexts[Math.floor(Math.random() * categoryTexts.length)];
   };
 
-  useEffect(() => {
-    setPlaceholder(getWeeklySpecialPlaceholder());
+  //***** 인기 검색어 로드 함수 *****
+  const loadPopularKeywords = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('popular_keywords')
+        .select('keyword, weekly_count')
+        .order('weekly_count', { ascending: false })
+        .limit(10);
 
-    const query = searchParams.get('q');
-    if (query) {
-      setSearchValue(query);
-      setIsSearching(true);
-      performSearch(query);
-    } else {
-      setIsSearching(false);
+      if (error) throw error;
+
+      setPopularKeywords(data?.map(item => item.keyword) || []);
+    } catch (error) {
+      console.error('인기 검색어 로드 실패:', error);
+      setPopularKeywords([]); // 에러 시 빈 배열
     }
+  }
 
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [searchParams]);
+  //***** 실시간 검색어 로드 함수 *****
+  const loadRealtimeKeywords = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('popular_keywords')
+        .select('keyword, hourly_count')
+        .order('hourly_count', { ascending: false })
+        .limit(10);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (searchValue.trim()) {
-      // 검색어 저장
-      await saveSearchKeyword(searchValue.trim());
+      if (error) throw error;
 
-      setIsSearching(true);
-      navigate(`/search?q=${encodeURIComponent(searchValue)}`);
-      setShowHistory(false); // 검색 기록 숨기기
-    }
-  };
-
-  // 검색 기록 클릭 처리 함수
-  const handleHistoryClick = async (keyword) => {
-    setSearchValue(keyword);
-    // 검색어 저장 
-    await saveSearchKeyword(keyword);
-    setIsSearching(true);
-    navigate(`/search?q=${encodeURIComponent(keyword)}`);
-    setShowHistory(false);
-  };
-
-  // 검색창 포커스 처리
-  const handleInputFocus = () => {
-    setShowHistory(true);
-  };
-
-  // 검색창 바깥 클릭 시 기록 숨기기 (새로 추가)
-  const handleClickOutside = (e) => {
-    if (!e.target.closest('.search-input-section')) {
-      setShowHistory(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-  const handleClearSearch = () => {
-    setSearchValue('');
-    setIsSearching(false);
-    setSearchResults({
-      products: [],
-      brands: [],
-      events: [],
-      contents: [],
-      lookbooks: []
-    });
-    navigate('/search');
-    if (inputRef.current) {
-      inputRef.current.focus();
+      setRealtimeKeywords(data?.map(item => item.keyword) || []);
+    } catch (error) {
+      console.error('실시간 검색어 로드 실패:', error);
+      setRealtimeKeywords([]); // 에러 시 빈 배열
     }
   };
 
@@ -206,7 +207,6 @@ const Search = () => {
     setLoading(true);
 
     try {
-      // 상품 검색
       const { data: productData } = await supabase
         .from('products')
         .select(`
@@ -234,11 +234,57 @@ const Search = () => {
       });
 
       setActiveTab('product'); // 검색 후 상품 탭으로 이동
-
     } catch (error) {
       console.error('검색 중 오류:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      await saveSearchKeyword(searchValue.trim());
+      setIsSearching(true);
+      navigate(`/search?q=${encodeURIComponent(searchValue)}`);
+      setShowHistory(false); // 검색 기록 숨기기
+    }
+  };
+
+  // 검색 기록 클릭 처리 함수
+  const handleHistoryClick = async (keyword) => {
+    setSearchValue(keyword);
+    await saveSearchKeyword(keyword);
+    setIsSearching(true);
+    navigate(`/search?q=${encodeURIComponent(keyword)}`);
+    setShowHistory(false);
+  };
+
+  // 검색창 포커스 처리
+  const handleInputFocus = () => {
+    setShowHistory(true);
+  };
+
+  // 검색창 바깥 클릭 시 기록 숨기기 (새로 추가)
+  const handleClickOutside = (e) => {
+    if (!e.target.closest('.search-input-section')) {
+      setShowHistory(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchValue('');
+    setIsSearching(false);
+    setSearchResults({
+      products: [],
+      brands: [],
+      events: [],
+      contents: [],
+      lookbooks: []
+    });
+    navigate('/search');
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
 
@@ -270,51 +316,11 @@ const Search = () => {
             </span>
           </button>
         </form>
-        {/* 검색 기록 드롭다운 (새로 추가) */}
-        {/*
-        {showHistory && isSearchHistoryEnabled && (
-          <div className="search-history-dropdown">
-            <div className="history-header">
-              <span>최근 검색어</span>
-              {searchHistory.length > 0 && (
-                <button
-                  onClick={clearAllSearchHistory}
-                  className="clear-all-btn"
-                >
-                  전체삭제
-                </button>
-              )}
-            </div>
 
-            <div className="history-list">
-              {searchHistory.length > 0 ? (
-                searchHistory.map((keyword, index) => (
-                  <div key={index} className="history-item">
-                    <span
-                      onClick={() => handleHistoryClick(keyword)}
-                      className="keyword"
-                    >
-                      {keyword}
-                    </span>
-                    <button
-                      onClick={() => deleteSearchKeyword(keyword)}
-                      className="delete-btn"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <div className="no-history">최근 검색어가 없습니다</div>
-              )}
-            </div>
-          </div>
-        )}*/}
         {/* 검색 드롭다운 - 3섹션 구조 */}
         {showHistory && (
           <div className="search-dropdown">
             <div className="dropdown-sections">
-
               {/* 왼쪽: 최근 검색어 */}
               <div className="recent-section">
                 <div className="section-header">
@@ -379,6 +385,23 @@ const Search = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            {/* 하단 토글 섹션 추가 */}
+            <div className="search-settings-footer">
+              <div className="settings-item">
+                <div className="settings-label">
+                  <span>검색어 저장</span>
+                </div>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={isSearchHistoryEnabled}
+                    onChange={toggleSearchHistorySetting}
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
               </div>
             </div>
           </div>
