@@ -1,0 +1,341 @@
+/* 카테고리 관리 페이지 */
+#category-admin {
+  /* admin-wrap 스타일은 App.css에 정의되어 있음 */
+}
+
+.category-admin-title {
+  /* admin-title 스타일은 App.css에 정의되어 있음 */
+}
+
+/* 카테고리 추가 버튼 */
+.btn-category-add {
+  margin-left: 20px;
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-category-add:hover {
+  background: #000;
+}
+
+/* 테이블 컨테이너 */
+.category-admin-container {
+  margin-top: 20px;
+}
+
+/* 테이블 스타일 */
+.category-admin-table {
+  /* 기본 admin-table 스타일 사용 */
+}
+
+/* 카테고리명 */
+.category-admin-table .name {
+  font-weight: 600;
+  color: #000;
+}
+
+/* Slug */
+.category-admin-table .slug {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 서브카테고리 영역 */
+.sub-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.sub-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+}
+
+.sub-item span {
+  font-size: 13px;
+  color: #333;
+}
+
+.sub-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* 작은 버튼 (서브카테고리용) */
+.btn-edit-small,
+.btn-delete-small {
+  padding: 4px 10px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-edit-small:hover {
+  background: #333;
+  color: #fff;
+}
+
+.btn-delete-small {
+  border-color: #666;
+  color: #666;
+}
+
+.btn-delete-small:hover {
+  background: #666;
+  color: #fff;
+  border-color: #666;
+}
+
+/* 서브카테고리 추가 버튼 */
+.btn-sub-add {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #333;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn-sub-add:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* 관리 버튼 */
+.category-admin-table .manage-btn {
+  /* 기본 스타일 사용 */
+}
+
+.btn-edit {
+  padding: 8px 16px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-right: 6px;
+}
+
+.btn-edit:hover {
+  background: #333;
+  color: #fff;
+}
+
+.btn-delete {
+  padding: 8px 16px;
+  border: 1px solid #333;
+  background: #333;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-delete:hover {
+  background: #000;
+  border-color: #000;
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 컨텐츠 */
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+}
+
+/* 모달 헤더 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #333;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* 모달 닫기 버튼 */
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+/* 모달 폼 */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 폼 그룹 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 입력 필드 */
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus {
+  outline: none;
+  border-color: #333;
+}
+
+/* 버튼 */
+.btn {
+  padding: 10px 20px;
+  border: 1px solid #333;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* 제출 버튼 */
+.btn-submit {
+  background: #333;
+  color: #fff;
+  border: none;
+}
+
+.btn-submit:hover {
+  background: #000;
+}
+
+.btn-submit:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+/* 모달 액션 버튼 영역 */
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 반응형 - 태블릿 */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .sub-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .sub-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 480px) {
+  .btn-category-add {
+    margin-left: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .modal-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .category-admin-table .name,
+  .category-admin-table .slug {
+    font-size: 12px;
+  }
+}
