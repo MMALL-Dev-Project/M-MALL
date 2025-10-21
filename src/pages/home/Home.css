@@ -34,7 +34,8 @@
 
 .home-main .main-visual img {
   width: 100%;
-  height: auto;
+  height: 700px;
+  object-fit: cover;
   display: block;
 }
 /* ===================================CONT1 (스페셜 쇼케이스) 시작 */
@@ -284,4 +285,60 @@
   border-radius: 6px;
   padding: 3px 8px;
   display: inline-block;
+}
+
+/* 반응형 - 1920px 이하 */
+@media (max-width: 1920px) {
+  .home-main .main-visual img {
+    height: 700px;
+  }
+}
+
+/* 반응형 - 1440px 이하 */
+@media (max-width: 1440px) {
+  .home-main .main-visual img {
+    height: 600px;
+  }
+}
+
+/* 반응형 - 1200px 이하 */
+@media (max-width: 1200px) {
+  .home-main .main-visual img {
+    height: 500px;
+  }
+}
+
+/* 반응형 - 태블릿 (768px 이하) */
+@media (max-width: 768px) {
+  .home-main .main-visual {
+    margin-bottom: 80px;
+  }
+  
+  .home-main .main-visual img {
+    height: 400px;
+  }
+  
+  .home-main .main-visual .swiper-button-prev {
+    left: 20px;
+  }
+  
+  .home-main .main-visual .swiper-button-next {
+    right: 20px;
+  }
+}
+
+/* 반응형 - 모바일 (480px 이하) */
+@media (max-width: 480px) {
+  .home-main .main-visual {
+    margin-bottom: 60px;
+  }
+  
+  .home-main .main-visual img {
+    height: 300px;
+  }
+  
+  .home-main .main-visual .swiper-button-prev,
+  .home-main .main-visual .swiper-button-next {
+    display: none;  /* 모바일에서는 네비게이션 버튼 숨김 */
+  }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
@@ -7,10 +7,51 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// 커스텀 스타일
+// 추가
+import { supabase } from '@config/supabase';
+
 import './Home.css';
 
 const Home = () => {
+    // 메인 비주얼 배너 상태 추가
+    const [mainVisualBanners, setMainVisualBanners] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // 컴포넌트 마운트 시 배너 데이터 가져오기
+    useEffect(() => {
+        fetchMainVisualBanners();
+    }, []);
+
+    // 메인 비주얼 배너 가져오는 함수
+    const fetchMainVisualBanners = async () => {
+        try {
+            // Supabase에서 MAIN_VISUAL 타입의 활성화된 배너 조회
+            const { data, error } = await supabase
+                .from('content_banners')
+                .select('*')
+                .eq('type', 'MAIN_VISUAL')  // 메인 비주얼 타입만
+                .eq('is_active', true)       // 활성화된 것만
+                .order('display_order', { ascending: true })  // 순서대로 정렬
+                .order('id', { ascending: false });           // 같은 순서면 최신순
+
+            // 에러 처리
+            if (error) {
+                console.error('배너 조회 에러:', error);
+                // 에러 발생 시 빈 배열 사용 (페이지는 정상 표시)
+                setMainVisualBanners([]);
+            } else {
+                // 데이터 저장
+                setMainVisualBanners(data || []);
+            }
+        } catch (error) {
+            console.error('배너 로드 실패:', error);
+            setMainVisualBanners([]);
+        } finally {
+            // 로딩 완료
+            setLoading(false);
+        }
+    };
+
     // 서비스 준비중
     const handleComingSoon = (e) => {
         e.preventDefault();
@@ -28,33 +69,41 @@ const Home = () => {
         );
     };
 
+    // 배너 클릭 핸들러
+    const handleBannerClick = (e, linkUrl) => {
+        // 링크가 없으면 준비중 메시지
+        if (!linkUrl || linkUrl === '#') {
+            handleComingSoon(e);
+        } // 링크가 있으면 그대로 이동 (a 태그의 기본 동작)
+    };
+
     // 메인 슬라이더 이미지 데이터
-    const mainVisualImages = [
-        {
-            id: 1,
-            src: `${import.meta.env.BASE_URL}images/mainVisual4.png`,
-            alt: 'rare book room',
-            link: '#'
-        },
-        {
-            id: 2,
-            src: `${import.meta.env.BASE_URL}images/mainVisual.png`,
-            alt: 'rare book room',
-            link: '#'
-        },
-        {
-            id: 3,
-            src: `${import.meta.env.BASE_URL}images/mainVisual2.png`,
-            alt: 'rare book room',
-            link: '#'
-        },
-        {
-            id: 4,
-            src: `${import.meta.env.BASE_URL}images/mainVisual3.png`,
-            alt: 'rare book room',
-            link: '#'
-        }
-    ];
+    // const mainVisualImages = [
+    //     {
+    //         id: 1,
+    //         src: `${import.meta.env.BASE_URL}images/mainVisual4.png`,
+    //         alt: 'rare book room',
+    //         link: '#'
+    //     },
+    //     {
+    //         id: 2,
+    //         src: `${import.meta.env.BASE_URL}images/mainVisual.png`,
+    //         alt: 'rare book room',
+    //         link: '#'
+    //     },
+    //     {
+    //         id: 3,
+    //         src: `${import.meta.env.BASE_URL}images/mainVisual2.png`,
+    //         alt: 'rare book room',
+    //         link: '#'
+    //     },
+    //     {
+    //         id: 4,
+    //         src: `${import.meta.env.BASE_URL}images/mainVisual3.png`,
+    //         alt: 'rare book room',
+    //         link: '#'
+    //     }
+    // ];
 
     // 스페셜 쇼케이스 데이터
     const specialShowcase = [
@@ -133,13 +182,56 @@ const Home = () => {
                 }}
                 loop={true}
             >
-                {mainVisualImages.map((image) => (
+                {/* {mainVisualImages.map((image) => (
                     <SwiperSlide key={image.id}>
                         <a href="#" onClick={handleComingSoon}>
                             <img src={image.src} alt={image.alt} />
                         </a>
                     </SwiperSlide>
-                ))}
+                ))} */}
+                {/* 로딩 중일 때 */}
+                {loading ? (
+                    <SwiperSlide>
+                        <div style={{
+                            height: '600px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: '#f5f5f5'
+                        }}>
+                            로딩 중...
+                        </div>
+                    </SwiperSlide>
+                ) : mainVisualBanners.length > 0 ? (
+                    /* DB에서 가져온 배너 표시 */
+                    mainVisualBanners.map((banner) => (
+                        <SwiperSlide key={banner.id}>
+                            <a
+                                href={banner.link_url || '#'}
+                                onClick={(e) => handleBannerClick(e, banner.link_url)}
+                            >
+                                <img
+                                    src={banner.image_url}
+                                    alt={banner.title || 'banner'}
+                                />
+                            </a>
+                        </SwiperSlide>
+                    ))
+                ) : (
+                    /* 배너가 없을 때 */
+                    <SwiperSlide>
+                        <div style={{
+                            height: '600px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: '#f5f5f5',
+                            color: '#999'
+                        }}>
+                            등록된 배너가 없습니다
+                        </div>
+                    </SwiperSlide>
+                )}
             </Swiper>
 
             {/* CONT1 - 스페셜 쇼케이스 */}
