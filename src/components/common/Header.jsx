@@ -112,6 +112,7 @@ const Header = () => {
             <NavLink to="/admin/brands" className="admin-link">브랜드 관리</NavLink>
             <NavLink to="/admin/products" className="admin-link">상품 관리</NavLink>
             <NavLink to="/admin/content" className="admin-link">컨텐츠 관리</NavLink>
+            <NavLink to="/admin/categories" className="admin-link">카테고리 관리</NavLink>
           </nav>
         </div>
       )}

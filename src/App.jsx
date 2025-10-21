@@ -29,6 +29,7 @@ import UserManagement from '@pages/admin/UserManagement';
 import OrderManagement from '@pages/admin/OrderManagement';
 import BrandManagement from '@pages/admin/BrandManagement';
 import ContentManagement from '@pages/admin/ContentManagement';
+import CategoryManagement from '@pages/admin/CategoryManagement';
 
 
 import NotFound from '@pages/error/NotFound';
@@ -91,6 +92,7 @@ function AppContent() {
         <Route path="/admin/ordermanagement" element={<OrderManagement />} />
         <Route path="/admin/brands" element={<BrandManagement />} />
         <Route path="/admin/content" element={<ContentManagement />} />
+        <Route path="/admin/categories" element={<CategoryManagement />} />
       </Routes>
 
       {/* 로그인, 회원가입, 콜백 페이지 푸터X*/}
