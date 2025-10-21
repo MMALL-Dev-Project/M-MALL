@@ -1,0 +1,692 @@
+/* 회원 관리 페이지 전체 래퍼 */
+.admin-wrap {
+  /* App.css에 정의된 기본 스타일 사용 */
+}
+
+/* 검색 영역 */
+.user-search-section {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 검색 타입 선택 */
+.search-type-select {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.search-type-select:focus {
+  outline: none;
+  border-color: #333;
+}
+
+/* 검색 입력 필드 */
+.search-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* 검색 버튼 */
+.btn-search {
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-search:hover {
+  background: #000;
+}
+
+/* 로딩 상태 */
+.loading-state {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* 회원 목록 테이블 */
+.admin-container {
+  margin-top: 20px;
+}
+
+.admin-table {
+  /* App.css의 기본 admin-table 스타일 사용 */
+}
+
+/* 회원 테이블 행 호버 효과 */
+.user-row:hover {
+  background: #f5f5f5;
+}
+
+/* 프로필 이미지 */
+.user-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+}
+
+/* 등급 배지 */
+.role-badge {
+  font-weight: 500;
+  color: #333;
+  display: inline-block;
+}
+
+.role-badge span {
+  text-align: center;
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 컨텐츠 */
+.modal-content.user-detail-modal {
+  background: #fff;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+}
+
+/* 모달 헤더 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #333;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 모달 닫기 버튼 */
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+}
+
+.btn-close:hover {
+  color: #000;
+}
+
+/* 회원 기본 정보 영역 */
+.user-basic-info {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+/* 회원 상세 프로필 이미지 */
+.user-detail-profile {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* 회원 정보 상세 */
+.user-info-details {
+  flex: 1;
+}
+
+.user-info-details h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-info-details p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 탭 메뉴 */
+.user-detail-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 12px 20px;
+  background: #f5f5f5;
+  color: #666;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-button:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.tab-button.active {
+  background: #fff;
+  color: #333;
+  border-bottom: 2px solid #333;
+  font-weight: 600;
+}
+
+/* 탭 컨텐츠 */
+.tab-content {
+  min-height: 300px;
+  padding: 20px 0;
+}
+
+/* 빈 메시지 */
+.empty-message {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 15px;
+  color: #999;
+}
+
+/* 주문 목록 */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 주문 아이템 */
+.order-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #fff;
+}
+
+/* 주문 헤더 */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.order-date {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 주문 상태 배지 */
+.order-status {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.order-status.PENDING {
+  background: #fff;
+  color: #666;
+  border-color: #ddd;
+}
+
+.order-status.PAID {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.order-status.PREPARING {
+  background: #666;
+  color: #fff;
+  border-color: #666;
+}
+
+.order-status.SHIPPED {
+  background: #444;
+  color: #fff;
+  border-color: #444;
+}
+
+.order-status.DELIVERED {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.order-status.CANCELLED,
+.order-status.RETURNED {
+  background: #999;
+  color: #fff;
+  border-color: #999;
+}
+
+/* 주문 상품 목록 */
+.order-products {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* 주문 상품 */
+.order-product {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.product-thumbnail {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* 상품 정보 */
+.product-info {
+  flex: 1;
+}
+
+.brand-name {
+  font-size: 13px;
+  color: #999;
+  margin: 0 0 5px 0;
+}
+
+.product-name {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.product-quantity {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+/* 상품 가격 */
+.product-price {
+  font-size: 15px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* 주문 총액 */
+.order-total {
+  text-align: right;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-size: 15px;
+  color: #333;
+}
+
+.order-total strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* 문의 목록 */
+.inquiries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 문의 아이템 */
+.inquiry-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #fff;
+}
+
+/* 문의 헤더 */
+.inquiry-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* 문의 타입 */
+.inquiry-type {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+/* 문의 상태 배지 */
+.inquiry-status {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.inquiry-status.PENDING {
+  background: #fff;
+  color: #666;
+  border-color: #ddd;
+}
+
+.inquiry-status.ANSWERED {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+/* 문의 날짜 */
+.inquiry-date {
+  font-size: 13px;
+  color: #999;
+  margin-left: auto;
+}
+
+/* 문의 제목 */
+.inquiry-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+/* 문의 내용 */
+.inquiry-content {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+}
+
+/* 문의 관련 상품 */
+.inquiry-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.product-thumbnail-small {
+  width: 60px;
+  height: 75px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.inquiry-product span {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 관리자 답변 */
+.admin-answer {
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-left: 3px solid #333;
+  margin-top: 15px;
+}
+
+.admin-answer strong {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.admin-answer p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 8px 0;
+}
+
+.answer-date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 리뷰 목록 */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 리뷰 아이템 */
+.review-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #fff;
+}
+
+/* 리뷰 헤더 */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* 리뷰 별점 */
+.review-rating {
+  font-size: 16px;
+  color: #333;
+}
+
+/* 리뷰 날짜 */
+.review-date {
+  font-size: 13px;
+  color: #999;
+}
+
+/* 리뷰 관련 상품 */
+.review-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.review-product span {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 리뷰 내용 */
+.review-content {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+}
+
+/* 리뷰 이미지들 */
+.review-images {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.review-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* 반응형 - 태블릿 */
+@media (max-width: 768px) {
+  .user-search-section {
+    flex-direction: column;
+  }
+
+  .search-type-select,
+  .search-input,
+  .btn-search {
+    width: 100%;
+  }
+
+  .modal-content.user-detail-modal {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .user-basic-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .user-detail-profile {
+    width: 120px;
+    height: 120px;
+  }
+
+  .user-detail-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .order-product {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-thumbnail {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+  }
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 480px) {
+  .modal-content.user-detail-modal {
+    padding: 15px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .user-basic-info {
+    padding: 15px;
+  }
+
+  .user-detail-profile {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-info-details h3 {
+    font-size: 1.1rem;
+  }
+
+  .tab-button {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+
+  .order-item,
+  .inquiry-item,
+  .review-item {
+    padding: 15px;
+  }
+
+  .review-images {
+    gap: 8px;
+  }
+
+  .review-image {
+    width: 80px;
+    height: 80px;
+  }
+}
