@@ -14,6 +14,9 @@ const Header = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
   const [menuData, setMenuData] = useState([]);
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
+
   // 프로필 이미지
   const getProfileImage = () => {
     const profileImg = userInfo?.profile_image;
@@ -59,6 +62,20 @@ const Header = () => {
     fetchCategories();
   }, []);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setOpenMobileSubmenu(null);
+  };
+
+  const toggleMobileSubmenu = (index) => {
+    setOpenMobileSubmenu(openMobileSubmenu === index ? null : index);
+  };
+
+  const handleMobileLinkClick = () => {
+    setIsMobileMenuOpen(false);
+    setOpenMobileSubmenu(null);
+  };
+
   const handleMenuHover = (index) => {
     setHoveredMenu(index);
   };
@@ -99,6 +116,17 @@ const Header = () => {
         </div>
       )}
       <header id="header">
+        {/* 햄버거 메뉴 버튼 (모바일에서만 표시) */}
+        <button
+          className="hamburger-btn"
+          onClick={toggleMobileMenu}
+          aria-label="메뉴"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
         <h1 className="logo">
           <Link to="/">
             <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="M-MALL" />
@@ -141,11 +169,73 @@ const Header = () => {
           {/* 서브메뉴 배경 */}
           <div className={`sub-bg ${hoveredMenu !== null ? 'visible' : ''}`}></div>
         </nav>
+        {/* 모바일 사이드바 메뉴 */}
+        <div className={`mobile-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
+          <div className="mobile-sidebar-header">
+            <h2>MENU</h2>
+            <button
+              className="close-btn"
+              onClick={toggleMobileMenu}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <nav className="mobile-nav">
+            <ul className="mobile-menu-list">
+              {menuData.map((menu, index) => (
+                <li key={index} className={`mobile-menu-item ${menu.isSpecial ? 'special' : ''}`}>
+                  <div className="mobile-menu-header">
+                    <Link
+                      to={`/${menu.slug}`}
+                      onClick={handleMobileLinkClick}
+                      className="mobile-menu-link"
+                    >
+                      {menu.name}
+                    </Link>
+                    {menu.subMenu && menu.subMenu.length > 0 && (
+                      <button
+                        className="submenu-toggle"
+                        onClick={() => toggleMobileSubmenu(index)}
+                        aria-label="서브메뉴 열기"
+                      >
+                        {openMobileSubmenu === index ? '−' : '+'}
+                      </button>
+                    )}
+                  </div>
+                  {/* 모바일 서브메뉴 */}
+                  {menu.subMenu && menu.subMenu.length > 0 && (
+                    <ul className={`mobile-submenu ${openMobileSubmenu === index ? 'open' : ''}`}>
+                      {menu.subMenu.map((subItem, subIndex) => (
+                        <li key={subIndex}>
+                          <Link
+                            to={`/${menu.slug}/${subItem.slug}`}
+                            onClick={handleMobileLinkClick}
+                          >
+                            {subItem.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        {/* 모바일 오버레이 */}
+        {isMobileMenuOpen && (
+          <div
+            className="mobile-overlay"
+            onClick={toggleMobileMenu}
+          ></div>
+        )}
         {/* 우측 회원 */}
         <ul className="lnb">
           <li className="tooltip-container">
             <button onClick={handleSearch} aria-label="검색">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" /></svg>
             </button>
             <span className="tooltip">검색</span>
           </li>
@@ -167,7 +257,7 @@ const Header = () => {
                 {/* 관리자는 마이페이지 x */}
                 {isAdmin ? (
                   <span className="user-greeting admin-name">
-                    {userInfo?.name}<span></span>
+                    {userInfo?.name}
                   </span>
                 ) : (
                   <Link to="/mypage" aria-label="마이페이지">

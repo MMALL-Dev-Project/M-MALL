@@ -7,17 +7,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// 추가
 import { supabase } from '@config/supabase';
 
 import './Home.css';
 
 const Home = () => {
-    // 메인 비주얼 배너 상태 추가
+    // 메인 비주얼 배너 상태
     const [mainVisualBanners, setMainVisualBanners] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // 컴포넌트 마운트 시 배너 데이터 가져오기
     useEffect(() => {
         fetchMainVisualBanners();
     }, []);
@@ -34,20 +32,16 @@ const Home = () => {
                 .order('display_order', { ascending: true })  // 순서대로 정렬
                 .order('id', { ascending: false });           // 같은 순서면 최신순
 
-            // 에러 처리
             if (error) {
                 console.error('배너 조회 에러:', error);
-                // 에러 발생 시 빈 배열 사용 (페이지는 정상 표시)
                 setMainVisualBanners([]);
             } else {
-                // 데이터 저장
                 setMainVisualBanners(data || []);
             }
         } catch (error) {
             console.error('배너 로드 실패:', error);
             setMainVisualBanners([]);
         } finally {
-            // 로딩 완료
             setLoading(false);
         }
     };
@@ -74,36 +68,8 @@ const Home = () => {
         // 링크가 없으면 준비중 메시지
         if (!linkUrl || linkUrl === '#') {
             handleComingSoon(e);
-        } // 링크가 있으면 그대로 이동 (a 태그의 기본 동작)
+        }
     };
-
-    // 메인 슬라이더 이미지 데이터
-    // const mainVisualImages = [
-    //     {
-    //         id: 1,
-    //         src: `${import.meta.env.BASE_URL}images/mainVisual4.png`,
-    //         alt: 'rare book room',
-    //         link: '#'
-    //     },
-    //     {
-    //         id: 2,
-    //         src: `${import.meta.env.BASE_URL}images/mainVisual.png`,
-    //         alt: 'rare book room',
-    //         link: '#'
-    //     },
-    //     {
-    //         id: 3,
-    //         src: `${import.meta.env.BASE_URL}images/mainVisual2.png`,
-    //         alt: 'rare book room',
-    //         link: '#'
-    //     },
-    //     {
-    //         id: 4,
-    //         src: `${import.meta.env.BASE_URL}images/mainVisual3.png`,
-    //         alt: 'rare book room',
-    //         link: '#'
-    //     }
-    // ];
 
     // 스페셜 쇼케이스 데이터
     const specialShowcase = [
@@ -180,15 +146,8 @@ const Home = () => {
                     delay: 4000,
                     disableOnInteraction: false,
                 }}
-                loop={true}
+                loop={mainVisualBanners.length >= 2}
             >
-                {/* {mainVisualImages.map((image) => (
-                    <SwiperSlide key={image.id}>
-                        <a href="#" onClick={handleComingSoon}>
-                            <img src={image.src} alt={image.alt} />
-                        </a>
-                    </SwiperSlide>
-                ))} */}
                 {/* 로딩 중일 때 */}
                 {loading ? (
                     <SwiperSlide>
