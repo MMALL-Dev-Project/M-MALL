@@ -447,7 +447,7 @@ const handleAddressFormChange = (e) => {
         .from('orders')
         .insert([{
           uid: user.id,
-          pid: orderItems[0].pid, // 첫 번째 상품의 PID (기존 스키마 호환성)
+          pid: orderItems[0].pid,
           total_amount: pricing.finalTotal,
           status: 'PENDING',
           address_id: selectedAddress.aid
@@ -540,7 +540,6 @@ const handleAddressFormChange = (e) => {
   };
 
   return {
-    // 상태
     orderItems,
     addresses,
     selectedAddress,
