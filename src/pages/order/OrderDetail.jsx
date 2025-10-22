@@ -133,10 +133,10 @@ console.log('user_addresses:', order.user_addresses);
             <h2>주문 상세</h2>
             <div id="orderdetail" className="order-info">
               <span id="orderdetail" className="date">{formatDate(orderData.created_at)}</span>
-              <span id="orderdetail" className="order-number">주문번호 {orderData.oid.toString().padStart(10, '0')}</span>
+              <span id="orderdetail" className="order-orderdetail-number">주문번호 {orderData.oid.toString().padStart(10, '0')}</span>
             </div>
           </div>
-          <div id="orderdetail" className="order-status">
+          <div id="orderdetail" className="order-orderdetail-status">
             <span 
               id="orderdetail"
               className="status-badge"
@@ -227,7 +227,7 @@ console.log('user_addresses:', order.user_addresses);
                     <button id="orderdetail" className="btn-review">후기 작성</button>
                     <button 
                       id="orderdetail" 
-                      className="btn-inquiry" 
+                      className="btn-orderdetail-inquiry" 
                       onClick={() => {
                         navigate('/support/inquiries', {
                           state: {

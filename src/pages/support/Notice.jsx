@@ -214,7 +214,7 @@ const Notice = () => {
 
                     <div id="notice-content-area" className="notice-content">
                         {notices.length > 0 ? (
-                            <div id="notice-table" className="notice-table">
+                            <div id="notice-table-row" className="notice-table-row">
                                 <div id="notice-table-header" className={`table-header ${isAdmin ? 'admin' : ''}`}>
                                     <div id="notice-col-number" className="col-number">번호</div>
                                     <div id="notice-col-title" className="col-title">제목</div>
@@ -352,9 +352,9 @@ const Notice = () => {
                                         {/* 확장된 내용 */}
                                         {expandedId === notice.nid && (
                                             <div id={`notice-expanded-${notice.nid}`} className="notice-expanded-content">
-                                                <div className="expanded-content-wrapper">
+                                                <div className="expanded-con-wrapper">
                                                     <div
-                                                        className="expanded-content"
+                                                        className="notice-expanded-con"
                                                         dangerouslySetInnerHTML={{
                                                             __html: notice.content.replace(/\n/g, '<br>')
                                                         }}

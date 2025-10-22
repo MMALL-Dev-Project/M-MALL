@@ -1,0 +1,243 @@
+.product-inquiry {
+  padding: 40px 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.inquiry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+  border-bottom: 2px solid #000;
+  padding-bottom: 20px;
+}
+
+.inquiry-header p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.btn-inquiry {
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.inquiry-loading,
+.inquiry-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.inquiry-empty p {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.inquiry-hint {
+  color: #999;
+  font-size: 13px;
+}
+
+.product-inquiry-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.inquiry-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  cursor: pointer;
+}
+
+.inquiry-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.inquiry-label {
+  padding: 4px 8px;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.inquiry-private-icon {
+  font-size: 14px;
+  color: #666;
+}
+
+.inquiry-title-preview {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.inquiry-title-preview.is-private {
+  color: #999;
+  font-style: italic;
+}
+
+.inquiry-header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.inquiry-author {
+  font-size: 13px;
+  color: #666;
+}
+
+.inquiry-toggle {
+  font-size: 16px;
+  color: #999;
+}
+
+.inquiry-toggle.expanded {
+  transform: rotate(180deg);
+}
+
+.inquiry-item-content {
+  padding: 0 10px 20px 10px;
+  animation: slideDown 0.3s ease;
+}
+
+.inquiry-content-text {
+  font-size: 14px;
+  color: #555;
+  padding: 20px;
+  background: #fafafa;
+  border-left: 3px solid #e0e0e0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.inquiry-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.inquiry-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+/* 관리자 답변 */
+.inquiry-answer {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-left: 3px solid #333;
+}
+
+.answer-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.answer-icon {
+  font-size: 16px;
+  color: #666;
+}
+
+.answer-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.answer-content {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.answer-date {
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .product-inquiry {
+    padding: 30px 0;
+  }
+
+  .inquiry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 15px;
+  }
+
+  .inquiry-header p {
+    font-size: 20px;
+  }
+
+  .btn-inquiry {
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  .inquiry-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .inquiry-header-left {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .inquiry-header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .inquiry-item-content {
+    padding: 0 15px 15px 15px;
+  }
+
+  .inquiry-content-text {
+    padding: 12px;
+  }
+
+  .inquiry-images {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .inquiry-image {
+    height: 80px;
+  }
+
+  .inquiry-answer {
+    padding: 12px;
+  }
+}
