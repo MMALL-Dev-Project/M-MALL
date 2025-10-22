@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { supabase } from '@config/supabase';
+import { useCheckAdmin } from "@hooks/useAdminAuth";
 
 import ProductInfo from '@components/products/product-detail/ProductInfo';
 import ProductReview from '@components/products/product-detail/ProductReview';
 import ProductInquiry from '@components/products/product-detail/ProductInquiry';
 import '@components/products/product-detail/ProductDetail.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = () => {
     const { pid } = useParams(); // URL 파라미터에서 상품 pid 추출
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true); // 초기값을 true로 변경
     const [error, setError] = useState(null);
+    const isAdmin = useCheckAdmin();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -50,6 +54,16 @@ const ProductDetail = () => {
         }
     }, [pid]);
 
+    if (!loading && product?.is_active === false && isAdmin !== true) {
+
+        alert('판매중지된 상품입니다.');
+        setTimeout(() => {
+            navigate('/');
+        }, 0);
+        return null;
+    }
+
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -65,6 +79,9 @@ const ProductDetail = () => {
 
     return (
         <div id='product-detail-page'>
+            {product?.is_active === false && isAdmin && (
+                <div style={{ backgroundColor: '#f5f5f5', padding: '20px 0', textAlign: 'center', color: '#666' }}>비활성 상품 입니다.</div>
+            )}
             {/* 상품 정보 및 상세페이지 */}
             <ProductInfo product={product} />
             {/* 상품 문의 */}

@@ -56,7 +56,8 @@ const CategoryPage = () => {
             brands(name, bid),
             categories(name, cid, slug),
             sub_categories(name, scid, slug)
-          `);
+          `)
+          .eq('is_active', true);
 
         const isAllCategory = category.slug === ALL_CATEGORY_SLUG;
         const isAllSubcategory = subcategory?.slug === ALL_CATEGORY_SLUG;

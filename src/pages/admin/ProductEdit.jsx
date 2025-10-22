@@ -131,7 +131,8 @@ const ProductEdit = () => {
           options: sku.options || {},
           sku_code: sku.sku_code,
           additional_price: sku.additional_price,
-          stock_qty: sku.stock_qty
+          stock_qty: sku.stock_qty,
+          is_active: sku.is_active !== false // 기본값 true
         }));
         setSkus(formattedSkus);
         setExistingSkus(formattedSkus);
@@ -283,7 +284,8 @@ const ProductEdit = () => {
       options: options,
       sku_code: generateSkuCode(options),
       additional_price: 0,
-      stock_qty: 20
+      stock_qty: 20,
+      is_active: true
     }));
 
     setSkus(newSkus);
@@ -305,7 +307,14 @@ const ProductEdit = () => {
     ));
   };
 
-  // SKU 제거
+  // SKU 활성화 토글
+  const handleToggleSkuActive = (skuId) => {
+    setSkus(prev => prev.map(sku =>
+      sku.id === skuId ? { ...sku, is_active: !sku.is_active } : sku
+    ));
+  };
+
+  // SKU 제거 (새로 추가된 것만)
   const handleRemoveSku = (skuId) => {
     setSkus(prev => prev.filter(sku => sku.id !== skuId));
   };
@@ -318,7 +327,8 @@ const ProductEdit = () => {
       options: {},
       sku_code: `${product.name.substring(0, 3).toUpperCase() || 'PRD'}-DEFAULT`,
       additional_price: 0,
-      stock_qty: 20
+      stock_qty: 20,
+      is_active: true
     };
     setSkus([...skus, defaultSku]);
   };
@@ -425,11 +435,12 @@ const ProductEdit = () => {
         });
       }
 
-      // 4. 재고 확인
-      const allSkusOutOfStock = skus.every(sku => {
+      // 4. 재고 확인 (활성화된 SKU 중에서)
+      const activeSkus = skus.filter(sku => sku.is_active);
+      const allSkusOutOfStock = activeSkus.every(sku => {
         const stockQty = parseInt(sku.stock_qty) || 0;
         return stockQty === 0;
-      });
+      }) || activeSkus.length === 0;
 
       // 5. 상품 정보 업데이트
       const { error: updateError } = await supabase
@@ -452,35 +463,37 @@ const ProductEdit = () => {
 
       if (updateError) throw updateError;
 
-      // 6. SKU 처리 (기존 삭제 후 재등록)
-      // 기존 SKU 삭제
-      const { error: deleteSkuError } = await supabase
-        .from('product_skus')
-        .delete()
-        .eq('pid', pid);
-
-      if (deleteSkuError) throw deleteSkuError;
-
-      // 새 SKU 등록
-      const skuInserts = skus.map(sku => {
+      // 6. SKU 처리 (UPDATE/INSERT 방식)
+      const existingSkuIds = existingSkus.map(sku => sku.id);
+      
+      for (const sku of skus) {
         const stockQty = parseInt(sku.stock_qty) || 0;
-
-        return {
+        const skuData = {
           pid: parseInt(pid),
           options: hasOptions ? sku.options : {},
           sku_code: sku.sku_code,
           additional_price: parseInt(sku.additional_price) || 0,
           stock_qty: stockQty,
-          reserved_qty: 0,
-          is_active: stockQty > 0
+          is_active: sku.is_active && stockQty > 0
         };
-      });
 
-      const { error: skuError } = await supabase
-        .from('product_skus')
-        .insert(skuInserts);
-
-      if (skuError) throw skuError;
+        if (sku.isExisting && existingSkuIds.includes(sku.id)) {
+          // 기존 SKU 업데이트
+          const { error: updateError } = await supabase
+            .from('product_skus')
+            .update(skuData)
+            .eq('skid', sku.id);
+          
+          if (updateError) throw updateError;
+        } else {
+          // 새 SKU 추가
+          const { error: insertError } = await supabase
+            .from('product_skus')
+            .insert({ ...skuData, reserved_qty: 0 });
+          
+          if (insertError) throw insertError;
+        }
+      }
 
       alert('상품이 성공적으로 수정되었습니다!');
       navigate(`/product/${pid}`);
@@ -821,12 +834,13 @@ const ProductEdit = () => {
                     <th>SKU 코드</th>
                     <th>추가 가격</th>
                     <th>재고 수량</th>
+                    <th className="text-center">활성화</th>
                     <th className="text-center">삭제</th>
                   </tr>
                 </thead>
                 <tbody>
                   {skus.map((sku) => (
-                    <tr key={sku.id}>
+                    <tr key={sku.id} style={{ opacity: sku.is_active ? 1 : 0.5 }}>
                       {hasOptions && (
                         <td>
                           {Object.entries(sku.options).map(([key, value]) => (
@@ -840,6 +854,7 @@ const ProductEdit = () => {
                           value={sku.sku_code}
                           onChange={(e) => handleSkuChange(sku.id, 'sku_code', e.target.value)}
                           className="table-input"
+                          disabled={sku.isExisting}
                         />
                       </td>
                       <td>
@@ -861,13 +876,28 @@ const ProductEdit = () => {
                         />
                       </td>
                       <td className="text-center">
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSku(sku.id)}
-                          className="btn-danger"
-                        >
-                          삭제
-                        </button>
+                        <label className="checkbox-label" style={{ margin: 0, justifyContent: 'center' }}>
+                          <input
+                            type="checkbox"
+                            checked={sku.is_active}
+                            onChange={() => handleToggleSkuActive(sku.id)}
+                            className="checkbox-input"
+                            disabled={!sku.isExisting}
+                          />
+                        </label>
+                      </td>
+                      <td className="text-center">
+                        {sku.isExisting ? (
+                          <span style={{ color: '#999', fontSize: '0.9em' }}>-</span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSku(sku.id)}
+                            className="btn-danger"
+                          >
+                            삭제
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
