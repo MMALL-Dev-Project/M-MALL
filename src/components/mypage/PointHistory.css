@@ -1,0 +1,87 @@
+/* src/components/mypage/PointHistory.css */
+
+.point-history {
+  width: 100%;
+}
+
+/* 페이지 제목 */
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+/* 현재 보유 포인트 표시 영역 */
+.point-summary {
+  background-color: #f9fafb;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+
+.current-points {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current-points .label {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.current-points .amount {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 사용 내역이 없을 때 */
+.empty-history {
+  text-align: center;
+  padding: 80px 0;
+  color: #9ca3af;
+  font-size: 16px;
+}
+
+/* 내역 리스트 */
+.history-list {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* 각 내역 항목 */
+.history-item {
+  padding: 20px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-date {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.history-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-reason {
+  font-size: 16px;
+  color: #000000;
+}
+
+.history-amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ef4444;
+}
+
+/* 로딩 표시 */
+.loading {
+  text-align: center;
+  padding: 80px 0;
+  font-size: 16px;
+  color: #6b7280;
+}
