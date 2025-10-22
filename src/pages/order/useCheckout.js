@@ -370,174 +370,158 @@ const handleAddressFormChange = (e) => {
 
   // 주문 처리 (재고 차감)
   const handleOrder = async () => {
-    if (!selectedAddress) {
-      alert('배송지를 선택해주세요.');
-      return;
-    }
+  if (!selectedAddress) {
+    alert('배송지를 선택해주세요.');
+    return;
+  }
 
-    if (!selectedPayment) {
-      alert('결제 수단을 선택해주세요.');
-      return;
-    }
+  if (!selectedPayment) {
+    alert('결제 수단을 선택해주세요.');
+    return;
+  }
 
-    if (selectedPayment === 'card' && !selectedCard) {
-      alert('카드를 선택해주세요.');
-      return;
-    }
+  if (selectedPayment === 'card' && !selectedCard) {
+    alert('카드를 선택해주세요.');
+    return;
+  }
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      // 1. 재고 확인 및 차감
-      for (const item of orderItems) {
-        // 현재 재고 확인
-        const { data: currentSku, error: skuError } = await supabase
-          .from('product_skus')
-          .select('stock_qty, reserved_qty')
-          .eq('skid', item.skid)
-          .single();
-
-        if (skuError) throw new Error(`재고 확인 실패: ${skuError.message}`);
-
-        const availableStock = currentSku.stock_qty - (currentSku.reserved_qty || 0);
-        if (availableStock < item.quantity) {
-          throw new Error(`재고가 부족합니다. (상품: ${item.product?.name || '알 수 없음'})`);
-        }
-
-        console.log('재고 차감 시작:', {
-          skid: item.skid,
-          현재재고: currentSku.stock_qty,
-          차감량: item.quantity,
-          새재고: currentSku.stock_qty - item.quantity
-        });
-
-        const { data: updateResult, error: updateError } = await supabase
-          .from('product_skus')
-          .update({
-            stock_qty: currentSku.stock_qty - item.quantity,
-            updated_at: new Date().toISOString()
-          })
-          .eq('skid', item.skid)
-          .select();
-
-        console.log('재고 차감 결과:', { updateResult, updateError });
-
-        if (updateError) {
-          console.error('재고 차감 실패 상세:', updateError);
-          throw new Error(`재고 차감 실패: ${updateError.message}`);
-        }
-
-        // 재고 로그 기록
-        const { error: logError } = await supabase
-          .from('stock_log')
-          .insert({
-            skid: item.skid,
-            pid: item.pid,
-            change_qty: -item.quantity,
-            reason: '주문 완료',
-            memo: `주문 완료로 인한 재고 차감`,
-            created_by: user.id
-          });
-
-        if (logError) console.error('재고 로그 기록 실패:', logError);
-      }
-
-      // 2. 주문 생성
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert([{
-          uid: user.id,
-          pid: orderItems[0].pid,
-          total_amount: pricing.finalTotal,
-          status: 'PENDING',
-          address_id: selectedAddress.aid
-        }])
-        .select()
+    // ✅ 1. 예약재고만 해제 (실재고는 절대 건드리지 않음!)
+    console.log('💳 주문 완료 처리 시작');
+    
+    for (const item of orderItems) {
+      const { data: currentSku, error: skuError } = await supabase
+        .from('product_skus')
+        .select('stock_qty, reserved_qty')
+        .eq('skid', item.skid)
         .single();
 
-      if (orderError) throw orderError;
+      if (skuError) throw new Error(`재고 확인 실패: ${skuError.message}`);
 
-      // 3. 주문 아이템들 저장
-      const orderItemsData = orderItems.map(item => {
-        // 이 상품이 전체에서 차지하는 비율 계산
-        const itemRatio = (item.itemTotal || (item.itemPrice * item.quantity)) / pricing.subtotal;
-        // 포인트 할인을 비율에 따라 배분
-        const itemPointDiscount = Math.floor(pricing.pointDiscount * itemRatio);
-        // 실제 판매가 계산
-        const originalPrice = item.itemPrice || (item.product?.price + (item.sku?.additional_price || 0));
-        const actualSalePrice = Math.max(0, originalPrice - Math.floor(itemPointDiscount / item.quantity));
-
-        return {
-          oid: order.oid,
-          pid: item.pid,
-          skid: item.skid,
-          quantity: item.quantity,
-          unit_original_price: originalPrice,
-          unit_sale_price: actualSalePrice,
-          product_name: item.product?.name || '상품명 불명',
-          product_brand: item.product?.brands?.name || '',
-          sku_options: item.sku?.options || {},
-          sku_code: item.sku?.sku_code || null
-        };
+      console.log('예약 해제 전:', {
+        skid: item.skid,
+        현재재고: currentSku.stock_qty,
+        예약재고: currentSku.reserved_qty,
+        해제량: item.quantity
       });
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItemsData);
+      // ✅ 예약재고만 해제 (stock_qty는 절대 수정 안 함!)
+      const { error: updateError } = await supabase
+        .from('product_skus')
+        .update({
+          reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity),
+          updated_at: new Date().toISOString()
+        })
+        .eq('skid', item.skid);
 
-      if (itemsError) throw itemsError;
+      if (updateError) throw new Error(`예약 해제 실패: ${updateError.message}`);
 
-      // 4. 포인트 사용 처리
-      if (usePoints && pointsToUse > 0) {
-        const { error: pointsError } = await supabase
-          .from('user_info')
-          .update({
-            points_balance: (userInfo.points_balance || 0) - pointsToUse
-          })
-          .eq('id', user.id);
+      console.log(`✅ 예약 해제 완료: reserved_qty ${currentSku.reserved_qty} → ${Math.max(0, currentSku.reserved_qty - item.quantity)}`);
 
-        if (pointsError) throw pointsError;
-
-        await supabase
-          .from('point_log')
-          .insert([{
-            uid: user.id,
-            amount: -pointsToUse,
-            reason: `주문 결제 사용 (주문번호: ${order.oid})`
-          }]);
-      }
-
-      // 5. 장바구니에서 주문한 상품들 제거 (장바구니에서 온 경우에만)
-      const cartItemsToRemove = orderItems.map(item => ({
-        uid: user.id,
-        pid: item.pid,
-        skid: item.skid
-      }));
-
-      for (const item of cartItemsToRemove) {
-        await supabase
-          .from('cart_items')
-          .delete()
-          .match({
-            uid: item.uid,
-            pid: item.pid,
-            skid: item.skid
-          });
-      }
-
-      // 6. 세션스토리지 정리
-      sessionStorage.removeItem('checkoutItems');
-
-      alert('주문이 완료되었습니다!');
-      navigate(`/order/orderdetail/${order.oid}`);
-
-    } catch (error) {
-      console.error('주문 처리 오류:', error);
-      alert(error.message || '주문 처리 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
+      // 재고 로그 기록
+      await supabase
+        .from('stock_log')
+        .insert({
+          skid: item.skid,
+          pid: item.pid,
+          change_qty: -item.quantity,
+          reason: '주문 완료',
+          memo: `주문 완료로 인한 예약 해제 (실재고 유지)`,
+          created_by: user.id
+        });
     }
-  };
+
+    // 2. 주문 생성
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert([{
+        uid: user.id,
+        pid: orderItems[0].pid,
+        total_amount: pricing.finalTotal,
+        status: 'PENDING',
+        address_id: selectedAddress.aid
+      }])
+      .select()
+      .single();
+
+    if (orderError) throw orderError;
+
+    // 3. 주문 아이템들 저장
+    const orderItemsData = orderItems.map(item => {
+      const itemRatio = (item.itemTotal || (item.itemPrice * item.quantity)) / pricing.subtotal;
+      const itemPointDiscount = Math.floor(pricing.pointDiscount * itemRatio);
+      const originalPrice = item.itemPrice || (item.product?.price + (item.sku?.additional_price || 0));
+      const actualSalePrice = Math.max(0, originalPrice - Math.floor(itemPointDiscount / item.quantity));
+
+      return {
+        oid: order.oid,
+        pid: item.pid,
+        skid: item.skid,
+        quantity: item.quantity,
+        unit_original_price: originalPrice,
+        unit_sale_price: actualSalePrice,
+        product_name: item.product?.name || '상품명 불명',
+        product_brand: item.product?.brands?.name || '',
+        sku_options: item.sku?.options || {},
+        sku_code: item.sku?.sku_code || null
+      };
+    });
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItemsData);
+
+    if (itemsError) throw itemsError;
+
+    // 4. 포인트 사용 처리
+    if (usePoints && pointsToUse > 0) {
+      await supabase
+        .from('user_info')
+        .update({
+          points_balance: (userInfo.points_balance || 0) - pointsToUse
+        })
+        .eq('id', user.id);
+
+      await supabase
+        .from('point_log')
+        .insert([{
+          uid: user.id,
+          amount: -pointsToUse,
+          reason: `주문 결제 사용 (주문번호: ${order.oid})`
+        }]);
+    }
+
+    // 5. 장바구니에서 제거
+    for (const item of orderItems) {
+      await supabase
+        .from('cart_items')
+        .delete()
+        .match({
+          uid: user.id,
+          pid: item.pid,
+          skid: item.skid
+        });
+    }
+
+    // ✅ 6. 세션 정리 (stockReserved 플래그 삭제)
+    console.log('🗑️ 세션 정리 시작');
+    sessionStorage.removeItem('checkoutItems');
+    sessionStorage.removeItem('stockReserved');
+    localStorage.removeItem('orderTimer');
+    console.log('✅ 세션 정리 완료 - 주문 완료');
+
+    alert('주문이 완료되었습니다!');
+    navigate(`/order/orderdetail/${order.oid}`);
+
+  } catch (error) {
+    console.error('주문 처리 오류:', error);
+    alert(error.message || '주문 처리 중 오류가 발생했습니다.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return {
     orderItems,

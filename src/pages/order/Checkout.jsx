@@ -9,7 +9,6 @@ const Checkout = () => {
   const navigate = useNavigate();
   
   const {
-    // 상태
     orderItems,
     addresses,
     selectedAddress,
@@ -24,14 +23,10 @@ const Checkout = () => {
     editingAddress,
     addressForm,
     userInfo,
-
-    // 상태 변경 함수
     setSelectedAddress,
     setSelectedPayment,
     setSelectedCard,
     setShowAddressModal,
-
-    // 이벤트 핸들러
     handlePointsToggle,
     handlePointsChange,
     handleUseAllPoints,
@@ -44,36 +39,77 @@ const Checkout = () => {
     handleOrder
   } = useCheckout();
 
-  // 타이머 코드
   const [timeLeft, setTimeLeft] = useState(0);
   const [showExtendButton, setShowExtendButton] = useState(false);
   const [extendButtonTimer, setExtendButtonTimer] = useState(null);
 
-  // 재고 예약 해제 함수
+  // ✅ 재고 복구 함수 (실재고 복구 + 예약재고 해제)
   const releaseReservedStock = async () => {
     try {
       const checkoutItems = JSON.parse(sessionStorage.getItem('checkoutItems') || '[]');
       
+      if (checkoutItems.length === 0) {
+        console.log('⚠️ 복구할 아이템 없음');
+        return;
+      }
+      
+      console.log('🔄 재고 복구 시작:', checkoutItems);
+      
       for (const item of checkoutItems) {
         const { data: currentSku } = await supabase
           .from('product_skus')
-          .select('reserved_qty')
+          .select('stock_qty, reserved_qty')
           .eq('skid', item.skid)
           .single();
+
+        console.log('복구 전:', {
+          skid: item.skid,
+          stock_qty: currentSku.stock_qty,
+          reserved_qty: currentSku.reserved_qty
+        });
 
         await supabase
           .from('product_skus')
           .update({ 
-            reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity)
+            stock_qty: currentSku.stock_qty + item.quantity,              // ✅ 실재고 복구
+            reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity)  // ✅ 예약재고 해제
           })
           .eq('skid', item.skid);
+        
+        console.log(`✅ 재고 복구 완료: stock_qty ${currentSku.stock_qty} → ${currentSku.stock_qty + item.quantity}, reserved_qty ${currentSku.reserved_qty} → 0`);
       }
-      console.log('재고 예약 해제 완료');
+      
+      console.log('✅ 모든 재고 복구 & 예약 해제 완료');
     } catch (error) {
-      console.error('재고 예약 해제 실패:', error);
+      console.error('❌ 재고 복구 실패:', error);
     }
   };
 
+  // ✅ 언마운트 시 재고 복구 (조건부)
+  useEffect(() => {
+    return () => {
+      const stockReserved = sessionStorage.getItem('stockReserved');
+      const checkoutItems = sessionStorage.getItem('checkoutItems');
+      
+      console.log('📍 언마운트 체크:', { 
+        stockReserved, 
+        hasCheckoutItems: !!checkoutItems 
+      });
+      
+      // stockReserved가 'true'이고 checkoutItems가 있으면 복구
+      if (stockReserved === 'true' && checkoutItems) {
+        console.log('🔄 페이지 이탈 감지 - 재고 복구 시작');
+        releaseReservedStock();
+        sessionStorage.removeItem('checkoutItems');
+        sessionStorage.removeItem('stockReserved');
+        localStorage.removeItem('orderTimer');
+      } else {
+        console.log('✅ 재고 복구 안 함 (주문 완료됨)');
+      }
+    };
+  }, []);
+
+  // ✅ 타이머 로직
   useEffect(() => {
     const endTime = localStorage.getItem('orderTimer');
     if (!endTime) return;
@@ -82,9 +118,12 @@ const Checkout = () => {
       const remaining = parseInt(endTime) - Date.now();
       
       if (remaining <= 0) {
-        // 시간 만료 - 재고 예약 해제 후 뒤로가기
+        console.log('⏰ 타이머 만료 - 재고 복구');
         releaseReservedStock();
         localStorage.removeItem('orderTimer');
+        sessionStorage.removeItem('checkoutItems');
+        sessionStorage.removeItem('stockReserved');
+        alert('주문 시간이 만료되었습니다.');
         navigate(-1);
         clearInterval(timer);
         return;
@@ -98,8 +137,12 @@ const Checkout = () => {
         
         // 1분 후 자동으로 뒤로가기
         const autoExit = setTimeout(() => {
+          console.log('⏰ 자동 종료 - 재고 복구');
           releaseReservedStock();
           localStorage.removeItem('orderTimer');
+          sessionStorage.removeItem('checkoutItems');
+          sessionStorage.removeItem('stockReserved');
+          alert('주문 시간이 만료되었습니다.');
           navigate(-1);
         }, 60 * 1000);
         
@@ -119,11 +162,12 @@ const Checkout = () => {
     setTimeLeft(10 * 60 * 1000);
     setShowExtendButton(false);
     
-    // 기존 자동 종료 타이머 취소
     if (extendButtonTimer) {
       clearTimeout(extendButtonTimer);
       setExtendButtonTimer(null);
     }
+    
+    console.log('⏰ 타이머 10분 연장');
   };
 
   if (loading) {
@@ -148,7 +192,7 @@ const Checkout = () => {
             fontWeight: 'bold'
           }}>
             주문 시간이 2분 남았습니다. 1분 후 자동으로 나갑니다.
-            <button 
+            <button
               onClick={handleExtend}
               style={{
                 marginLeft: '15px',
@@ -165,7 +209,7 @@ const Checkout = () => {
             </button>
           </div>
         )}
-        
+
         <div className="checkout-header">
           <h2>주문서</h2>
         </div>
@@ -176,12 +220,12 @@ const Checkout = () => {
             {/* 주문 상품 정보 */}
             <section className="checkout-section">
               <h3 className="section-title">주문 상품 ({orderItems.length}개)</h3>
-              <div className="order-items">
+              <div className="order-checkout-items">
                 {orderItems.map((item, index) => (
-                  <div key={`${item.pid}-${item.skid}-${index}`} className="order-item">
+                  <div key={`${item.pid}-${item.skid}-${index}`} className="checkout-order-item">
                     <div className="item-image">
-                      <img 
-                        src={item.product.thumbnail_url || '/M-MALL/images/default-product.png'} 
+                      <img
+                        src={item.product.thumbnail_url || '/M-MALL/images/default-product.png'}
                         alt={item.product.name}
                       />
                     </div>
@@ -209,7 +253,7 @@ const Checkout = () => {
             <section className="checkout-section">
               <div className="section-header">
                 <h3 className="section-title">배송지</h3>
-                <button 
+                <button
                   className="btn-change"
                   onClick={() => setShowAddressModal(true)}
                 >
@@ -232,7 +276,7 @@ const Checkout = () => {
               ) : (
                 <div className="no-address">
                   <p>등록된 배송지가 없습니다.</p>
-                  <button 
+                  <button
                     className="btn-add-address"
                     onClick={() => setShowAddressModal(true)}
                   >
@@ -259,7 +303,7 @@ const Checkout = () => {
                     보유 포인트: {(userInfo?.points_balance || 0).toLocaleString()}P
                   </div>
                 </div>
-                
+
                 {usePoints && (
                   <div className="points-input-section">
                     <div className="points-input-wrapper">
@@ -272,7 +316,7 @@ const Checkout = () => {
                         max={maxPointsUsable}
                       />
                       <span className="points-unit">P</span>
-                      <button 
+                      <button
                         className="btn-use-all"
                         onClick={handleUseAllPoints}
                       >
@@ -324,7 +368,7 @@ const Checkout = () => {
                   />
                   토스
                 </label>
-                
+
                 <label className="payment-option">
                   <input
                     type="radio"
@@ -338,8 +382,8 @@ const Checkout = () => {
 
                 {selectedPayment === 'card' && (
                   <div className="card-selection">
-                    <select 
-                      value={selectedCard} 
+                    <select
+                      value={selectedCard}
                       onChange={(e) => setSelectedCard(e.target.value)}
                       required
                     >
@@ -364,17 +408,17 @@ const Checkout = () => {
           <div className="checkout-right">
             <div className="payment-summary">
               <h3>결제 금액</h3>
-              
+
               <div className="price-row">
                 <span>상품 금액</span>
                 <span>{pricing.subtotal.toLocaleString()}원</span>
               </div>
-              
+
               <div className="price-row">
                 <span>배송비</span>
                 <span>무료</span>
               </div>
-              
+
               {/* 무료배송 안내 */}
               <div className="free-shipping-notice">
                 <div className="shipping-benefit">
@@ -382,21 +426,21 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-              
+
               {usePoints && pricing.pointDiscount > 0 && (
                 <div className="price-row discount">
                   <span>M포인트 할인</span>
                   <span>-{pricing.pointDiscount.toLocaleString()}원</span>
                 </div>
               )}
-              
+
               <div className="price-divider"></div>
-              
+
               <div className="price-row total">
                 <span>총 결제 금액</span>
                 <span>{pricing.finalTotal.toLocaleString()}원</span>
               </div>
-              
+
               {/* 추가 혜택 안내 */}
               <div className="order-benefits">
                 <div className="benefit-item">
@@ -406,8 +450,8 @@ const Checkout = () => {
                   <span>평일 오후 2시 이전 주문 시 당일 발송</span>
                 </div>
               </div>
-              
-              <button 
+
+              <button
                 className="btn-order"
                 onClick={handleOrder}
                 disabled={!selectedAddress || !selectedPayment}

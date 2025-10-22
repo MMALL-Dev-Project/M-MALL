@@ -176,7 +176,7 @@
   margin: 0;
 }
 
-.notice-table {
+.notice-table-row {
   width: 100%;
   border-collapse: collapse;
 }
@@ -304,13 +304,13 @@
 }
 
 .notice-expanded-content {
-  padding: 30px;
+  padding: 25px;
   background: #fafafa;
   border: 1px solid #eee;
   margin-bottom: 15px;
 }
 
-.expanded-content-wrapper {
+.expanded-con-wrapper {
   color: #333;
 }
 
@@ -349,7 +349,7 @@
   margin-bottom: 20px;
 }
 
-.expanded-content {
+.notice-expanded-con {
   font-size: 1rem;
   line-height: 1.8;
   color: #333;

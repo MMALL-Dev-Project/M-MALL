@@ -61,7 +61,7 @@
   flex: 1;
 }
 
-.order-number {
+.order-ordermanage-number {
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -75,7 +75,7 @@
   margin-bottom: 4px;
 }
 
-.order-status {
+.order-ordermanage-status {
   display: flex;
   align-items: center;
 }
@@ -89,14 +89,14 @@
   border-radius: 50px;
 }
 
-.order-items-section,
+.order-ordermanage-section,
 .address-section,
 .shipping-section {
   padding: 20px;
   border-bottom: 1px solid #eee;
 }
 
-.order-items-section h4,
+.order-ordermanage-section h4,
 .address-section h4,
 .shipping-section h4 {
   font-size: 16px;
@@ -105,7 +105,7 @@
   margin-bottom: 15px;
 }
 
-.order-item {
+.order-ordermanage-item {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -160,7 +160,7 @@
   padding: 20px;
 }
 
-.order-actions {
+.order-ordermanage-actions {
   padding: 20px;
   background: #ffffff;
   display: flex;
@@ -373,7 +373,7 @@
     align-items: flex-start;
   }
   
-  .order-actions {
+  .order-ordermanage-actions {
     flex-direction: column;
     gap: 15px;
     align-items: stretch;

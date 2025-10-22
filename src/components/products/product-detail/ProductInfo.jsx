@@ -371,7 +371,7 @@ const ProductInfo = ({ product }) => {
         // 현재 reserved_qty 값을 먼저 가져오기
         const { data: currentSku } = await supabase
           .from('product_skus')
-          .select('reserved_qty')
+          .select('stock_qty, reserved_qty')
           .eq('skid', card.sku.skid)
           .single();
 
@@ -379,6 +379,7 @@ const ProductInfo = ({ product }) => {
         const { error } = await supabase
           .from('product_skus')
           .update({
+            stock_qty: currentSku.stock_qty - card.quantity, 
             reserved_qty: (currentSku.reserved_qty || 0) + card.quantity
           })
           .eq('skid', card.sku.skid);
@@ -388,6 +389,7 @@ const ProductInfo = ({ product }) => {
       console.log('📦 재고 예약 완료!');
     } catch (error) {
       console.error('재고 예약 실패:', error);
+      return;
     }
 
     // 선택된 모든 옵션카드를 주문 아이템으로 변환
@@ -556,7 +558,6 @@ const ProductInfo = ({ product }) => {
 
   // 좋아요 토글 핸들러
   const handleLikeToggle = toggleLike;
-  console.log("productSkus", productSkus)
   return (
     <>
       {/* 상품 정보 영역 */}

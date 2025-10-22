@@ -254,9 +254,6 @@ const UserInquiries = ({
     <div className="inquiries-container user-view" id="inquiries">
       <div className="page-header">
         <h1>내 문의 내역</h1>
-        <button onClick={openWriteModal} className="btn-write">
-          문의하기
-        </button>
       </div>
 
       <div className="user-list">

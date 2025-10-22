@@ -301,8 +301,8 @@ const OrderManagement = () => {
         {orders.map((order) => (
           <div key={order.oid} className="order-card">
             <div className="order-header">
-              <div className="order-info">
-                <div className="order-number">
+              <div className="order-ordermanage-info">
+                <div className="order-ordermanage-number">
                   주문번호: {order.oid.toString().padStart(10, '0')}
                 </div>
                 <div className="order-date">
@@ -312,17 +312,17 @@ const OrderManagement = () => {
                   주문자: {order.user_info?.name} ({order.user_info?.user_id})
                 </div>
               </div>
-              <div className="order-status">
+              <div className="order-ordermanage-status">
                 <span className={`status-badge status-${order.status.toLowerCase()}`}>
                   {getStatusText(order.status)}
                 </span>
               </div>
             </div>
 
-            <div className="order-items-section">
+            <div className="order-ordermanage-section">
               <h4>주문 상품</h4>
               {order.order_items?.map((item, index) => (
-                <div key={index} className="order-item">
+                <div key={index} className="order-ordermanage-item">
                   <img 
                     src={item.products?.thumbnail_url || '/default-product.png'}
                     alt={item.product_name}
@@ -366,7 +366,7 @@ const OrderManagement = () => {
               </div>
             )}
 
-            <div className="order-actions">
+            <div className="order-ordermanage-actions">
               <div className="action-buttons">
                 {order.status === 'PENDING' && (
                   <button

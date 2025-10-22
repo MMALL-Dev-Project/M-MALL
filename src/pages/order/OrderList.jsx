@@ -269,14 +269,14 @@ const submitRefund = async () => {
           <div key={order.oid} className="order-card">
             <div className="order-header">
               <div className="order-info">
-                <div className="order-number">
+                <div className="order-orderlist-number">
                   주문번호: {order.oid.toString().padStart(10, '0')}
                 </div>
                 <div className="order-date">
                   주문일시: {formatDate(order.created_at)}
                 </div>
               </div>
-              <div className="order-status">
+              <div className="order-orderlist-status">
                 <span className={`status-badge status-${getStatusColor(order.status)}`}>
                   {getStatusText(order.status)}
                 </span>
