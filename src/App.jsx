@@ -30,6 +30,9 @@ import OrderManagement from '@pages/admin/OrderManagement';
 import BrandManagement from '@pages/admin/BrandManagement';
 import ContentManagement from '@pages/admin/ContentManagement';
 import CategoryManagement from '@pages/admin/CategoryManagement';
+import ProductManagement from '@pages/admin/ProductManagement';
+import ProductNew from '@pages/admin/ProductNew';
+import ProductEdit from '@pages/admin/ProductEdit';
 
 
 import NotFound from '@pages/error/NotFound';
@@ -93,6 +96,9 @@ function AppContent() {
         <Route path="/admin/brands" element={<BrandManagement />} />
         <Route path="/admin/content" element={<ContentManagement />} />
         <Route path="/admin/categories" element={<CategoryManagement />} />
+        <Route path="/admin/products" element={<ProductManagement />} />
+        <Route path="/admin/products/new" element={<ProductNew />} />
+        <Route path="/admin/products/edit/:pid" element={<ProductEdit />} />
       </Routes>
 
       {/* 로그인, 회원가입, 콜백 페이지 푸터X*/}

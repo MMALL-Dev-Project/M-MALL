@@ -1,0 +1,92 @@
+/* 상품 관리 제목 */
+#product-admin .product-admin-title {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+#product-admin .product-admin-title div {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+#product-admin .product-admin-title .sort-controls {
+    font-weight: normal;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#product-admin .btn-product-add {
+    padding: 8px;
+    margin-left: 10px;
+    margin-bottom: -2px;
+    border: 1px solid #333;
+    background-color: #eee;
+    font-size: 1rem;
+    font-weight: normal;
+    display: block;
+    font-size: 0.875rem;
+    transition: background .3s, color .3s;
+}
+
+#product-admin .btn-product-add:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.product-admin-table {
+    text-align: center;
+}
+
+.product-admin-table td.thumb {
+    width: 100px;
+    padding: 0;
+}
+
+.product-admin-table td.name {
+    width: 160px;
+}
+
+.product-admin-table td.badge {
+    width: 80px;
+}
+
+.product-admin-table td.page-btn {
+    width: 110px;
+}
+
+.product-admin-table td.manage-btn {
+    width: 150px;
+}
+
+
+.product-admin-card .thumb img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.product-admin-card .btn-detail {
+    background-color: #ddd;
+    border-color: #ddd;
+    color: #333;
+}
+
+.product-admin-card .btn-detail:hover {
+    /* color: #fff; */
+    background-color: #aaa;
+    border-color: #aaa;
+}
+
+.product-admin-card .btn-delete {
+    background-color: #a00;
+    border-color: #a00;
+    margin-left: 1px;
+}
+
+.product-admin-card .btn-delete:hover {
+    background-color: #800;
+    border-color: #800;
+}
+
