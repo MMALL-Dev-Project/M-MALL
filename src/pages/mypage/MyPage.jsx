@@ -8,6 +8,7 @@ import LikedItems from '@components/mypage/LikedItems';
 import ProfileEdit from '@components/mypage/ProfileEdit';
 import NotificationSettings from '@components/mypage/NotificationSettings';
 import ReviewSection from '@components/mypage/ReviewSection';
+import PointHistory from '@components/mypage/PointHistory';
 import './MyPage.css';
 
 export default function MyPage() {
@@ -40,13 +41,6 @@ export default function MyPage() {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    if (user) {
-      loadAllData();
-    }
-  }, [user]);
-
-  // ========== 데이터 로드 ==========
   useEffect(() => {
     if (user) {
       loadAllData();
@@ -344,7 +338,7 @@ export default function MyPage() {
         <div className="empty-content">
           <p>로그인이 필요합니다.</p>
           <button onClick={() => navigate('/login')} className="submit-btn">
-            로그인하기
+            로그인하러 가기
           </button>
         </div>
       </div>
@@ -359,11 +353,14 @@ export default function MyPage() {
           <div className="profile-top">
             <div className="profile-info">
               <div className="profile-image">
-                {userInfo?.profile_image ? (
-                  <img src={userInfo.profile_image} alt="프로필" />
-                ) : (
-                  userInfo?.name?.charAt(0) || 'U'
-                )}
+                <img
+                  src={userInfo?.profile_image || '/images/default-avatar.png'}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/images/default-avatar.png';
+                  }}
+                  alt="프로필"
+                />
               </div>
 
               <div className="profile-details">
@@ -379,7 +376,9 @@ export default function MyPage() {
           <div className="stats-grid three-items">
             <div className="stat-item">
               <p className="stat-label">M-point</p>
-              <p className="stat-value">{userInfo?.points_balance || 0}P</p>
+              <p className="stat-value">
+                {(userInfo?.points_balance || 0).toLocaleString()}P
+              </p>
             </div>
             <div className="stat-item">
               <p className="stat-label">쿠폰</p>
@@ -408,6 +407,14 @@ export default function MyPage() {
                   className={activeMenu === '주문 내역' ? 'active' : ''}
                 >
                   주문 내역
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setActiveMenu('포인트 사용 내역')}
+                  className={activeMenu === '포인트 사용 내역' ? 'active' : ''}
+                >
+                  포인트 사용 내역
                 </button>
               </li>
             </ul>
@@ -511,6 +518,9 @@ export default function MyPage() {
               reviewCount={reviewCount}
               initialTab={location.state?.activeTab}
             />
+          )}
+          {activeMenu === '포인트 사용 내역' && (
+            <PointHistory />
           )}
         </main>
       </div>
