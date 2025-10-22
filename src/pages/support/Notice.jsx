@@ -39,6 +39,7 @@ const Notice = () => {
     //컴포넌트 마운트시 데이터 불러오기
     useEffect(() => {
         fetchNotices();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     //확장된 공지사항 ID 
@@ -324,7 +325,7 @@ const Notice = () => {
                                                             <button
                                                                 type="button"
                                                                 id={`notice-edit-small-btn-${notice.nid}`}
-                                                                className="admin-btn-small edit-btn"
+                                                                className="admin-btn-small notice-edit-btn"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     startEditing(notice);

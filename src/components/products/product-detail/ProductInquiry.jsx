@@ -91,10 +91,10 @@ const ProductInquiry = ({ product }) => {
     };
 
     const canViewInquiry = (inquiry) => {
-        if (!inquiry.is_private) return true; // 일반글은 모두 볼 수 있음
-        if (!user) return false; // 비밀글인데 로그인 안 함
-        if (isAdmin) return true; // 관리자는 모든 비밀글 볼 수 있음
-        return inquiry.uid === user.id; // 본인 글만 볼 수 있음
+        if (!inquiry.is_private) return true;
+        if (!user) return false;
+        if (isAdmin) return true;
+        return inquiry.uid === user.id;
     };
 
     const formatDate = (dateString) => {
@@ -108,7 +108,7 @@ const ProductInquiry = ({ product }) => {
 
     return (
         <div className='product-inquiry'>
-            <div className="inquiry-header">
+            <div className="pro-inquiry-header">
                 <p>상품문의 ({inquiries.length})</p>
                 <button
                     className="btn-inquiry"
