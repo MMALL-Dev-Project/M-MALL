@@ -43,17 +43,17 @@ const Checkout = () => {
   const [showExtendButton, setShowExtendButton] = useState(false);
   const [extendButtonTimer, setExtendButtonTimer] = useState(null);
 
-  // ✅ 재고 복구 함수 (실재고 복구 + 예약재고 해제)
+  //  재고 복구 함수 (실재고 복구 + 예약재고 해제)
   const releaseReservedStock = async () => {
     try {
       const checkoutItems = JSON.parse(sessionStorage.getItem('checkoutItems') || '[]');
       
       if (checkoutItems.length === 0) {
-        console.log('⚠️ 복구할 아이템 없음');
+        console.log(' 복구할 아이템 없음');
         return;
       }
       
-      console.log('🔄 재고 복구 시작:', checkoutItems);
+      console.log(' 재고 복구 시작:', checkoutItems);
       
       for (const item of checkoutItems) {
         const { data: currentSku } = await supabase
@@ -76,40 +76,40 @@ const Checkout = () => {
           })
           .eq('skid', item.skid);
         
-        console.log(`✅ 재고 복구 완료: stock_qty ${currentSku.stock_qty} → ${currentSku.stock_qty + item.quantity}, reserved_qty ${currentSku.reserved_qty} → 0`);
+        console.log(` 재고 복구 완료: stock_qty ${currentSku.stock_qty} → ${currentSku.stock_qty + item.quantity}, reserved_qty ${currentSku.reserved_qty} → 0`);
       }
       
-      console.log('✅ 모든 재고 복구 & 예약 해제 완료');
+      console.log(' 모든 재고 복구 & 예약 해제 완료');
     } catch (error) {
-      console.error('❌ 재고 복구 실패:', error);
+      console.error(' 재고 복구 실패:', error);
     }
   };
 
-  // ✅ 언마운트 시 재고 복구 (조건부)
+  // 언마운트 시 재고 복구 (조건부)
   useEffect(() => {
     return () => {
       const stockReserved = sessionStorage.getItem('stockReserved');
       const checkoutItems = sessionStorage.getItem('checkoutItems');
       
-      console.log('📍 언마운트 체크:', { 
+      console.log('언마운트 체크:', { 
         stockReserved, 
         hasCheckoutItems: !!checkoutItems 
       });
       
       // stockReserved가 'true'이고 checkoutItems가 있으면 복구
       if (stockReserved === 'true' && checkoutItems) {
-        console.log('🔄 페이지 이탈 감지 - 재고 복구 시작');
+        console.log(' 페이지 이탈 감지 - 재고 복구 시작');
         releaseReservedStock();
         sessionStorage.removeItem('checkoutItems');
         sessionStorage.removeItem('stockReserved');
         localStorage.removeItem('orderTimer');
       } else {
-        console.log('✅ 재고 복구 안 함 (주문 완료됨)');
+        console.log('재고 복구 안 함 (주문 완료됨)');
       }
     };
   }, []);
 
-  // ✅ 타이머 로직
+  // 타이머 로직
   useEffect(() => {
     const endTime = localStorage.getItem('orderTimer');
     if (!endTime) return;
@@ -118,7 +118,7 @@ const Checkout = () => {
       const remaining = parseInt(endTime) - Date.now();
       
       if (remaining <= 0) {
-        console.log('⏰ 타이머 만료 - 재고 복구');
+        console.log('타이머 만료 - 재고 복구');
         releaseReservedStock();
         localStorage.removeItem('orderTimer');
         sessionStorage.removeItem('checkoutItems');
@@ -137,7 +137,7 @@ const Checkout = () => {
         
         // 1분 후 자동으로 뒤로가기
         const autoExit = setTimeout(() => {
-          console.log('⏰ 자동 종료 - 재고 복구');
+          console.log(' 자동 종료 - 재고 복구');
           releaseReservedStock();
           localStorage.removeItem('orderTimer');
           sessionStorage.removeItem('checkoutItems');
@@ -167,7 +167,7 @@ const Checkout = () => {
       setExtendButtonTimer(null);
     }
     
-    console.log('⏰ 타이머 10분 연장');
+    console.log(' 타이머 10분 연장');
   };
 
   if (loading) {
