@@ -476,22 +476,16 @@ const handleAddressFormChange = (e) => {
     if (itemsError) throw itemsError;
 
     // 4. 포인트 사용 처리
-    if (usePoints && pointsToUse > 0) {
-      await supabase
-        .from('user_info')
-        .update({
-          points_balance: (userInfo.points_balance || 0) - pointsToUse
-        })
-        .eq('id', user.id);
+      if (usePoints && pointsToUse > 0) {
 
-      await supabase
-        .from('point_log')
-        .insert([{
-          uid: user.id,
-          amount: -pointsToUse,
-          reason: `주문 결제 사용 (주문번호: ${order.oid})`
-        }]);
-    }
+        await supabase
+          .from('point_log')
+          .insert([{
+            uid: user.id,
+            amount: -pointsToUse,
+            reason: `주문 결제 사용 (주문번호: ${order.oid})`
+          }]);
+      }
 
     // 5. 장바구니에서 제거
     for (const item of orderItems) {

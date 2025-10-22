@@ -15,6 +15,8 @@ const OrderDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (!user) {
       navigate('/login');
       return;
