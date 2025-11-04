@@ -6,14 +6,15 @@
     <title>M-MALL - Redirecting...</title>
     <script>
         (function () {
-            // 현재 경로에서 /M-MALL 부분 제거
-            var path = window.location.pathname.replace(/^\/M-MALL/, '');
+            // /M-MALL 제거하지 말고 전체 경로 그대로 저장
+            var path = window.location.pathname;
             var search = window.location.search || '';
             var hash = window.location.hash || '';
 
             var redirect = path + search + hash;
 
-            if (redirect && redirect !== '/') {
+            // /M-MALL/ 이 아닌 경우에만 저장
+            if (redirect && redirect !== '/M-MALL' && redirect !== '/M-MALL/') {
                 sessionStorage.setItem('githubPagesRedirect', redirect);
             }
 
