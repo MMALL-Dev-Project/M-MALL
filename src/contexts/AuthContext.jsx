@@ -87,7 +87,12 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
         options: {
-          emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback`,
+          // emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback`,
+          emailRedirectTo: (() => {
+            const origin = (import.meta.env.VITE_APP_URL || window.location.origin).replace(/\/+$/, '')
+            const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '')
+            return `${origin}${base}/auth/callback`
+          })(),
           data: {
             // 트리거에서 사용할 데이터를 user_metadata에 저장
             user_id: userData.user_id,
