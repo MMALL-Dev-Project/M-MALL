@@ -170,7 +170,7 @@ React와 Supabase를 활용하여 실제 서비스와 유사한 사용자 경험
 ---
 
 ## 📂 프로젝트 구조
-# M-MALL React 프로젝트 폴더 구조
+### M-MALL React 프로젝트 폴더 구조
 
 ```
 M-MALL/
@@ -312,3 +312,4 @@ git commit -m "docs: README 설치 방법 추가"
 ## 📄 라이센스
 
 이 프로젝트는 학습 목적으로 제작하였습니다.
+
