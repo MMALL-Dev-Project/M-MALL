@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <title>M-MALL - Redirecting...</title>
+    <script>
+        (function () {
+            // 현재 경로에서 /M-MALL 부분 제거
+            var path = window.location.pathname.replace(/^\/M-MALL/, '');
+            var search = window.location.search || '';
+            var hash = window.location.hash || '';
+
+            var redirect = path + search + hash;
+
+            if (redirect && redirect !== '/') {
+                sessionStorage.setItem('githubPagesRedirect', redirect);
+            }
+
+            // index.html로 리다이렉트
+            window.location.replace('/M-MALL/');
+        })();
+    </script>
+</head>
+
+<body>
+    <div style="text-align:center;padding:50px;font-family:sans-serif;">
+        <h2>페이지를 불러오는 중...</h2>
+    </div>
+</body>
+
+</html>

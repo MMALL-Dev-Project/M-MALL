@@ -5,12 +5,22 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/x-icon" href="%BASE_URL%favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <title>M-MALL | 취향을 만나는 곳 현대카드 M몰</title>
 </head>
 
 <body>
   <div id="root"></div>
+  <!-- GitHub Pages SPA 리다이렉트 복원 -->
+  <script>
+    (function () {
+      var redirect = sessionStorage.getItem('githubPagesRedirect');
+      if (redirect && redirect !== '/') {
+        sessionStorage.removeItem('githubPagesRedirect');
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
