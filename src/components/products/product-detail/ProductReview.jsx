@@ -26,7 +26,7 @@ const ProductReview = ({ product }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [allImages, setAllImages] = useState([]);
 
-    // ✅ 포토리뷰 갤러리 모달
+    //  포토리뷰 갤러리 모달
     const [photoGalleryModalOpen, setPhotoGalleryModalOpen] = useState(false);
 
     useEffect(() => {
@@ -172,7 +172,7 @@ const ProductReview = ({ product }) => {
         setIsModalOpen(true);
     };
 
-    // ✅ 포토 갤러리 모달에서 이미지 클릭
+    //  포토 갤러리 모달에서 이미지 클릭
     const handlePhotoGalleryClick = (index) => {
         setCurrentImageIndex(index);
         setSelectedImage(photoReviews[index].url);
@@ -254,7 +254,7 @@ const ProductReview = ({ product }) => {
                 </div>
             </div>
 
-            {/* ✅ 리뷰 통계 + 사진 갤러리 */}
+            {/*  리뷰 통계 + 사진 갤러리 */}
             <div className="review-stats-gallery-container">
                 {/* 리뷰 통계 (왼쪽) */}
                 {reviewStats.totalCount > 0 && (
@@ -285,7 +285,7 @@ const ProductReview = ({ product }) => {
                     </div>
                 )}
 
-                {/* ✅ 사진 리뷰 갤러리 (오른쪽) - 6개만 표시 */}
+                {/*  사진 리뷰 갤러리 (오른쪽) - 6개만 표시 */}
                 {photoReviews.length > 0 && (
                     <div id="photo-review-gallery">
                         {photoReviews.slice(0, 6).map((photo, idx) => (
@@ -380,7 +380,7 @@ const ProductReview = ({ product }) => {
                 />
             )}
 
-            {/* ✅ 포토리뷰 갤러리 모달 (전체 사진 보기) */}
+            {/*  포토리뷰 갤러리 모달 (전체 사진 보기) */}
             {photoGalleryModalOpen && (
                 <div className="photo-gallery-modal-overlay" onClick={() => setPhotoGalleryModalOpen(false)}>
                     <div className="photo-gallery-modal-content" onClick={(e) => e.stopPropagation()}>

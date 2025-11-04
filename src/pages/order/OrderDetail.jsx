@@ -49,10 +49,6 @@ const OrderDetail = () => {
     .eq('uid', user.id)
     .single();
 
-    console.log('조회된 주문 데이터:', order);
-console.log('address_id:', order.address_id);
-console.log('user_addresses:', order.user_addresses);
-
       if (orderError) throw orderError;
 
       // 주문 아이템들 조회

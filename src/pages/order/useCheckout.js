@@ -388,7 +388,7 @@ const handleAddressFormChange = (e) => {
   try {
     setLoading(true);
 
-    // ✅ 1. 예약재고만 해제 (실재고는 절대 건드리지 않음!)
+    // 1. 예약재고만 해제 (실재고는 절대 건드리지 않음!)
     console.log('💳 주문 완료 처리 시작');
     
     for (const item of orderItems) {
@@ -407,7 +407,7 @@ const handleAddressFormChange = (e) => {
         해제량: item.quantity
       });
 
-      // ✅ 예약재고만 해제 (stock_qty는 절대 수정 안 함!)
+      // 예약재고만 해제 (stock_qty는 절대 수정 안 함!)
       const { error: updateError } = await supabase
         .from('product_skus')
         .update({
@@ -418,7 +418,7 @@ const handleAddressFormChange = (e) => {
 
       if (updateError) throw new Error(`예약 해제 실패: ${updateError.message}`);
 
-      console.log(`✅ 예약 해제 완료: reserved_qty ${currentSku.reserved_qty} → ${Math.max(0, currentSku.reserved_qty - item.quantity)}`);
+      console.log(`예약 해제 완료: reserved_qty ${currentSku.reserved_qty} → ${Math.max(0, currentSku.reserved_qty - item.quantity)}`);
 
       // 재고 로그 기록
       await supabase
@@ -499,12 +499,12 @@ const handleAddressFormChange = (e) => {
         });
     }
 
-    // ✅ 6. 세션 정리 (stockReserved 플래그 삭제)
+    // 6. 세션 정리 (stockReserved 플래그 삭제)
     console.log('🗑️ 세션 정리 시작');
     sessionStorage.removeItem('checkoutItems');
     sessionStorage.removeItem('stockReserved');
     localStorage.removeItem('orderTimer');
-    console.log('✅ 세션 정리 완료 - 주문 완료');
+    console.log('세션 정리 완료 - 주문 완료');
 
     alert('주문이 완료되었습니다!');
     navigate(`/order/orderdetail/${order.oid}`);
