@@ -354,10 +354,10 @@ export default function MyPage() {
             <div className="profile-info">
               <div className="profile-image">
                 <img
-                  src={userInfo?.profile_image || '/images/default-avatar.png'}
+                  src={userInfo?.profile_image || 'https://csitasavsenhjprwwdup.supabase.co/storage/v1/object/public/user-profiles/default-avatar.png'}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = '/images/default-avatar.png';
+                    e.currentTarget.src = 'https://csitasavsenhjprwwdup.supabase.co/storage/v1/object/public/user-profiles/default-avatar.png';
                   }}
                   alt="프로필"
                 />

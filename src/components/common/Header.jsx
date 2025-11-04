@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import './Header.css';
 import { supabase } from "../../config/supabase";
 
+
 const Header = () => {
   const { user, userInfo, signOut } = useAuth();
 
@@ -20,7 +21,7 @@ const Header = () => {
   // 프로필 이미지
   const getProfileImage = () => {
     const profileImg = userInfo?.profile_image;
-    const DEFAULT_AVATAR = '/images/default-avatar.png';
+    const DEFAULT_AVATAR = 'https://csitasavsenhjprwwdup.supabase.co/storage/v1/object/public/user-profiles/default-avatar.png';
 
     if (!profileImg || profileImg === 'default.jpg' || profileImg === "'default.jpg'" || profileImg.includes('default')) {
       return DEFAULT_AVATAR;
