@@ -35,7 +35,7 @@ const BrandManagement = () => {
 				.select(`
             *, 
             products(*)
-          `);
+`);
 
 			const { data: brands, error: brandsError } = await brandsQuery
 				.order('bid', { ascending: false });

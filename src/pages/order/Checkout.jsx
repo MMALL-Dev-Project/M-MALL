@@ -71,8 +71,8 @@ const Checkout = () => {
         await supabase
           .from('product_skus')
           .update({ 
-            stock_qty: currentSku.stock_qty + item.quantity,              // ✅ 실재고 복구
-            reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity)  // ✅ 예약재고 해제
+            stock_qty: currentSku.stock_qty + item.quantity,              // 실재고 복구
+            reserved_qty: Math.max(0, (currentSku.reserved_qty || 0) - item.quantity)  // 예약재고 해제
           })
           .eq('skid', item.skid);
         

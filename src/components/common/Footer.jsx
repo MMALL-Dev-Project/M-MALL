@@ -9,29 +9,6 @@ const Footer = () => {
   const [noticeList, setNoticeList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // const noticeList = [
-  //   {
-  //     title: '· M몰 스노우피크 리빙쉘 롱Pro. 상품 정보 오등록으로 인한 주문 취소 안내',
-  //     date: '2024.07.18'
-  //   },
-  //   {
-  //     title: '· 5월 첫구매 이벤트 리워드 적립 일정 변경',
-  //     date: '2024.06.28'
-  //   },
-  //   {
-  //     title: "· 'Apple Day' 운영 방식 변경 안내 (선착순 구매 방식 적용)",
-  //     date: '2024.04.19'
-  //   },
-  //   {
-  //     title: "· 'Apple Day' 운영 방식 변경 안내",
-  //     date: '2024.01.19'
-  //   },
-  //   {
-  //     title: '· M몰 Grand Festa 럭키드로우 3차 당점차 발표(12/28일)',
-  //     date: '2023.12.26'
-  //   }
-  // ];
-
   const eventList = [
     {
       title: '· M몰에서 첫 구매하고 웰컴 리워드 받아 보세요!',
@@ -60,8 +37,8 @@ const Footer = () => {
         .from('notices')
         .select('nid, title, created_at')
         .eq('is_active', true)
-        .order('is_important', { ascending: false}) // 중요 공지 우선
-        .order('created_at', {ascending: false}) // 최신순
+        .order('is_important', { ascending: false }) // 중요 공지 우선
+        .order('created_at', { ascending: false }) // 최신순
         .limit(5);
 
       if (error) throw error;
@@ -78,7 +55,7 @@ const Footer = () => {
       }));
 
       setNoticeList(formattedData);
-    }catch(error) {
+    } catch (error) {
       console.error('공지사항 불러오기 오류:', error);
       // 에러 시 빈 배열로 설정
       setNoticeList([]);
@@ -250,7 +227,7 @@ const Footer = () => {
         <p>ⓒ HYUNDAI CARD Corp.</p>
       </div>
     </footer>
-    
+
   );
 }
 

@@ -1,8 +1,3 @@
-/* 회원 관리 페이지 전체 래퍼 */
-.admin-wrap {
-  /* App.css에 정의된 기본 스타일 사용 */
-}
-
 /* 검색 영역 */
 .user-search-section {
   margin: 20px 0;
@@ -74,10 +69,6 @@
 /* 회원 목록 테이블 */
 .admin-container {
   margin-top: 20px;
-}
-
-.admin-table {
-  /* App.css의 기본 admin-table 스타일 사용 */
 }
 
 /* 회원 테이블 행 호버 효과 */

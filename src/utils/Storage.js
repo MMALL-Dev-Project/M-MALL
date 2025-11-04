@@ -1,7 +1,3 @@
-/**
- * Utility functions for localStorage management
- */
-
 const Storage = {
     set(key, value) {
         try {

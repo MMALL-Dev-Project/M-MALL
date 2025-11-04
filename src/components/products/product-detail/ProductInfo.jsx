@@ -75,7 +75,6 @@ const ProductInfo = ({ product }) => {
 
         setProductSkus(skusData || []);
 
-        // console.log(`PID ${product.pid}의 활성화된 SKU 데이터:`, skusData);
       } catch (error) {
         console.error('SKU 데이터 로드 에러:', error);
         setProductSkus([]);
@@ -175,10 +174,6 @@ const ProductInfo = ({ product }) => {
       });
     });
 
-    if (matchingSku) {
-      console.log('매칭된 SKU:', matchingSku.skid, matchingSku.options);
-    }
-
     setSelectedSku(matchingSku || null);
   }, [selectedOptions, productSkus, product.option_types]);
 
@@ -275,15 +270,6 @@ const ProductInfo = ({ product }) => {
     }
 
     // 콘솔에 선택된 카드 정보 출력
-    console.log('장바구니에 추가할 아이템들:');
-    selectedOptionCards.forEach(card => {
-      console.log({
-        skid: card.sku.skid,
-        quantity: card.quantity,
-        pid: product.pid,
-
-      });
-    });
 
     try {
       // 각 선택된 옵션카드를 cart_items 에 insert 또는 update
@@ -312,8 +298,6 @@ const ProductInfo = ({ product }) => {
             .eq('caid', existingItem.caid);
 
           if (updateError) throw updateError;
-
-          // console.log(`기존 아이템 수량 업데이트: skid=${card.sku.skid}, ${existingItem.quantity} + ${card.quantity} = ${newQuantity}`);
 
         } else {
           // 새로운 아이템 추가
@@ -386,7 +370,6 @@ const ProductInfo = ({ product }) => {
 
         if (error) throw error;
       }
-      console.log('📦 재고 예약 완료!');
     } catch (error) {
       console.error('재고 예약 실패:', error);
       return;

@@ -94,10 +94,6 @@
   border-color: #ff4444;
 }
 
-/* 성공 상태 */
-.form-group input.success {
-  /* border-color: #016ACA; */
-}
 
 /* 중복확인 버튼 */
 .check-btn {

@@ -87,7 +87,6 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
         options: {
-          // emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback`,
           emailRedirectTo: (() => {
             const origin = (import.meta.env.VITE_APP_URL || window.location.origin).replace(/\/+$/, '')
             const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '')

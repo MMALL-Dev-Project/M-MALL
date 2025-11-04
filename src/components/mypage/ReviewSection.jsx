@@ -352,7 +352,7 @@ export default function ReviewSection({ reviewCount, initialTab }) {
         />
       )}
 
-      {/* ✅ 이미지 확대 모달 */}
+      {/* 이미지 확대 모달 */}
       {imageModalOpen && (
         <div className="image-modal-overlay" onClick={() => setImageModalOpen(false)}>
           <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
