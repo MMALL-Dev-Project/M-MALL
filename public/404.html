@@ -11,15 +11,24 @@
             var search = window.location.search || '';
             var hash = window.location.hash || '';
 
+            console.log('404 Page - Original path:', path);
+            console.log('404 Page - Hash:', hash);
+
+            // /auth/callback인 경우 /M-MALL 추가
+            if (path === '/auth/callback') {
+                var fullUrl = '/M-MALL/auth/callback' + search + hash;
+                console.log('Redirecting to:', fullUrl);
+                window.location.replace(fullUrl);
+                return;
+            }
+
             var redirect = path + search + hash;
 
-            // /M-MALL/ 이 아닌 경우에만 저장
             if (redirect && redirect !== '/M-MALL' && redirect !== '/M-MALL/') {
                 sessionStorage.setItem('githubPagesRedirect', redirect);
             }
 
-            // index.html로 리다이렉트
-            window.location.replace('/M-MALL/');
+            window.location.replace('/M-MALL/' + hash);
         })();
     </script>
 </head>
