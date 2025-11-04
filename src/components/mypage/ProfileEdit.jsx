@@ -3,7 +3,7 @@ import { supabase } from '../../config/supabase';
 import './ProfileEdit.css';
 
 export default function ProfileEdit({ userInfo, detailedUserInfo, onSave }) {
-  const DEFAULT_AVATAR = '/images/default-avatar.png';
+  const DEFAULT_AVATAR = 'https://csitasavsenhjprwwdup.supabase.co/storage/v1/object/public/user-profiles/default-avatar.png';
 
   const getInitialImage = () => {
     const profileImg = detailedUserInfo?.profile_image;

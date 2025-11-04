@@ -9,7 +9,7 @@ const UserManagement = () => {
   const navigate = useNavigate();
 
   // 기본 프로필 이미지 상수 추가
-  const DEFAULT_AVATAR = '/images/default-avatar.png';
+  const DEFAULT_AVATAR = 'https://csitasavsenhjprwwdup.supabase.co/storage/v1/object/public/user-profiles/default-avatar.png';
 
   // 프로필 이미지 가져오는 헬퍼 함수 추가
   const getProfileImageSrc = (profileImage) => {
